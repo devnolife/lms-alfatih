@@ -7,6 +7,8 @@ import ConditionFlow from "@/components/lesson/visualizers/ConditionFlow";
 import StepSequence from "@/components/lesson/visualizers/StepSequence";
 import FlowchartDiagram from "@/components/lesson/visualizers/FlowchartDiagram";
 import PixelGrid from "@/components/lesson/visualizers/PixelGrid";
+import BarChart from "@/components/lesson/visualizers/BarChart";
+import FolderTree from "@/components/lesson/visualizers/FolderTree";
 
 interface Props {
   type?: string;
@@ -33,6 +35,10 @@ export default function VisualBlock({ type, ...rest }: Props) {
       return <FlowchartDiagram {...rest} />;
     case "pixel-grid":
       return <PixelGrid {...rest} />;
+    case "bar-chart":
+      return <BarChart {...rest} />;
+    case "folder-tree":
+      return <FolderTree {...rest} />;
     default:
       return null;
   }

@@ -43,6 +43,11 @@ Bayangkan lemari tanpa sekat — semua baju campur aduk! Folder adalah "sekat" a
 berkasmu mudah dicari. 🗄️
 :::
 
+Begini contoh berkas yang sudah rapi di dalam folder-foldernya. Perhatikan
+**ekstensi** berwarna di tiap berkas — warnanya menandakan jenis berkas:
+
+::visual{type="folder-tree" title="Berkas yang sudah rapi" root="Tugas-Sekolah" data="Gambar: 🖼️ foto-kucing.jpg, 🖼️ poster.png | Dokumen: 📄 tugas-ipa.docx, 📄 jadwal.pdf | Musik: 🎵 lagu-indah.mp3"}
+
 ## 🎮 Latihan: Sortir Berkas
 
 Klik sebuah berkas, lalu klik **folder** yang tepat. Rapikan semuanya!

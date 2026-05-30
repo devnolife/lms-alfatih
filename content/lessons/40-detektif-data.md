@@ -45,6 +45,11 @@ hasilmu di luar itu, pasti ada yang salah hitung! 🧮
 Grafik batang mengubah angka jadi **batang** — makin tinggi batang, makin besar
 angkanya. Sekali lihat, kamu langsung tahu mana yang juara! 🏆
 
+::visual{type="bar-chart" title="Penjualan Kantin Hari Ini" unit="porsi" data="Bakso:32|Mie Ayam:25|Es Teh:40|Gorengan:18|Nasi Goreng:35"}
+
+Tekan **🧮 Hitung SUM & AVERAGE** pada grafik di atas untuk melihat total dan
+rata-rata semua penjualan sekaligus.
+
 ## 🎮 Latihan: Olah Data Kantin
 
 Hitung **total** dan **rata-rata** porsi terjual dari tabel berikut. Perhatikan
