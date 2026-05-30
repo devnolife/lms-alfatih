@@ -22,7 +22,24 @@ Di level ini kamu belajar:
 
 - Apa arti **melatih** sebuah AI.
 - Bagaimana AI belajar dari **contoh** (data).
+- Bagaimana komputer **melihat** gambar sebagai angka.
 - Mengapa **makin banyak contoh**, makin pintar tebakannya.
+
+## 💡 Apa Itu AI?
+
+**Kecerdasan Buatan (AI)** adalah program komputer yang bisa **belajar** dan
+**mengambil keputusan** sendiri — tidak cuma menjalankan perintah baku.
+
+| Program biasa | AI (mesin yang belajar) |
+| --- | --- |
+| Kamu tulis **aturan** persis, contoh: "kalau nilai ≥ 75, lulus". | Kamu beri **contoh**, AI menemukan aturannya sendiri. |
+| Tidak berubah kalau tidak diprogram ulang. | Makin sering dilatih, makin pintar. |
+
+:::callout{type="concept" title="Inti kecerdasan buatan"}
+AI tidak "berpikir" seperti manusia. Ia mencari **pola** dari banyak contoh,
+lalu memakai pola itu untuk menebak hal baru. Itulah yang akan kamu lakukan
+hari ini! 🧠
+:::
 
 ## 🧠 Bagaimana AI Belajar?
 
@@ -54,6 +71,34 @@ mirip-mirip semua, AI gampang salah tebak — sama seperti murid yang cuma belaj
 satu soal lalu bingung saat soal diganti. 📚
 :::
 
+## 👁️ Bagaimana Komputer Melihat Gambar?
+
+Saat kamu menggambar, mata kita melihat **bentuk**. Tapi komputer tidak punya
+mata — ia mengubah gambar menjadi **kotak-kotak angka** (disebut *piksel*). Tiap
+kotak menyimpan satu angka: makin gelap coretannya, makin besar angkanya.
+
+Tekan tombolnya untuk melihat gambar yang sama lewat "mata" AI:
+
+::visual{type="pixel-grid" title="Gambar = kumpulan angka" human="❤️" pattern="0990990/9999999/9999999/0999990/0099900/0009000"}
+
+Saat melatih AI di lab nanti, di balik layar komputer mengubah tiap gambarmu
+menjadi grid angka seperti ini, lalu **membandingkan** angka-angkanya untuk
+menebak. Gambar yang bentuknya mirip akan punya angka yang mirip pula. 🔢
+
+## 📊 Tingkat Keyakinan AI
+
+AI tidak menjawab "pasti benar". Ia memberi **persentase keyakinan** untuk tiap
+kategori — seperti kamu menebak "kayaknya 80% ini kucing, 20% anjing".
+
+- Bar paling tinggi = tebakan utama AI.
+- Kalau dua bar **hampir sama tinggi**, berarti AI **ragu** — gambarnya mirip
+  dua kategori, atau contohnya masih kurang.
+
+:::callout{type="tip" title="Bikin AI makin yakin"}
+Mau bar keyakinannya makin tinggi? Beri lebih banyak contoh yang **jelas
+berbeda** antar kategori, lalu latih ulang. 📈
+:::
+
 ## 🎮 Lab: Latih AI-mu Sendiri
 
 Sekarang giliranmu! Ikuti **dua tahap** berikut:
@@ -70,6 +115,18 @@ Sekarang giliranmu! Ikuti **dua tahap** berikut:
 Coba gambar yang **mirip** dua kategori sekaligus — lihat AI jadi ragu (bar
 keyakinannya seimbang). Lalu tambahkan lebih banyak contoh dan latih ulang;
 tebakannya pasti makin yakin! 🔁
+:::
+
+## ⚖️ AI Juga Bisa Salah
+
+AI hanya sepintar **contoh** yang kita berikan. Kalau contohnya kurang, keliru,
+atau berat sebelah, tebakannya pun ikut salah. Inilah kenapa AI sungguhan pun
+kadang keliru mengenali wajah atau menyaring informasi.
+
+:::callout{type="warning" title="Jadi pengguna AI yang bijak"}
+Karena AI bisa salah, jangan telan mentah-mentah jawabannya. Selalu **periksa
+ulang** dengan akal sehat — sama seperti yang kamu pelajari di **Level 6: Warga
+Digital Bijak**. 🛡️
 :::
 
 ## 🏆 Selesai!
