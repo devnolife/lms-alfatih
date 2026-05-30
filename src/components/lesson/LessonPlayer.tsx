@@ -97,7 +97,7 @@ export default function LessonPlayer({ lesson }: Props) {
               {isPractice(i) ? (
                 <>
                   <article className="min-w-0">
-                    <LessonContent body={sections[i] ?? ""} />
+                    <LessonContent body={sections[i] ?? ""} lessonSlug={lesson.slug} />
                   </article>
                   <div className="mt-5">
                     <div
@@ -111,7 +111,7 @@ export default function LessonPlayer({ lesson }: Props) {
                 </>
               ) : (
                 <article className="min-w-0">
-                  <LessonContent body={sections[i] ?? ""} />
+                  <LessonContent body={sections[i] ?? ""} lessonSlug={lesson.slug} />
                 </article>
               )}
             </div>

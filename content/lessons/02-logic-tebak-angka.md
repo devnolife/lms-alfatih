@@ -2,6 +2,8 @@
 title: "Logic Flow: Game Tebak Angka"
 summary: "Pelajari percabangan if/else dan perulangan for/while sambil membuat mini-game tebak angka."
 order: 2
+level: 5
+element: AP
 projectKey: tebak-angka
 estimatedMinutes: 60
 challenges:

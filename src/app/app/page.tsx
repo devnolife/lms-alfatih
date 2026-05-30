@@ -1,24 +1,27 @@
 import { getCurrentUser } from "@/lib/auth";
-import { getAllLessons } from "@/lib/content";
+import { getCurriculum } from "@/lib/curriculum";
+import { getGlobalLeaderboard } from "@/lib/leaderboard";
+import { syncUserBadges, getUserBadges } from "@/lib/badges";
+import LevelMap from "@/components/curriculum/LevelMap";
+import LeaderboardBoard from "@/components/curriculum/LeaderboardBoard";
+import BadgeShelf from "@/components/curriculum/BadgeShelf";
 import PendingLink from "@/components/ui/PendingLink";
 import MascotSvg from "@/components/MascotSvg";
 
-const ACCENTS = [
-  "var(--color-duo-green)",
-  "var(--color-sky-blue)",
-  "var(--color-grape)",
-  "var(--color-sunshine-dark)",
-  "var(--color-bubblegum)",
-];
-
 export default async function AppHome() {
-  const [user, lessons] = await Promise.all([getCurrentUser(), getAllLessons()]);
+  const user = await getCurrentUser();
   if (!user) return null;
 
-  const totalXp = lessons.reduce(
-    (sum, l) => sum + l.challenges.reduce((s, c) => s + (c.xpReward ?? 0), 0),
-    0
-  );
+  await syncUserBadges(user.id);
+  const [groups, leaderboard, badges] = await Promise.all([
+    getCurriculum(user.id),
+    getGlobalLeaderboard(user.id),
+    getUserBadges(user.id),
+  ]);
+
+  const totalXp = groups.reduce((sum, g) => sum + g.xp, 0);
+  const lessonCount = groups.reduce((sum, g) => sum + g.total, 0);
+  const completedLevels = groups.filter((g) => g.state === "done").length;
 
   return (
     <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-10">
@@ -38,8 +41,13 @@ export default async function AppHome() {
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-wide">
               <span className="rounded-full bg-white px-3 py-1 text-[var(--color-duo-green-dark)]">
-                📚 {lessons.length} modul
+                📚 {lessonCount} misi
               </span>
+              {completedLevels > 0 && (
+                <span className="rounded-full bg-white px-3 py-1 text-[var(--color-duo-green-dark)]">
+                  🏆 {completedLevels} level selesai
+                </span>
+              )}
               {totalXp > 0 && (
                 <span className="rounded-full bg-[var(--color-sunshine)] px-3 py-1 text-[var(--color-almost-black)]">
                   ⭐ {totalXp} XP total
@@ -76,78 +84,18 @@ export default async function AppHome() {
       </PendingLink>
 
       <h2 className="text-2xl mb-5" style={{ fontFamily: "var(--font-feather)" }}>
-        1-Day Bootcamp Track
+        Peta Petualangan Informatika
       </h2>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {lessons.map((lesson, i) => {
-          const accent = ACCENTS[i % ACCENTS.length];
-          const lessonXp = lesson.challenges.reduce(
-            (s, c) => s + (c.xpReward ?? 0),
-            0
-          );
-          return (
-            <PendingLink
-              key={lesson.slug}
-              href={`/learn/${lesson.slug}`}
-              className="duo-card group block p-5"
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-lg font-bold text-white"
-                  style={{
-                    backgroundColor: accent,
-                    fontFamily: "var(--font-feather)",
-                  }}
-                >
-                  {lesson.order}
-                </div>
-                <div className="text-xs uppercase tracking-wide text-[var(--color-silver)]">
-                  Modul {lesson.order}
-                  <div className="text-[var(--color-graphite)]">
-                    {lesson.projectKey}
-                  </div>
-                </div>
-              </div>
+      <LevelMap groups={groups} />
 
-              <div
-                className="mt-4 text-xl leading-tight"
-                style={{ fontFamily: "var(--font-feather)" }}
-              >
-                {lesson.title}
-              </div>
-              <p className="mt-2 text-sm font-normal text-[var(--color-graphite)]">
-                {lesson.summary}
-              </p>
-
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-wide">
-                {lesson.estimatedMinutes ? (
-                  <span className="rounded-full bg-[var(--color-cloud)] px-2.5 py-1 text-[var(--color-charcoal)]">
-                    ⏱ {lesson.estimatedMinutes} mnt
-                  </span>
-                ) : null}
-                {lessonXp > 0 ? (
-                  <span className="rounded-full bg-[var(--color-sunshine)] px-2.5 py-1 text-[var(--color-almost-black)]">
-                    ⭐ {lessonXp} XP
-                  </span>
-                ) : null}
-              </div>
-
-              <div className="mt-4 inline-flex items-center text-sm font-bold text-[var(--color-sky-blue-dark)]">
-                Mulai
-                <span className="ml-1 transition-transform group-hover:translate-x-1">
-                  →
-                </span>
-              </div>
-            </PendingLink>
-          );
-        })}
-
-        {lessons.length === 0 && (
-          <p className="text-[var(--color-silver)]">
-            Belum ada lesson yang dipublikasikan.
-          </p>
-        )}
+      <div className="mt-10 grid gap-5 lg:grid-cols-2">
+        <LeaderboardBoard
+          rows={leaderboard}
+          title="Peringkat Sekolah"
+          emoji="🏆"
+        />
+        <BadgeShelf earned={badges} />
       </div>
     </div>
   );

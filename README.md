@@ -34,6 +34,63 @@ Setiap pembelajaran kini punya lapisan visual/UI yang lengkap:
 **Phase 3 (Engagement: dashboard guru, submission/XP persist, sertifikat) — belum diimplementasi.** Lihat rencananya di plan internal (`.copilot/session-state/.../plan.md`).
 
 
+## 🎮 Kurikulum Informatika Kelas 7 (Fase D) — Gamified 6-Level (✅ selesai)
+
+FunPython kini bukan sekadar 3 lesson Python datar, melainkan **kurikulum
+Informatika Kurikulum Merdeka penuh** yang dipetakan ke 6 **Level/Quest**
+bergamifikasi dengan **penguncian berurutan**, **umpan balik instan**, dan
+**leaderboard**.
+
+| Level | Nama | Elemen Informatika | Aktivitas inti |
+|---|---|---|---|
+| 1 | Ksatria Logika | Berpikir Komputasional (BK) | Kuis logika + **flowchart rumpang** |
+| 2 | Navigator Berkas | TIK | **Sortir file (drag-drop)** + **upload ZIP nyata** (Misi Penyelamatan Berkas) |
+| 3 | Teknisi Siber | Sistem Komputer & Jaringan (SK_JKI) | **Cocokkan hardware → fungsi** + kuis bergambar |
+| 4 | Detektif Data | Analisis Data (AD) | **Spreadsheet mini** (SUM/AVERAGE) + grafik |
+| 5 | Pembuat Game Pemula | Algoritma & Pemrograman (AP) | **Python (Pyodide)** existing + embed **Scratch** |
+| 6 | Warga Digital Bijak | Dampak Sosial Informatika (DSI) | **Skenario bercabang** (branching) |
+
+### Mekanisme
+
+- **Level-lock berurutan** — Level N+1 terkunci sampai **semua** lesson Level N
+  berstatus `COMPLETED`. Akses langsung ke lesson terkunci → redirect ke
+  `/learn?locked=1`. Logika di `src/lib/curriculum.ts` (`getCurriculum`,
+  `isLessonLocked`).
+- **Model penyelesaian terpusat** (`src/lib/progress.ts` →
+  `recomputeLessonProgress`): sebuah lesson `COMPLETED` **jika dan hanya jika**
+  semua dimensi wajibnya terpenuhi — (1) semua **challenge** Python punya
+  `ChallengeCompletion`, (2) semua **activity** wajib di frontmatter punya
+  `ActivityCompletion`, dan (3) semua **mission** punya `FileMissionSubmission`
+  yang lulus. Derivasi dari baris yang dipersist → **idempoten & race-safe**.
+  Dipanggil oleh ketiga route penilaian (`/api/submissions`,
+  `/api/missions/file-rescue`, `/api/activities/complete`).
+- **Aktivitas in-app** ditulis di Markdown sebagai directive
+  `::game{type=... activityId=...}` → `src/components/lesson/GameBlock.tsx`.
+  Saat siswa menyelesaikan game, `useGameFeedback().solved()` otomatis
+  melaporkan ke `POST /api/activities/complete` (lihat
+  `src/components/lesson/ActivityContext.tsx`). Tipe game: `quiz`, `flowchart`,
+  `filesort`, `hardware`, `spreadsheet`, `branching`, dll.
+- **Misi upload ZIP nyata** (Level 2) — siswa mengunggah `.zip` berisi struktur
+  folder; server (`/api/missions/file-rescue`) meng-unzip + memvalidasi
+  (anti zip-slip), menyimpan `FileMissionSubmission`, memberi feedback granular.
+- **Embed Scratch** (Level 5) — directive `::scratch{projectId=...}` menampilkan
+  iframe `scratch.mit.edu` (butuh internet; ada pesan fallback).
+- **Leaderboard** — papan XP **per-kelas** (untuk guru, di `/app/classes`) dan
+  **global sekolah** di home `/app` (`src/lib/leaderboard.ts` +
+  `src/components/curriculum/LeaderboardBoard.tsx`).
+- **Badge & sertifikat** — badge per-Level otomatis di-award lewat
+  `syncUserBadges()` saat lesson `COMPLETED`; rak badge di `/app`
+  (`BadgeShelf.tsx`). Sertifikat saat seluruh kurikulum selesai, dengan halaman
+  verifikasi publik `/certificate/[token]` (`src/lib/badges.ts`).
+
+> Catatan: penilaian game bersifat **client-side (honor-system)** — endpoint
+> activity mempercayai klien. Ini diterima untuk alat kelas berisiko-rendah;
+> UI tetap menggerbang siswa secara normal.
+
+Konten ada di `content/lessons/*.md` (5 lesson aktivitas baru untuk Level 1–4 & 6,
+plus 3 lesson Python lama yang kini menjadi Level 5).
+
+
 ## 🧱 Stack
 
 | Lapisan | Teknologi |
@@ -101,6 +158,30 @@ Buka <http://localhost:3000>.
 | `/learn/logic-tebak-angka` | Modul 2 |
 | `/learn/project-turtle-art` | Modul 3 |
 | `/dashboard` | Placeholder teacher (Phase 3) |
+
+### 6. Seed konten & data demo
+
+```bash
+npm run db:seed
+```
+
+Meng-upsert semua lesson Markdown (termasuk 5 lesson aktivitas baru + 3 lesson
+Python), challenge, dan **7 badge per-Level**. Akun demo: `siswa`, `instruktur`,
+`admin` — semua password `password123`.
+
+### 7. Testing E2E (Playwright)
+
+Suite end-to-end ada di `tests/e2e/run_e2e.py` (22 pengujian: marketing, auth,
+lesson player + Pyodide, games, kelas + sesi live, **level-lock, aktivitas
+kurikulum, leaderboard, badge, sertifikat**). Jalankan terhadap dev server yang
+sedang aktif; override base URL bila port bukan 3000:
+
+```bash
+pip install playwright && python -m playwright install chromium
+E2E_BASE_URL=http://localhost:3000 python tests/e2e/run_e2e.py
+```
+
+Screenshot tiap langkah disimpan di `tests/e2e/shots/`.
 
 ## 📂 Struktur kode
 

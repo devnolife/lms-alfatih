@@ -2,6 +2,8 @@
 title: "Warm-up: Identitas Digital"
 summary: "Kenalan dengan Python lewat input dan output sederhana — bikin kartu nama digitalmu sendiri!"
 order: 1
+level: 5
+element: AP
 projectKey: digital-identity
 estimatedMinutes: 45
 challenges:

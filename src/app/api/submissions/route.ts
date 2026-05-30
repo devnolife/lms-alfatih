@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import { readSession } from "@/lib/auth";
 import { rateLimit } from "@/lib/redis";
 import { broadcastUserActivity } from "@/lib/sessions";
+import { syncUserBadges } from "@/lib/badges";
+import { recomputeLessonProgress } from "@/lib/progress";
 
 export const runtime = "nodejs";
 
@@ -110,37 +112,10 @@ export async function POST(req: Request) {
       },
     });
 
-    // Recompute lesson progress over ACTIVE challenges only.
-    const activeChallenges = await tx.challenge.findMany({
-      where: { lessonSlug, active: true },
-      select: { id: true },
-    });
-    const totalActive = activeChallenges.length;
-    let lessonStatus: LessonStatus = LessonStatus.IN_PROGRESS;
-
-    if (totalActive > 0) {
-      const doneCount = await tx.challengeCompletion.count({
-        where: { userId, challengeId: { in: activeChallenges.map((c) => c.id) } },
-      });
-      const completed = doneCount >= totalActive;
-      lessonStatus = completed
-        ? LessonStatus.COMPLETED
-        : LessonStatus.IN_PROGRESS;
-
-      await tx.lessonProgress.upsert({
-        where: { userId_lessonSlug: { userId, lessonSlug } },
-        update: {
-          status: lessonStatus,
-          completedAt: completed ? new Date() : null,
-        },
-        create: {
-          userId,
-          lessonSlug,
-          status: lessonStatus,
-          completedAt: completed ? new Date() : null,
-        },
-      });
-    }
+    // Recompute lesson progress across ALL required dimensions (challenges,
+    // activities, missions) via the single source of truth.
+    const progress = await recomputeLessonProgress(tx, userId, lessonSlug);
+    const lessonStatus = progress.status;
 
     const user = await tx.user.findUnique({
       where: { id: userId },
@@ -154,6 +129,11 @@ export async function POST(req: Request) {
       lessonStatus,
     };
   });
+
+  // Award any newly-completed Level badges / certificate. Best-effort.
+  if (result.lessonStatus === LessonStatus.COMPLETED) {
+    await syncUserBadges(userId).catch(() => {});
+  }
 
   // Push the student's updated progress to any active class sessions (live
   // board). Best-effort: never let real-time fan-out fail the submission.

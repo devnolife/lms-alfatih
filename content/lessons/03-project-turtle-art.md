@@ -2,6 +2,8 @@
 title: "Project Core: Turtle Art ASCII"
 summary: "Project penutup: kombinasikan fungsi, loop, dan kreativitas untuk membuat seni ASCII layaknya Turtle Art."
 order: 3
+level: 5
+element: AP
 projectKey: turtle-art
 estimatedMinutes: 90
 challenges:

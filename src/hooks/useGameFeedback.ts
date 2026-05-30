@@ -4,6 +4,10 @@ import { useCallback } from "react";
 import { useSound } from "@/components/festivity/SoundProvider";
 import { useReward, type Badge } from "@/components/festivity/RewardProvider";
 import { popConfetti, burstConfetti } from "@/lib/client/celebrate";
+import {
+  useActivityContext,
+  reportActivityComplete,
+} from "@/components/lesson/ActivityContext";
 
 interface RewardOpts {
   xp?: number;
@@ -23,6 +27,7 @@ interface RewardOpts {
 export function useGameFeedback() {
   const { play } = useSound();
   const { awardXp, unlockBadge } = useReward();
+  const { lessonSlug, activityId } = useActivityContext();
 
   const click = useCallback(() => {
     play("click");
@@ -48,8 +53,13 @@ export function useGameFeedback() {
       burstConfetti();
       if (opts.xp) awardXp(opts.xp, opts.label);
       if (opts.badge) unlockBadge(opts.badge);
+      // When this game is an activity inside a lesson, persist its completion
+      // (server reads the authoritative XP from the lesson manifest).
+      if (lessonSlug && activityId) {
+        reportActivityComplete(lessonSlug, activityId);
+      }
     },
-    [play, awardXp, unlockBadge]
+    [play, awardXp, unlockBadge, lessonSlug, activityId]
   );
 
   return { click, correct, wrong, solved };

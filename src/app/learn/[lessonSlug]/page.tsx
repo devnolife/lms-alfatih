@@ -1,5 +1,7 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getAllLessons, getLessonBySlug } from "@/lib/content";
+import { getCurrentUser } from "@/lib/auth";
+import { isLessonLocked } from "@/lib/curriculum";
 import LessonPlayer from "@/components/lesson/LessonPlayer";
 import MascotSvg from "@/components/MascotSvg";
 import BackButton from "@/components/ui/BackButton";
@@ -17,6 +19,11 @@ export default async function LessonPage({ params }: PageProps) {
   const { lessonSlug } = await params;
   const lesson = await getLessonBySlug(lessonSlug);
   if (!lesson) notFound();
+
+  const user = await getCurrentUser();
+  if (await isLessonLocked(lessonSlug, user?.id)) {
+    redirect("/learn?locked=1");
+  }
 
   const totalXp = lesson.challenges.reduce(
     (sum, c) => sum + (c.xpReward ?? 0),

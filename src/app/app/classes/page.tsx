@@ -1,7 +1,9 @@
 import { getCurrentUser } from "@/lib/auth";
 import { getStudentClasses, getTeacherClasses } from "@/lib/classes";
+import { getClassLeaderboard } from "@/lib/leaderboard";
 import BackButton from "@/components/ui/BackButton";
 import JoinClassPanel from "@/components/classes/JoinClassPanel";
+import LeaderboardBoard from "@/components/curriculum/LeaderboardBoard";
 import PendingLink from "@/components/ui/PendingLink";
 
 export const metadata = {
@@ -16,6 +18,15 @@ export default async function ClassesPage() {
   const classes = isTeacher
     ? await getTeacherClasses(user.id)
     : await getStudentClasses(user.id);
+
+  const leaderboards = Object.fromEntries(
+    await Promise.all(
+      classes.map(async (c) => [
+        c.id,
+        await getClassLeaderboard(c.id, user.id),
+      ] as const)
+    )
+  );
 
   return (
     <div className="max-w-[900px] mx-auto px-4 sm:px-6 py-10">
@@ -77,6 +88,15 @@ export default async function ClassesPage() {
                 >
                   🔴 Masuk Sesi Live →
                 </PendingLink>
+              )}
+              {leaderboards[c.id]?.length > 0 && (
+                <div className="mt-4">
+                  <LeaderboardBoard
+                    rows={leaderboards[c.id].slice(0, 5)}
+                    title="Peringkat Kelas"
+                    emoji="🏅"
+                  />
+                </div>
               )}
             </div>
           ))}

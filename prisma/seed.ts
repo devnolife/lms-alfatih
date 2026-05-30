@@ -62,6 +62,8 @@ async function syncContent() {
         title: lesson.title,
         summary: lesson.summary,
         order: lesson.order,
+        level: lesson.level,
+        element: lesson.element,
         projectKey: lesson.projectKey,
         active: true,
       },
@@ -70,6 +72,8 @@ async function syncContent() {
         title: lesson.title,
         summary: lesson.summary,
         order: lesson.order,
+        level: lesson.level,
+        element: lesson.element,
         projectKey: lesson.projectKey,
         active: true,
       },
@@ -120,6 +124,29 @@ async function syncContent() {
   );
 }
 
+// One badge per Level/Quest, awarded when a learner completes that level.
+const LEVEL_BADGES = [
+  { code: "level-1-bk", name: "Ksatria Logika", description: "Menyelesaikan Level 1 — Berpikir Komputasional.", iconKey: "🧠" },
+  { code: "level-2-tik", name: "Navigator Digital", description: "Menyelesaikan Level 2 — TIK.", iconKey: "🧭" },
+  { code: "level-3-skjki", name: "Teknisi Siber", description: "Menyelesaikan Level 3 — Sistem Komputer & Jaringan.", iconKey: "🛠️" },
+  { code: "level-4-ad", name: "Detektif Data", description: "Menyelesaikan Level 4 — Analisis Data.", iconKey: "🔎" },
+  { code: "level-5-ap", name: "Pembuat Game Pemula", description: "Menyelesaikan Level 5 — Algoritma & Pemrograman.", iconKey: "🎮" },
+  { code: "level-6-dsi", name: "Warga Digital Bijak", description: "Menyelesaikan Level 6 — Dampak Sosial Informatika.", iconKey: "🛡️" },
+  { code: "teknisi-muda", name: "Teknisi Muda", description: "Menjawab 100% benar kuis perangkat keras.", iconKey: "🏅" },
+];
+
+async function syncBadges() {
+  console.log("\nSyncing level badges...");
+  for (const b of LEVEL_BADGES) {
+    await prisma.badge.upsert({
+      where: { code: b.code },
+      update: { name: b.name, description: b.description, iconKey: b.iconKey },
+      create: b,
+    });
+  }
+  console.log(`  ✓ ${LEVEL_BADGES.length} badges synced`);
+}
+
 async function main() {
   console.log("Seeding test accounts...\n");
   for (const u of USERS) {
@@ -146,6 +173,7 @@ async function main() {
   }
 
   await syncContent();
+  await syncBadges();
   console.log("\nDone. Login at /login.");
 }
 

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "tsx --env-file=.env prisma/seed.ts"
+    "db:seed": "tsx --env-file=.env prisma/seed.ts",
+    "test:e2e": "python tests/e2e/run_e2e.py"
   },
   "prisma": {
     "seed": "tsx --env-file=.env prisma/seed.ts"
@@ -17,6 +18,7 @@
     "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.4",
+    "fflate": "^0.8.3",
     "gray-matter": "^4.0.3",
     "gsap": "^3.15.0",
     "ioredis": "^5.11.0",

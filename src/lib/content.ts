@@ -15,14 +15,41 @@ export interface ChallengeSpec {
   xpReward?: number;
 }
 
+/** A non-Python interactive activity that counts toward lesson completion. */
+export interface ActivitySpec {
+  id: string;
+  xp: number;
+  /** Whether this activity must be solved to complete the lesson. */
+  required: boolean;
+  active: boolean;
+}
+
+/** A real file-upload mission that counts toward lesson completion. */
+export interface MissionSpec {
+  key: string;
+  required: boolean;
+}
+
+/** Kurikulum Merdeka Informatika Fase D element codes. */
+export type ElementCode = "BK" | "TIK" | "SK_JKI" | "AD" | "AP" | "DSI";
+
 export interface LessonMeta {
   slug: string;
   title: string;
   summary: string;
+  /** Sequential ordering within the whole curriculum. */
   order: number;
+  /** Level/Quest 1-6 this lesson belongs to. */
+  level: number;
+  /** Informatika element code this lesson teaches. */
+  element: ElementCode;
   projectKey: string;
   estimatedMinutes?: number;
   challenges: ChallengeSpec[];
+  /** Interactive activities (games) that count toward completion. */
+  activities: ActivitySpec[];
+  /** File-upload missions that count toward completion. */
+  missions: MissionSpec[];
 }
 
 export interface Lesson extends LessonMeta {
@@ -41,11 +68,39 @@ async function readLessonFile(file: string): Promise<Lesson> {
     title: data.title ?? slug,
     summary: data.summary ?? "",
     order: data.order ?? 0,
+    level: data.level ?? 5,
+    element: (data.element as ElementCode) ?? "AP",
     projectKey: data.projectKey ?? slug,
     estimatedMinutes: data.estimatedMinutes,
     challenges: (data.challenges ?? []) as ChallengeSpec[],
+    activities: normalizeActivities(data.activities),
+    missions: normalizeMissions(data.missions),
     body: parsed.content,
   };
+}
+
+function normalizeActivities(raw: unknown): ActivitySpec[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((a): a is Record<string, unknown> => Boolean(a) && typeof a === "object")
+    .map((a) => ({
+      id: String(a.id ?? ""),
+      xp: Number(a.xp ?? 0),
+      required: a.required !== false,
+      active: a.active !== false,
+    }))
+    .filter((a) => a.id.length > 0);
+}
+
+function normalizeMissions(raw: unknown): MissionSpec[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((m): m is Record<string, unknown> => Boolean(m) && typeof m === "object")
+    .map((m) => ({
+      key: String(m.key ?? ""),
+      required: m.required !== false,
+    }))
+    .filter((m) => m.key.length > 0);
 }
 
 let cache: Lesson[] | null = null;

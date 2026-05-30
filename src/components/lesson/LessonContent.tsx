@@ -10,9 +10,13 @@ import Callout from "@/components/lesson/Callout";
 import VisualBlock from "@/components/lesson/VisualBlock";
 import GameBlock from "@/components/lesson/GameBlock";
 import ConceptReveal from "@/components/lesson/ConceptReveal";
+import ScratchEmbed from "@/components/lesson/ScratchEmbed";
+import FileRescueMission from "@/components/lesson/FileRescueMission";
+import { ActivityProvider } from "@/components/lesson/ActivityContext";
 
 interface Props {
   body: string;
+  lessonSlug?: string;
 }
 
 type CalloutType = "tip" | "info" | "warning" | "concept";
@@ -112,6 +116,13 @@ const components = {
   game: (props: { type?: string; [key: string]: string | undefined }) => (
     <GameBlock {...props} />
   ),
+  scratch: (props: { projectId?: string; [key: string]: string | undefined }) => (
+    <ScratchEmbed {...props} />
+  ),
+  filemission: (props: {
+    missionKey?: string;
+    [key: string]: string | undefined;
+  }) => <FileRescueMission {...props} />,
   reveal: ({
     visual,
     title,
@@ -129,15 +140,17 @@ const components = {
   ),
 } as Components;
 
-export default function LessonContent({ body }: Props) {
+export default function LessonContent({ body, lessonSlug }: Props) {
   return (
-    <div className="text-[var(--color-almost-black)]">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkDirective, remarkDirectives]}
-        components={components}
-      >
-        {body}
-      </ReactMarkdown>
-    </div>
+    <ActivityProvider value={{ lessonSlug }}>
+      <div className="text-[var(--color-almost-black)]">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkDirective, remarkDirectives]}
+          components={components}
+        >
+          {body}
+        </ReactMarkdown>
+      </div>
+    </ActivityProvider>
   );
 }

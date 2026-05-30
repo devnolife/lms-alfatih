@@ -1,4 +1,14 @@
-export type GameType = "maze" | "order" | "match" | "fill";
+export type GameType =
+  | "maze"
+  | "order"
+  | "match"
+  | "fill"
+  | "quiz"
+  | "flowchart"
+  | "filesort"
+  | "hardware"
+  | "spreadsheet"
+  | "branching";
 
 export interface GameEntry {
   /** Stable id used for keys. */
@@ -201,6 +211,95 @@ export const GAME_CATALOG: GameCategory[] = [
           answer: "nama",
           title: "Nama Variabel",
           question: "Apa yang harus diisi agar nama Sinta tampil?",
+        },
+      },
+    ],
+  },
+  {
+    id: "informatika",
+    title: "Petualangan Informatika",
+    emoji: "🗺️",
+    description:
+      "Aktivitas dari 6 Level kurikulum Informatika: logika, file, perangkat, data, dan warga digital.",
+    games: [
+      {
+        id: "flowchart-1",
+        type: "flowchart",
+        title: "Alur Membuat Teh",
+        blurb: "Lengkapi diagram alir langkah-langkah yang hilang.",
+        emoji: "🧠",
+        level: 1,
+        props: {
+          steps: "Mulai|Didihkan air|___|Tuang air panas|___|Selesai",
+          answers: "Masukkan teh;Aduk",
+          bank: "Masukkan teh;Aduk;Tidur;Matikan komputer",
+          title: "Alur Membuat Teh",
+        },
+      },
+      {
+        id: "filesort-1",
+        type: "filesort",
+        title: "Rapikan Berkas",
+        blurb: "Seret tiap berkas ke folder yang benar.",
+        emoji: "🗂️",
+        level: 2,
+        props: {
+          files:
+            "🖼️ foto.jpg:Gambar|📄 tugas.docx:Dokumen|🎵 lagu.mp3:Musik|🖼️ poster.png:Gambar|📄 catatan.pdf:Dokumen",
+          title: "Rapikan Berkas",
+        },
+      },
+      {
+        id: "hardware-1",
+        type: "hardware",
+        title: "Perangkat & Fungsinya",
+        blurb: "Cocokkan perangkat keras dengan tugasnya.",
+        emoji: "🛠️",
+        level: 2,
+        props: {
+          pairs:
+            "⌨️ Keyboard:Mengetik teks|🖥️ Monitor:Menampilkan gambar|🖱️ Mouse:Menggerakkan kursor|🖨️ Printer:Mencetak ke kertas",
+          title: "Perangkat & Fungsinya",
+        },
+      },
+      {
+        id: "spreadsheet-1",
+        type: "spreadsheet",
+        title: "Data Kantin",
+        blurb: "Hitung total & rata-rata makanan terjual.",
+        emoji: "🔎",
+        level: 3,
+        props: {
+          rows: "Bakso:32|Mie Ayam:25|Es Teh:40|Gorengan:18",
+          labelHeader: "Makanan",
+          valueHeader: "Terjual",
+          title: "Data Kantin",
+        },
+      },
+      {
+        id: "quiz-1",
+        type: "quiz",
+        title: "Kuis Sistem Komputer",
+        blurb: "Uji pemahamanmu soal perangkat & jaringan.",
+        emoji: "📝",
+        level: 2,
+        props: {
+          title: "Kuis Sistem Komputer",
+          data:
+            "Berapa bit dalam 1 byte?|4 bit;8 bit;16 bit|1|Satu byte terdiri dari 8 bit.~Apa otak dari komputer?|RAM;CPU;Monitor|1|CPU (prosesor) adalah otak komputer yang mengolah data.",
+        },
+      },
+      {
+        id: "branching-1",
+        type: "branching",
+        title: "Warga Digital Bijak",
+        blurb: "Pilih keputusan bijak di dunia maya.",
+        emoji: "🛡️",
+        level: 3,
+        props: {
+          title: "Warga Digital Bijak",
+          data:
+            "start>>Temanmu mengirim pesan berisi kabar heboh yang belum tentu benar. Apa yang kamu lakukan?>>Langsung sebarkan ke grup::end|Cek dulu kebenarannya::node2::wise~node2>>Kamu menemukan kabar itu hoaks. Lalu?>>Diam saja::end|Ingatkan temanmu dengan sopan::end::wise",
         },
       },
     ],

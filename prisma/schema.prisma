@@ -42,6 +42,8 @@ model User {
   badges        UserBadge[]
   certificates  Certificate[]
   completions   ChallengeCompletion[]
+  fileMissions  FileMissionSubmission[]
+  activityCompletions ActivityCompletion[]
 }
 
 model Class {
@@ -176,6 +178,8 @@ model Lesson {
   title      String
   summary    String
   order      Int
+  level      Int      @default(5)
+  element    String   @default("AP")
   projectKey String
   active     Boolean  @default(true)
   createdAt  DateTime @default(now())
@@ -243,6 +247,41 @@ model LessonProgress {
   lesson Lesson @relation(fields: [lessonSlug], references: [slug], onDelete: Cascade)
 
   @@id([userId, lessonSlug])
+}
+
+// One row per graded attempt of a real file-upload mission (Level 2 "Misi
+// Penyelamatan Berkas"). Files themselves are validated then removed; only the
+// outcome + feedback is persisted.
+model FileMissionSubmission {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonSlug  String
+  missionKey  String
+  passed      Boolean
+  // JSON shape: Array<{ check: string; passed: boolean; message?: string }>
+  feedback    Json
+  xpAwarded   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, lessonSlug])
+}
+
+// Records the FIRST solve of a non-Python interactive activity (flowchart,
+// quiz, spreadsheet, hardware-match, branching, etc.) per user. Composite PK
+// makes XP idempotent at the DB level, exactly like ChallengeCompletion.
+model ActivityCompletion {
+  userId     String
+  lessonSlug String
+  activityId String
+  xpAwarded  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, lessonSlug, activityId])
+  @@index([userId, lessonSlug])
 }
 
 model Badge {
