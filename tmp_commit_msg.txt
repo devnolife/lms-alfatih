@@ -1,27 +1,34 @@
-feat: persistence, class management, and real-time live sessions
+feat: phase 2 - group task board and daily deliverables
 
-Implements phases 0a, 0b, and 1 of the real-time collaborative class
-sessions plan (plus the prior auth/design-system work in the same tree).
+Adds collaborative group work to live class sessions: a kanban task
+board and a "Hasil Hari Ini" deliverable panel, both real-time over the
+existing SSE stream.
 
-Phase 0a - Core persistence:
-- ChallengeCompletion model (award-once via composite PK) and active flags
-- POST /api/submissions: idempotent XP award (createMany skipDuplicates),
-  LessonProgress recompute, every submission persisted
-- LessonEditor persists each check and refreshes XP
+Schema (prisma db push):
+- GroupTask (TaskStatus TODO/DOING/DONE) + GroupDeliverable
+  (DeliverableType TEXT/LINK/CODE/IMAGE, ReviewStatus) + back-relations.
 
-Phase 0b - Class management:
-- src/lib/classes.ts (join codes, create/join/list)
-- /api/classes, /api/classes/join, teacher manager + student join UI
+Server:
+- src/lib/groupwork.ts: validation + caps (200 tasks / 100 deliverables,
+  title 120, text 10k, URL 2k, http(s)-only links), race-safe guarded
+  claim, display-name resolution, post-commit task:update/deliverable:update
+  broadcasts.
+- Routes: POST /tasks, PATCH|DELETE /tasks/[taskId], POST /deliverables,
+  PATCH|DELETE /deliverables/[delId]. Snapshot now returns tasks +
+  deliverables. All mutations scoped by sessionId.
 
-Phase 1 - Live session + real-time board:
-- ClassSession/SessionStatus schema
-- src/lib/realtime.ts (EventEmitter + optional Redis pub/sub, presence)
-- src/lib/sessions.ts (authz, board, broadcastUserActivity)
-- /api/sessions (start), /[id] (snapshot), /[id]/end, /[id]/stream (SSE)
-- useSessionStream hook + SessionRoom page with live presence + board
-- Entry points on dashboard and /app/classes
+Authorization:
+- Any member creates/claims tasks; title edits limited to creator/claimer/
+  teacher; teacher-only deliverable review; ENDED sessions lock student
+  writes while teachers can still review/delete.
 
-Verified: lint, production build, and an end-to-end run (presence ->
-board:update within ~1s of a solve -> session:ended).
+Client:
+- useSessionStream tracks tasks + deliverables.
+- TaskBoard (claim/move/release/delete) and DeliverablePanel (typed
+  submissions, teacher review controls) wired into SessionRoom.
+
+Verified: lint, build, and an end-to-end run (create/claim/move tasks,
+race guard prevents claim-stealing, link validation rejects javascript:
+URLs, teacher review, student review 403, ENDED 409 lock).
 
 Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>

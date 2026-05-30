@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { readSession } from "@/lib/auth";
 import { getOnlineUsers } from "@/lib/realtime";
 import { getSessionAccess, getSessionBoard } from "@/lib/sessions";
+import { getDeliverables, getTasks } from "@/lib/groupwork";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,7 +26,11 @@ export async function GET(
     );
   }
 
-  const board = await getSessionBoard(id, access.classId);
+  const [board, tasks, deliverables] = await Promise.all([
+    getSessionBoard(id, access.classId),
+    getTasks(id),
+    getDeliverables(id),
+  ]);
 
   return NextResponse.json({
     session: {
@@ -38,5 +43,7 @@ export async function GET(
     },
     online: getOnlineUsers(id),
     board,
+    tasks,
+    deliverables,
   });
 }

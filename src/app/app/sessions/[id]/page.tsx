@@ -28,7 +28,7 @@ export default async function SessionPage({
           label="Kelas"
         />
       </div>
-      <SessionRoom sessionId={id} />
+      <SessionRoom sessionId={id} currentUserId={user.id} />
     </div>
   );
 }

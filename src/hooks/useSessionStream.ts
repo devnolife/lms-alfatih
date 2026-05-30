@@ -28,6 +28,35 @@ export interface SessionSnapshot {
   session: SessionInfo;
   online: PresenceUser[];
   board: BoardRow[];
+  tasks: TaskRow[];
+  deliverables: DeliverableRow[];
+}
+
+export type TaskStatus = "TODO" | "DOING" | "DONE";
+
+export interface TaskRow {
+  id: string;
+  title: string;
+  status: TaskStatus;
+  createdByUserId: string;
+  createdByName: string;
+  claimedByUserId: string | null;
+  claimedByName: string | null;
+  createdAt: string;
+}
+
+export type DeliverableType = "TEXT" | "LINK" | "CODE" | "IMAGE";
+export type ReviewStatus = "SUBMITTED" | "REVIEWED" | "APPROVED";
+
+export interface DeliverableRow {
+  id: string;
+  type: DeliverableType;
+  content: string;
+  teacherStatus: ReviewStatus;
+  authorUserId: string;
+  authorName: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface RealtimeEvent {
@@ -41,6 +70,8 @@ export interface SessionStreamState {
   session: SessionInfo | null;
   online: PresenceUser[];
   board: BoardRow[];
+  tasks: TaskRow[];
+  deliverables: DeliverableRow[];
   ended: boolean;
 }
 
@@ -54,6 +85,8 @@ export function useSessionStream(sessionId: string): SessionStreamState {
   const [session, setSession] = useState<SessionInfo | null>(null);
   const [online, setOnline] = useState<PresenceUser[]>([]);
   const [board, setBoard] = useState<BoardRow[]>([]);
+  const [tasks, setTasks] = useState<TaskRow[]>([]);
+  const [deliverables, setDeliverables] = useState<DeliverableRow[]>([]);
   const [ended, setEnded] = useState(false);
 
   const lastEventIdRef = useRef(0);
@@ -68,6 +101,8 @@ export function useSessionStream(sessionId: string): SessionStreamState {
       setSession(snap.session);
       setOnline(snap.online);
       setBoard(snap.board);
+      setTasks(snap.tasks);
+      setDeliverables(snap.deliverables);
       setEnded(snap.session.status === "ENDED");
     } catch {
       // transient; will retry on next reconnect
@@ -98,6 +133,14 @@ export function useSessionStream(sessionId: string): SessionStreamState {
           break;
         case "board:update":
           setBoard((event.data as { board: BoardRow[] }).board);
+          break;
+        case "task:update":
+          setTasks((event.data as { tasks: TaskRow[] }).tasks);
+          break;
+        case "deliverable:update":
+          setDeliverables(
+            (event.data as { deliverables: DeliverableRow[] }).deliverables
+          );
           break;
         case "session:ended":
           setEnded(true);
@@ -135,5 +178,5 @@ export function useSessionStream(sessionId: string): SessionStreamState {
     };
   }, [sessionId, fetchSnapshot]);
 
-  return { connected, session, online, board, ended };
+  return { connected, session, online, board, tasks, deliverables, ended };
 }

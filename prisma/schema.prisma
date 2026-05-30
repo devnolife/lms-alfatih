@@ -71,9 +71,60 @@ model ClassSession {
   endedAt         DateTime?
 
   class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+  tasks        GroupTask[]
+  deliverables GroupDeliverable[]
 
   @@index([classId, status])
   @@index([startedAt])
+}
+
+enum TaskStatus {
+  TODO
+  DOING
+  DONE
+}
+
+model GroupTask {
+  id              String     @id @default(cuid())
+  sessionId       String
+  createdByUserId String
+  claimedByUserId String?
+  title           String
+  status          TaskStatus @default(TODO)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  session ClassSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, status, createdAt])
+}
+
+enum DeliverableType {
+  TEXT
+  LINK
+  CODE
+  IMAGE
+}
+
+enum ReviewStatus {
+  SUBMITTED
+  REVIEWED
+  APPROVED
+}
+
+model GroupDeliverable {
+  id            String          @id @default(cuid())
+  sessionId     String
+  authorUserId  String
+  type          DeliverableType
+  content       String
+  teacherStatus ReviewStatus    @default(SUBMITTED)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  session ClassSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
 }
 
 model Enrollment {

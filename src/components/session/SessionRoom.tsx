@@ -3,14 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSessionStream } from "@/hooks/useSessionStream";
+import TaskBoard from "@/components/session/TaskBoard";
+import DeliverablePanel from "@/components/session/DeliverablePanel";
 
 interface Props {
   sessionId: string;
+  currentUserId: string;
 }
 
-export default function SessionRoom({ sessionId }: Props) {
+export default function SessionRoom({ sessionId, currentUserId }: Props) {
   const router = useRouter();
-  const { connected, session, online, board, ended } =
+  const { connected, session, online, board, tasks, deliverables, ended } =
     useSessionStream(sessionId);
   const [ending, setEnding] = useState(false);
 
@@ -125,6 +128,23 @@ export default function SessionRoom({ sessionId }: Props) {
             ))}
           </ul>
         )}
+      </div>
+
+      <div className="mt-6 space-y-6">
+        <TaskBoard
+          sessionId={sessionId}
+          tasks={tasks}
+          isTeacher={session.isTeacher}
+          currentUserId={currentUserId}
+          locked={ended}
+        />
+        <DeliverablePanel
+          sessionId={sessionId}
+          deliverables={deliverables}
+          isTeacher={session.isTeacher}
+          currentUserId={currentUserId}
+          locked={ended}
+        />
       </div>
     </div>
   );
