@@ -9,6 +9,8 @@ import FlowchartDiagram from "@/components/lesson/visualizers/FlowchartDiagram";
 import PixelGrid from "@/components/lesson/visualizers/PixelGrid";
 import BarChart from "@/components/lesson/visualizers/BarChart";
 import FolderTree from "@/components/lesson/visualizers/FolderTree";
+import DeviceParts from "@/components/lesson/visualizers/DeviceParts";
+import ThinkCheck from "@/components/lesson/visualizers/ThinkCheck";
 
 interface Props {
   type?: string;
@@ -39,6 +41,10 @@ export default function VisualBlock({ type, ...rest }: Props) {
       return <BarChart {...rest} />;
     case "folder-tree":
       return <FolderTree {...rest} />;
+    case "device-parts":
+      return <DeviceParts {...rest} />;
+    case "think-check":
+      return <ThinkCheck {...rest} />;
     default:
       return null;
   }

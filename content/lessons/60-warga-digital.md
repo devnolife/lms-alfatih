@@ -33,6 +33,11 @@ Sebelum membagikan sesuatu, tanyakan: apakah ini **True** (benar), **Helpful**
 (bermanfaat), **Inspiring**, **Necessary** (perlu), dan **Kind** (baik)? 💭
 :::
 
+Coba centang tiap pertanyaan di bawah ini sebelum membayangkan kamu menekan
+tombol "bagikan":
+
+::visual{type="think-check" title="THINK sebelum membagikan" data="T:True:Apakah ini benar?|H:Helpful:Apakah ini bermanfaat?|I:Inspiring:Apakah ini menginspirasi?|N:Necessary:Apakah ini perlu dibagikan?|K:Kind:Apakah ini baik & sopan?"}
+
 ### Lindungi Data Pribadi
 
 Jangan pernah membagikan **kata sandi**, **alamat rumah**, atau **nomor telepon**
@@ -43,6 +48,13 @@ orang asing! 🔐
 
 Kalau melihat teman dirundung online, jangan ikut menyebarkan. Bersikap **baik**
 dan laporkan ke orang dewasa yang dipercaya.
+
+### Pikirkan Akibatnya Dulu
+
+Setiap klik punya **akibat**. Sebelum membagikan atau membalas sesuatu, ambil
+keputusan seperti alur ini:
+
+::visual{type="flowchart-diagram" read="Mau membagikan / membalas" decision="Benar, baik & perlu?" yes="Boleh dibagikan" no="Jangan dibagikan"}
 
 ## 🎮 Latihan: Skenario Digital
 

@@ -42,11 +42,15 @@ yang menyuruh tubuh bergerak. 🧠
 - **RAM** — "meja kerja" tempat menaruh data yang sedang dipakai.
 - **Penyimpanan** — "lemari" tempat menyimpan file selamanya.
 
+::visual{type="device-parts" title="Bagian dalam komputer" data="🧠:CPU:Otak:Memproses & menghitung semua perintah|🪑:RAM:Meja kerja:Menaruh data yang sedang dipakai|🗄️:Penyimpanan:Lemari:Menyimpan file selamanya"}
+
 ### Bagaimana Internet Bekerja?
 
 Saat kamu membuka sebuah website, komputermu mengirim **permintaan** ke
 komputer lain (**server**) lewat jaringan. Server membalas dengan halaman yang
 kamu lihat — semua dalam hitungan detik! 🌐
+
+::visual{type="step-sequence" title="Perjalanan saat membuka website" steps="Komputermu|Kirim permintaan|Lewat internet|Server menerima|Server membalas|Halaman tampil" emojis="💻|📨|🌐|🖥️|📤|📄"}
 
 ## 🎮 Latihan: Pasangkan Perangkat
 
