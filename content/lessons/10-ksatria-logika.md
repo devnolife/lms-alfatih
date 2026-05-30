@@ -34,6 +34,11 @@ Membuat mie instan punya algoritma: didihkan air → masukkan mie → tunggu 3 m
 tiriskan → campur bumbu. Kalau urutannya ditukar, hasilnya kacau! 🍜
 :::
 
+Coba lihat **algoritma berangkat sekolah** ini berjalan runtut dari langkah 1 ke
+langkah terakhir — tekan ▶ Putar:
+
+::visual{type="step-sequence" title="Algoritma: Berangkat Sekolah" steps="Bangun|Mandi|Sarapan|Pakai seragam|Berangkat" emojis="⏰|🚿|🍳|👕|🎒"}
+
 ### Diagram Alir (Flowchart)
 
 **Diagram alir** adalah gambar langkah-langkah sebuah algoritma. Bentuknya:
@@ -41,6 +46,11 @@ tiriskan → campur bumbu. Kalau urutannya ditukar, hasilnya kacau! 🍜
 - ⬭ **Mulai / Selesai** — awal dan akhir.
 - ▭ **Proses** — sebuah aksi, misalnya "Tuang air".
 - ◇ **Keputusan** — pertanyaan ya/tidak.
+
+Beginilah ketiga bentuk itu dirangkai menjadi diagram alir yang utuh. Perhatikan
+kotak **Keputusan** ◇ yang memecah alur menjadi cabang **Ya** dan **Tidak**:
+
+::visual{type="flowchart-diagram" read="Baca nilai" decision="Nilai >= 75?" yes="Tampilkan 'Lulus'" no="Tampilkan 'Belum'"}
 
 ## 🎮 Ayo Berlatih
 

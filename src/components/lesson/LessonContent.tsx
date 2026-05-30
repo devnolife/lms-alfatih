@@ -148,7 +148,7 @@ export default function LessonContent({ body, lessonSlug }: Props) {
           remarkPlugins={[remarkGfm, remarkDirective, remarkDirectives]}
           components={components}
         >
-          {body}
+          {body.endsWith("\n") ? body : `${body}\n`}
         </ReactMarkdown>
       </div>
     </ActivityProvider>

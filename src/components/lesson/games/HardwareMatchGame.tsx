@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGameFeedback } from "@/hooks/useGameFeedback";
 
 interface Props {
@@ -53,7 +53,12 @@ export default function HardwareMatchGame({
     [pairs]
   );
 
-  const fns = useMemo(() => shuffle(parsed.map((p) => p.fn)), [parsed]);
+  // Stable order on the server and first client paint to avoid a hydration
+  // mismatch; shuffle once after mount.
+  const [fns, setFns] = useState<string[]>(() => parsed.map((p) => p.fn));
+  useEffect(() => {
+    setFns(shuffle(parsed.map((p) => p.fn)));
+  }, [parsed]);
   const fb = useGameFeedback();
 
   const [selDevice, setSelDevice] = useState<string | null>(null);

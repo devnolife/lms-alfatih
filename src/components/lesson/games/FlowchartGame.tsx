@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGameFeedback } from "@/hooks/useGameFeedback";
 
 interface Props {
@@ -48,10 +48,16 @@ export default function FlowchartGame({
     () => answers.split(";").map((a) => a.trim()).filter(Boolean),
     [answers]
   );
-  const tokens = useMemo(
-    () => shuffle(bank.split(";").map((b) => b.trim()).filter(Boolean)),
+  const tokenBank = useMemo(
+    () => bank.split(";").map((b) => b.trim()).filter(Boolean),
     [bank]
   );
+  // Render the bank in source order on the server and first client paint to
+  // avoid a hydration mismatch, then shuffle once after mount.
+  const [tokens, setTokens] = useState<string[]>(tokenBank);
+  useEffect(() => {
+    setTokens(shuffle(tokenBank));
+  }, [tokenBank]);
 
   const fb = useGameFeedback();
   const [fills, setFills] = useState<string[]>([]);
