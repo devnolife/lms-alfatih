@@ -30,6 +30,7 @@ export interface SessionSnapshot {
   board: BoardRow[];
   tasks: TaskRow[];
   deliverables: DeliverableRow[];
+  game: GameState;
 }
 
 export type TaskStatus = "TODO" | "DOING" | "DONE";
@@ -59,6 +60,27 @@ export interface DeliverableRow {
   updatedAt: string;
 }
 
+export type GameStatus = "OPEN" | "CLOSED";
+
+export interface GameRoundInfo {
+  id: string;
+  gameKey: string;
+  title: string;
+  status: GameStatus;
+  questionCount: number;
+}
+
+export interface ScoreRow {
+  userId: string;
+  displayName: string;
+  score: number;
+}
+
+export interface GameState {
+  round: GameRoundInfo | null;
+  scoreboard: ScoreRow[];
+}
+
 interface RealtimeEvent {
   id: number;
   type: string;
@@ -72,6 +94,7 @@ export interface SessionStreamState {
   board: BoardRow[];
   tasks: TaskRow[];
   deliverables: DeliverableRow[];
+  game: GameState;
   ended: boolean;
 }
 
@@ -87,6 +110,7 @@ export function useSessionStream(sessionId: string): SessionStreamState {
   const [board, setBoard] = useState<BoardRow[]>([]);
   const [tasks, setTasks] = useState<TaskRow[]>([]);
   const [deliverables, setDeliverables] = useState<DeliverableRow[]>([]);
+  const [game, setGame] = useState<GameState>({ round: null, scoreboard: [] });
   const [ended, setEnded] = useState(false);
 
   const lastEventIdRef = useRef(0);
@@ -103,6 +127,7 @@ export function useSessionStream(sessionId: string): SessionStreamState {
       setBoard(snap.board);
       setTasks(snap.tasks);
       setDeliverables(snap.deliverables);
+      setGame(snap.game);
       setEnded(snap.session.status === "ENDED");
     } catch {
       // transient; will retry on next reconnect
@@ -142,6 +167,9 @@ export function useSessionStream(sessionId: string): SessionStreamState {
             (event.data as { deliverables: DeliverableRow[] }).deliverables
           );
           break;
+        case "game:update":
+          setGame((event.data as { game: GameState }).game);
+          break;
         case "session:ended":
           setEnded(true);
           setSession((prev) => (prev ? { ...prev, status: "ENDED" } : prev));
@@ -178,5 +206,5 @@ export function useSessionStream(sessionId: string): SessionStreamState {
     };
   }, [sessionId, fetchSnapshot]);
 
-  return { connected, session, online, board, tasks, deliverables, ended };
+  return { connected, session, online, board, tasks, deliverables, game, ended };
 }

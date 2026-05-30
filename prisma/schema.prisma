@@ -73,6 +73,7 @@ model ClassSession {
   class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
   tasks        GroupTask[]
   deliverables GroupDeliverable[]
+  gameRounds   GameRound[]
 
   @@index([classId, status])
   @@index([startedAt])
@@ -125,6 +126,38 @@ model GroupDeliverable {
   session ClassSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId, createdAt])
+}
+
+enum GameStatus {
+  OPEN
+  CLOSED
+}
+
+model GameRound {
+  id              String     @id @default(cuid())
+  sessionId       String
+  gameKey         String
+  status          GameStatus @default(OPEN)
+  startedByUserId String
+  startedAt       DateTime   @default(now())
+  endedAt         DateTime?
+
+  session ClassSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  scores  GameScore[]
+
+  @@index([sessionId, status])
+}
+
+model GameScore {
+  roundId   String
+  userId    String
+  score     Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  round GameRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  @@id([roundId, userId])
+  @@index([roundId])
 }
 
 model Enrollment {

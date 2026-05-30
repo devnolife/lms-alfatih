@@ -3,6 +3,7 @@ import { readSession } from "@/lib/auth";
 import { getOnlineUsers } from "@/lib/realtime";
 import { getSessionAccess, getSessionBoard } from "@/lib/sessions";
 import { getDeliverables, getTasks } from "@/lib/groupwork";
+import { getGameState } from "@/lib/games";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,10 +27,11 @@ export async function GET(
     );
   }
 
-  const [board, tasks, deliverables] = await Promise.all([
+  const [board, tasks, deliverables, game] = await Promise.all([
     getSessionBoard(id, access.classId),
     getTasks(id),
     getDeliverables(id),
+    getGameState(id),
   ]);
 
   return NextResponse.json({
@@ -45,5 +47,6 @@ export async function GET(
     board,
     tasks,
     deliverables,
+    game,
   });
 }

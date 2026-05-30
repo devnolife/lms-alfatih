@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSessionStream } from "@/hooks/useSessionStream";
 import TaskBoard from "@/components/session/TaskBoard";
 import DeliverablePanel from "@/components/session/DeliverablePanel";
+import GamePanel from "@/components/session/GamePanel";
 
 interface Props {
   sessionId: string;
@@ -13,7 +14,7 @@ interface Props {
 
 export default function SessionRoom({ sessionId, currentUserId }: Props) {
   const router = useRouter();
-  const { connected, session, online, board, tasks, deliverables, ended } =
+  const { connected, session, online, board, tasks, deliverables, game, ended } =
     useSessionStream(sessionId);
   const [ending, setEnding] = useState(false);
 
@@ -141,6 +142,13 @@ export default function SessionRoom({ sessionId, currentUserId }: Props) {
         <DeliverablePanel
           sessionId={sessionId}
           deliverables={deliverables}
+          isTeacher={session.isTeacher}
+          currentUserId={currentUserId}
+          locked={ended}
+        />
+        <GamePanel
+          sessionId={sessionId}
+          game={game}
           isTeacher={session.isTeacher}
           currentUserId={currentUserId}
           locked={ended}
