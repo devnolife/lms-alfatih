@@ -10,6 +10,7 @@ import FileSortGame from "@/components/lesson/games/FileSortGame";
 import HardwareMatchGame from "@/components/lesson/games/HardwareMatchGame";
 import SpreadsheetGame from "@/components/lesson/games/SpreadsheetGame";
 import BranchingGame from "@/components/lesson/games/BranchingGame";
+import TeachableMachineGame from "@/components/lesson/games/TeachableMachineGame";
 import { ActivityProvider } from "@/components/lesson/ActivityContext";
 
 interface Props {
@@ -40,6 +41,8 @@ function renderGame(type: string | undefined, rest: Record<string, string | unde
       return <SpreadsheetGame {...rest} />;
     case "branching":
       return <BranchingGame {...rest} />;
+    case "teachable":
+      return <TeachableMachineGame {...rest} />;
     default:
       return null;
   }

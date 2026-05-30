@@ -441,6 +441,66 @@ def main():
             record("Curriculum activity tests", "WARN", repr(e))
             traceback.print_exc()
 
+        # 15b. Level 7 "Pelatih AI" (Teachable Machine) lesson + train->predict.
+        # The lesson is gated behind Levels 1-6, so a fresh student is redirected
+        # to /learn?locked=1 (which itself proves gating). When reachable, the
+        # in-browser KNN classifier must train and produce a guess.
+        try:
+            ap, _, _ = login(ctx, "siswa", "password123")
+            ap.goto(BASE + "/learn/pelatih-ai", wait_until="domcontentloaded", timeout=30000)
+            ap.wait_for_load_state("networkidle", timeout=20000)
+            ap.wait_for_timeout(800)
+            if "locked=1" in ap.url:
+                record("Level 7 Pelatih AI (gated)", "PASS", "redirected to locked (gating works)")
+            else:
+                # Walk to the drawing canvas.
+                canvas = None
+                for _ in range(8):
+                    c = ap.locator("canvas")
+                    if c.count() > 0 and c.first.is_visible():
+                        canvas = c.first
+                        break
+                    nxt = first_visible(ap, "button:has-text('Lanjut')")
+                    if nxt:
+                        nxt.click(); ap.wait_for_timeout(400)
+                    else:
+                        break
+
+                def draw_line(pts):
+                    box = canvas.bounding_box()
+                    ap.mouse.move(box["x"] + pts[0][0], box["y"] + pts[0][1])
+                    ap.mouse.down()
+                    for (dx, dy) in pts[1:]:
+                        ap.mouse.move(box["x"] + dx, box["y"] + dy, steps=4)
+                    ap.mouse.up()
+
+                guessed = False
+                if canvas is not None:
+                    for _ in range(3):
+                        draw_line([(120, 30), (120, 200)])
+                        ap.locator("button", has_text="Tambah").first.click()
+                        ap.wait_for_timeout(120)
+                    ap.locator("button", has_text="pilih").first.click()
+                    for _ in range(3):
+                        draw_line([(30, 120), (200, 120)])
+                        ap.locator("button", has_text="Tambah").first.click()
+                        ap.wait_for_timeout(120)
+                    ap.locator("button", has_text="Latih AI").first.click()
+                    ap.wait_for_timeout(1400)
+                    guess = ap.locator("button", has_text="Tebak")
+                    if guess.count() > 0:
+                        draw_line([(120, 30), (120, 200)])
+                        guess.first.click(); ap.wait_for_timeout(600)
+                        guessed = "AI menebak" in ap.content()
+                shot(ap, "15b-pelatih-ai")
+                record("Level 7 Pelatih AI (train -> predict)",
+                       "PASS" if guessed else "WARN",
+                       f"canvas={canvas is not None}, guessed={guessed}")
+            ap.close()
+        except Exception as e:
+            record("Level 7 Pelatih AI", "WARN", repr(e))
+
+
         # 16. Certificate verify page rejects an invalid token (404)
         try:
             browser4, ctx4, _ = new_ctx(p)

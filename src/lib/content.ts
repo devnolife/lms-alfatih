@@ -31,7 +31,7 @@ export interface MissionSpec {
 }
 
 /** Kurikulum Merdeka Informatika Fase D element codes. */
-export type ElementCode = "BK" | "TIK" | "SK_JKI" | "AD" | "AP" | "DSI";
+export type ElementCode = "BK" | "TIK" | "SK_JKI" | "AD" | "AP" | "DSI" | "AI";
 
 export interface LessonMeta {
   slug: string;

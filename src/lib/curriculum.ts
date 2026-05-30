@@ -76,6 +76,16 @@ export const LEVELS: LevelMeta[] = [
     blurb: "Pilih keputusan bijak lewat skenario dunia digital bercabang.",
     badgeCode: "level-6-dsi",
   },
+  {
+    level: 7,
+    title: "Pelatih AI",
+    element: "AI",
+    elementLabel: "Kecerdasan Artifisial",
+    emoji: "🤖",
+    color: "var(--color-grape)",
+    blurb: "Latih AI-mu sendiri: beri contoh gambar, lalu lihat AI menebak!",
+    badgeCode: "level-7-ai",
+  },
 ];
 
 export function getLevelMeta(level: number): LevelMeta | undefined {

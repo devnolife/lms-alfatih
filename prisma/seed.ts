@@ -132,7 +132,9 @@ const LEVEL_BADGES = [
   { code: "level-4-ad", name: "Detektif Data", description: "Menyelesaikan Level 4 — Analisis Data.", iconKey: "🔎" },
   { code: "level-5-ap", name: "Pembuat Game Pemula", description: "Menyelesaikan Level 5 — Algoritma & Pemrograman.", iconKey: "🎮" },
   { code: "level-6-dsi", name: "Warga Digital Bijak", description: "Menyelesaikan Level 6 — Dampak Sosial Informatika.", iconKey: "🛡️" },
+  { code: "level-7-ai", name: "Pelatih AI", description: "Menyelesaikan Level 7 — Kecerdasan Artifisial.", iconKey: "🤖" },
   { code: "teknisi-muda", name: "Teknisi Muda", description: "Menjawab 100% benar kuis perangkat keras.", iconKey: "🏅" },
+  { code: "pelatih-ai", name: "Pelatih AI Cilik", description: "Berhasil melatih AI dan mengujinya di Lab Pelatih AI.", iconKey: "🤖" },
 ];
 
 async function syncBadges() {
