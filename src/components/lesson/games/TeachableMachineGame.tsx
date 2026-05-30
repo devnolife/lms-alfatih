@@ -87,6 +87,7 @@ export default function TeachableMachineGame({
   const minCat = Math.max(2, Number(minCategories) || 2);
 
   const [phase, setPhase] = useState<Phase>("train");
+  const [inputMode, setInputMode] = useState<"draw" | "camera">("draw");
   const [categories, setCategories] = useState<Category[]>([
     { id: 1, name: "Kategori 1", examples: [] },
     { id: 2, name: "Kategori 2", examples: [] },
@@ -97,6 +98,55 @@ export default function TeachableMachineGame({
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [awarded, setAwarded] = useState(false);
   const [predictCount, setPredictCount] = useState(0);
+
+  // ---- Camera -----------------------------------------------------------------
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const captureRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const [cameraOn, setCameraOn] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [flash, setFlash] = useState(false);
+  const [lastShot, setLastShot] = useState<string | null>(null);
+
+  const stopCamera = useCallback(() => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    if (videoRef.current) videoRef.current.srcObject = null;
+    setCameraOn(false);
+  }, []);
+
+  const startCamera = useCallback(async () => {
+    setCameraError(null);
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setCameraError("Browser ini tidak mendukung kamera.");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false,
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play().catch(() => {});
+      }
+      setCameraOn(true);
+    } catch {
+      setCameraError(
+        "Tidak bisa mengakses kamera. Izinkan akses kamera di browser lalu coba lagi."
+      );
+      setCameraOn(false);
+    }
+  }, []);
+
+  useEffect(() => stopCamera, [stopCamera]);
+
+  function chooseInput(mode: "draw" | "camera") {
+    setInputMode(mode);
+    if (mode === "camera") startCamera();
+    else stopCamera();
+  }
 
   // ---- Canvas setup & drawing -------------------------------------------------
   const clearCanvas = useCallback(() => {
@@ -172,8 +222,45 @@ export default function TeachableMachineGame({
     return extractFeatures(gray, w, h, { grid: FEATURE_GRID });
   }
 
+  /**
+   * Grabs the current webcam frame as a full-frame grayscale thumbnail. Unlike
+   * a drawing, the whole picture matters, so we disable bounding-box cropping
+   * (inkThreshold/padding = 0) — the feature is just the downscaled scene.
+   */
+  function cameraFeatures(): number[] | null {
+    const video = videoRef.current;
+    const cc = captureRef.current;
+    if (!video || !cc || !cameraOn || video.videoWidth === 0) return null;
+    const ctx = cc.getContext("2d", { willReadFrequently: true })!;
+    const w = cc.width;
+    const h = cc.height;
+    // Mirror to match the on-screen preview.
+    ctx.save();
+    ctx.translate(w, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, w, h);
+    ctx.restore();
+    const data = ctx.getImageData(0, 0, w, h).data;
+    const gray = new Float32Array(w * h);
+    for (let i = 0; i < w * h; i++) {
+      const lum = (data[i * 4] + data[i * 4 + 1] + data[i * 4 + 2]) / (3 * 255);
+      gray[i] = 1 - lum;
+    }
+    setLastShot(cc.toDataURL("image/png"));
+    return extractFeatures(gray, w, h, {
+      grid: FEATURE_GRID,
+      inkThreshold: 0,
+      padding: 0,
+    });
+  }
+
+  /** Reads a feature vector from whichever input mode is active. */
+  function captureFeatures(): number[] | null {
+    return inputMode === "camera" ? cameraFeatures() : currentFeatures();
+  }
+
   function addExample() {
-    const feats = currentFeatures();
+    const feats = captureFeatures();
     if (!feats) {
       fb.wrong();
       return;
@@ -238,7 +325,7 @@ export default function TeachableMachineGame({
 
   // ---- Prediction -------------------------------------------------------------
   function predict() {
-    const feats = currentFeatures();
+    const feats = captureFeatures();
     if (!feats) {
       fb.wrong();
       return;
@@ -261,6 +348,15 @@ export default function TeachableMachineGame({
     } else {
       fb.correct();
     }
+  }
+
+  // ---- Camera shutter ---------------------------------------------------------
+  function shoot() {
+    if (!cameraOn) return;
+    setFlash(true);
+    window.setTimeout(() => setFlash(false), 180);
+    if (phase === "train") addExample();
+    else predict();
   }
 
   // ---- UI ---------------------------------------------------------------------
@@ -301,43 +397,126 @@ export default function TeachableMachineGame({
         </span>
       </div>
 
+      {/* Input mode toggle */}
+      <div className="mb-4 flex justify-center gap-2 text-xs font-bold">
+        <button
+          onClick={() => chooseInput("draw")}
+          className={`rounded-full px-4 py-1.5 transition-colors ${
+            inputMode === "draw"
+              ? "bg-[var(--color-grape)] text-white"
+              : "bg-[var(--color-cloud)] text-[var(--color-graphite)] hover:brightness-95"
+          }`}
+        >
+          ✏️ Gambar
+        </button>
+        <button
+          onClick={() => chooseInput("camera")}
+          className={`rounded-full px-4 py-1.5 transition-colors ${
+            inputMode === "camera"
+              ? "bg-[var(--color-grape)] text-white"
+              : "bg-[var(--color-cloud)] text-[var(--color-graphite)] hover:brightness-95"
+          }`}
+        >
+          📷 Kamera
+        </button>
+      </div>
+
       <div className="grid gap-5 md:grid-cols-2">
-        {/* Left: drawing pad */}
+        {/* Left: drawing pad or camera */}
         <div className="flex flex-col items-center">
-          <canvas
-            ref={canvasRef}
-            width={CANVAS}
-            height={CANVAS}
-            onPointerDown={startDraw}
-            onPointerMove={moveDraw}
-            onPointerUp={endDraw}
-            onPointerLeave={endDraw}
-            className="aspect-square w-full max-w-[240px] touch-none rounded-2xl border-2 border-[var(--color-sky-blue)] bg-white shadow-inner"
-            style={{ cursor: "crosshair" }}
-          />
-          <div className="mt-3 flex gap-2">
-            <button
-              onClick={clearCanvas}
-              className="rounded-xl border-2 border-[var(--color-cloud)] bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-graphite)] hover:border-[var(--color-sky-blue)]"
-            >
-              ↺ Hapus
-            </button>
-            {phase === "train" ? (
-              <button
-                onClick={addExample}
-                className="rounded-xl border-2 border-[var(--color-sky-blue)] bg-[var(--color-sky-blue)] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white hover:opacity-90"
-              >
-                ➕ Tambah ke “{categories.find((c) => c.id === activeCat)?.name ?? ""}”
-              </button>
-            ) : (
-              <button
-                onClick={predict}
-                className="rounded-xl border-2 border-[var(--color-duo-green)] bg-[var(--color-duo-green)] px-5 py-1.5 text-xs font-bold uppercase tracking-wide text-white hover:opacity-90"
-              >
-                🔮 Tebak!
-              </button>
-            )}
-          </div>
+          {/* Hidden capture canvas for webcam frames */}
+          <canvas ref={captureRef} width={112} height={112} className="hidden" />
+
+          {inputMode === "draw" ? (
+            <>
+              <canvas
+                ref={canvasRef}
+                width={CANVAS}
+                height={CANVAS}
+                onPointerDown={startDraw}
+                onPointerMove={moveDraw}
+                onPointerUp={endDraw}
+                onPointerLeave={endDraw}
+                className="aspect-square w-full max-w-[240px] touch-none rounded-2xl border-2 border-[var(--color-sky-blue)] bg-white shadow-inner"
+                style={{ cursor: "crosshair" }}
+              />
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={clearCanvas}
+                  className="rounded-xl border-2 border-[var(--color-cloud)] bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--color-graphite)] hover:border-[var(--color-sky-blue)]"
+                >
+                  ↺ Hapus
+                </button>
+                {phase === "train" ? (
+                  <button
+                    onClick={addExample}
+                    className="rounded-xl border-2 border-[var(--color-sky-blue)] bg-[var(--color-sky-blue)] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-white hover:opacity-90"
+                  >
+                    ➕ Tambah ke “{categories.find((c) => c.id === activeCat)?.name ?? ""}”
+                  </button>
+                ) : (
+                  <button
+                    onClick={predict}
+                    className="rounded-xl border-2 border-[var(--color-duo-green)] bg-[var(--color-duo-green)] px-5 py-1.5 text-xs font-bold uppercase tracking-wide text-white hover:opacity-90"
+                  >
+                    🔮 Tebak!
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="relative aspect-square w-full max-w-[240px] overflow-hidden rounded-2xl border-2 border-[var(--color-grape)] bg-black">
+                <video
+                  ref={videoRef}
+                  playsInline
+                  muted
+                  className="h-full w-full object-cover"
+                  style={{ transform: "scaleX(-1)" }}
+                />
+                {flash && <div className="absolute inset-0 bg-white opacity-80" />}
+                {!cameraOn && !cameraError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/70 px-4 text-center text-xs font-bold text-white">
+                    📷 Menyalakan kamera…
+                  </div>
+                )}
+                {cameraError && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/80 px-4 text-center text-xs font-bold text-white">
+                    <span>{cameraError}</span>
+                    <button
+                      onClick={startCamera}
+                      className="rounded-lg bg-[var(--color-grape)] px-3 py-1 text-white"
+                    >
+                      🔄 Coba lagi
+                    </button>
+                  </div>
+                )}
+                {lastShot && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={lastShot}
+                    alt="contoh terakhir"
+                    className="absolute bottom-1.5 right-1.5 h-12 w-12 rounded-lg border-2 border-white object-cover shadow"
+                  />
+                )}
+              </div>
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={shoot}
+                  disabled={!cameraOn}
+                  className={`rounded-xl border-2 px-5 py-1.5 text-xs font-bold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:opacity-40 ${
+                    phase === "train"
+                      ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue)] hover:opacity-90"
+                      : "border-[var(--color-duo-green)] bg-[var(--color-duo-green)] hover:opacity-90"
+                  }`}
+                >
+                  {phase === "train"
+                    ? `📸 Jepret → “${categories.find((c) => c.id === activeCat)?.name ?? ""}”`
+                    : "📸 Jepret & Tebak!"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Right: categories / prediction */}

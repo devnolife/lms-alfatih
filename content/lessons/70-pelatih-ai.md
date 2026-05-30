@@ -104,17 +104,29 @@ berbeda** antar kategori, lalu latih ulang. 📈
 Sekarang giliranmu! Ikuti **dua tahap** berikut:
 
 1. **Latih** — buat minimal 2 kategori (beri nama bebas, misalnya "Rumah" dan
-   "Bintang"), lalu gambar **minimal 3 contoh** untuk tiap kategori dan tekan
+   "Bintang"), lalu beri **minimal 3 contoh** untuk tiap kategori dan tekan
    *Tambah*. Kalau sudah cukup, tekan **🚀 Latih AI**.
-2. **Tebak** — gambar sesuatu yang baru, tekan **🔮 Tebak!**, dan lihat AI
-   menebak gambarmu lengkap dengan tingkat keyakinannya!
+2. **Tebak** — beri contoh baru, tekan **🔮 Tebak!**, dan lihat AI menebak
+   lengkap dengan tingkat keyakinannya!
+
+Ada **dua cara** memberi contoh: pilih **✏️ Gambar** untuk menggambar, atau
+**📷 Kamera** untuk memotret benda nyata di sekitarmu (seperti Teachable Machine
+sungguhan dari Google!).
 
 ::game{type="teachable" activityId="ai-teachable" title="Lab Pelatih AI" minCategories="2" minExamples="3" xp="30"}
 
 :::callout{type="tip" title="Eksperimen seru"}
-Coba gambar yang **mirip** dua kategori sekaligus — lihat AI jadi ragu (bar
-keyakinannya seimbang). Lalu tambahkan lebih banyak contoh dan latih ulang;
-tebakannya pasti makin yakin! 🔁
+Coba beri contoh yang **mirip** untuk dua kategori sekaligus — lihat AI jadi
+ragu (bar keyakinannya seimbang). Lalu tambahkan lebih banyak contoh dan latih
+ulang; tebakannya pasti makin yakin! 🔁
+:::
+
+:::callout{type="concept" title="Pembelajaran lanjut: latih AI pakai kamera"}
+Tekan tombol **📷 Kamera**, lalu **Jepret** beberapa foto tiap kategori —
+misalnya kategori "Pensil" vs "Penghapus", atau "Tangan terbuka" vs "Jempol".
+Komputer mengubah tiap foto jadi grid angka (persis seperti yang kamu lihat di
+atas), lalu membandingkannya untuk menebak. Inilah cara kerja AI pengenal
+gambar di dunia nyata! 📸🤖
 :::
 
 ## ⚖️ AI Juga Bisa Salah
