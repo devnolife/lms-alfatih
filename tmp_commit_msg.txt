@@ -1,0 +1,27 @@
+feat: persistence, class management, and real-time live sessions
+
+Implements phases 0a, 0b, and 1 of the real-time collaborative class
+sessions plan (plus the prior auth/design-system work in the same tree).
+
+Phase 0a - Core persistence:
+- ChallengeCompletion model (award-once via composite PK) and active flags
+- POST /api/submissions: idempotent XP award (createMany skipDuplicates),
+  LessonProgress recompute, every submission persisted
+- LessonEditor persists each check and refreshes XP
+
+Phase 0b - Class management:
+- src/lib/classes.ts (join codes, create/join/list)
+- /api/classes, /api/classes/join, teacher manager + student join UI
+
+Phase 1 - Live session + real-time board:
+- ClassSession/SessionStatus schema
+- src/lib/realtime.ts (EventEmitter + optional Redis pub/sub, presence)
+- src/lib/sessions.ts (authz, board, broadcastUserActivity)
+- /api/sessions (start), /[id] (snapshot), /[id]/end, /[id]/stream (SSE)
+- useSessionStream hook + SessionRoom page with live presence + board
+- Entry points on dashboard and /app/classes
+
+Verified: lint, production build, and an end-to-end run (presence ->
+board:update within ~1s of a solve -> session:ended).
+
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>

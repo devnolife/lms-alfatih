@@ -1,0 +1,196 @@
+// FunPython data model.
+// Phase 1 covers User, Class, Enrollment, Lesson, Challenge, Submission,
+// LessonProgress, Badge, UserBadge, Certificate. Live monitoring snapshots
+// live in Redis, not Postgres.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum LessonStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  displayName  String
+  role         Role     @default(STUDENT)
+  xp           Int      @default(0)
+  lives        Int      @default(5)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  enrollments   Enrollment[]
+  taughtClasses Class[]          @relation("ClassTeacher")
+  submissions   Submission[]
+  progress      LessonProgress[]
+  badges        UserBadge[]
+  certificates  Certificate[]
+  completions   ChallengeCompletion[]
+}
+
+model Class {
+  id        String   @id @default(cuid())
+  name      String
+  joinCode  String   @unique
+  teacherId String
+  createdAt DateTime @default(now())
+
+  teacher     User           @relation("ClassTeacher", fields: [teacherId], references: [id], onDelete: Cascade)
+  enrollments Enrollment[]
+  sessions    ClassSession[]
+}
+
+enum SessionStatus {
+  ACTIVE
+  ENDED
+}
+
+model ClassSession {
+  id              String        @id @default(cuid())
+  classId         String
+  startedByUserId String
+  title           String?
+  status          SessionStatus @default(ACTIVE)
+  startedAt       DateTime      @default(now())
+  endedAt         DateTime?
+
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@index([classId, status])
+  @@index([startedAt])
+}
+
+model Enrollment {
+  userId     String
+  classId    String
+  enrolledAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@id([userId, classId])
+}
+
+model Lesson {
+  slug       String   @id
+  title      String
+  summary    String
+  order      Int
+  projectKey String
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  challenges Challenge[]
+  progress   LessonProgress[]
+}
+
+model Challenge {
+  id          String  @id @default(cuid())
+  lessonSlug  String
+  order       Int
+  prompt      String
+  starterCode String
+  // JSON shape: { tests: Array<{ stdin?: string; expectedStdout?: string; assertions?: string[] }> }
+  tests       Json
+  xpReward    Int     @default(10)
+  active      Boolean @default(true)
+
+  lesson      Lesson                @relation(fields: [lessonSlug], references: [slug], onDelete: Cascade)
+  submissions Submission[]
+  completions ChallengeCompletion[]
+
+  @@unique([lessonSlug, order])
+}
+
+// Records the FIRST passing solve of a challenge per user. The composite primary
+// key makes XP award idempotent at the database level: a second solve (or a
+// double-submitted request) collides on insert and awards nothing.
+model ChallengeCompletion {
+  userId      String
+  challengeId String
+  xpAwarded   Int      @default(0)
+  completedAt DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, challengeId])
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  userId      String
+  challengeId String
+  code        String
+  passed      Boolean
+  // JSON shape: Array<{ name: string; passed: boolean; message?: string }>
+  results     Json
+  xpAwarded   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+}
+
+model LessonProgress {
+  userId      String
+  lessonSlug  String
+  status      LessonStatus @default(NOT_STARTED)
+  completedAt DateTime?
+  updatedAt   DateTime     @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonSlug], references: [slug], onDelete: Cascade)
+
+  @@id([userId, lessonSlug])
+}
+
+model Badge {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  iconKey     String
+  createdAt   DateTime @default(now())
+
+  users UserBadge[]
+}
+
+model UserBadge {
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, badgeId])
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  projectKey  String
+  verifyToken String   @unique
+  issuedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectKey])
+}

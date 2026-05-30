@@ -1,26 +1,376 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Duolingo Color Tokens */
+  --color-duo-green: #58cc02;
+  --color-duo-green-dark: #3f8f01;
+  --color-duo-green-light: #d7ffb8;
+  --color-sky-blue: #1cb0f6;
+  --color-sky-blue-dark: #1899d6;
+  --color-sky-blue-light: #e1f5fe;
+  --color-sunshine: #ffc700;
+  --color-sunshine-dark: #e09e00;
+  --color-grape: #a570ff;
+  --color-grape-dark: #843fff;
+  --color-bubblegum: #cc348d;
+  --color-snow: #ffffff;
+  --color-cloud: #e5e5e5;
+  --color-silver: #afafaf;
+  --color-graphite: #777777;
+  --color-charcoal: #4b4b4b;
+  --color-almost-black: #3c3c3c;
+  --color-error: #ea2b2b;
+  --color-error-light: #ffdfe0;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-feather: "Fredoka", sans-serif;
+  --font-din: "Nunito", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-din);
+  color: var(--color-almost-black);
+  background-color: var(--color-snow);
+  letter-spacing: 0.053em;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.dotted-bg {
+  background-image: radial-gradient(var(--color-cloud) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+/* 3D Tactile Button */
+.btn-3d {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-feather);
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  border: 3px solid var(--color-almost-black);
+  user-select: none;
+}
+.btn-3d:hover { transform: translateY(-2px); }
+.btn-3d:active { transform: translateY(4px); }
+
+.btn-green {
+  background-color: var(--color-duo-green);
+  color: var(--color-snow);
+  box-shadow: 0 6px 0 var(--color-duo-green-dark);
+}
+.btn-green:hover { background-color: #61e002; }
+.btn-green:active { box-shadow: 0 0 0 var(--color-duo-green-dark); }
+
+.btn-blue {
+  background-color: var(--color-sky-blue);
+  color: var(--color-snow);
+  box-shadow: 0 6px 0 var(--color-sky-blue-dark);
+}
+.btn-blue:active { box-shadow: 0 0 0 var(--color-sky-blue-dark); }
+
+.btn-outline {
+  background-color: var(--color-snow);
+  color: var(--color-sky-blue-dark);
+  box-shadow: 0 6px 0 var(--color-cloud);
+}
+.btn-outline:active { box-shadow: 0 0 0 var(--color-cloud); }
+
+.duo-card {
+  border: 3px solid var(--color-almost-black);
+  border-radius: 24px;
+  background-color: var(--color-snow);
+  box-shadow: 0 8px 0 var(--color-almost-black);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.duo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 0 var(--color-almost-black);
+}
+
+.duo-divider {
+  height: 6px;
+  background-color: var(--color-cloud);
+}
+
+html { scroll-behavior: smooth; }
+
+/* ---------------------------------------------------------------------------
+   Design System layer (/design showcase).
+   Faithful to the extracted Duolingo design language in desing.md:
+   - Depth ONLY on primary buttons via a solid darker-hue bottom shadow.
+   - Cards stay flat on the snow background (defined by a soft cloud border).
+   - Headlines use Feather (Fredoka); body/UI uses din-round (Nunito) with the
+     signature 0.053em tracking.
+--------------------------------------------------------------------------- */
+
+.ds-display {
+  font-family: var(--font-feather);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Tactile primary buttons — solid bottom "pad" that compresses on press. */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-din);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.053em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  user-select: none;
+  transition: filter 0.12s ease, transform 0.06s ease, box-shadow 0.06s ease;
+}
+.ds-btn:active { transform: translateY(4px); }
+
+.ds-btn--green {
+  background-color: var(--color-duo-green);
+  color: var(--color-snow);
+  box-shadow: 0 4px 0 var(--color-duo-green-dark);
+}
+.ds-btn--green:hover { filter: brightness(1.04); }
+.ds-btn--green:active { box-shadow: 0 0 0 var(--color-duo-green-dark); }
+
+.ds-btn--blue {
+  background-color: var(--color-sky-blue);
+  color: var(--color-snow);
+  box-shadow: 0 4px 0 var(--color-sky-blue-dark);
+}
+.ds-btn--blue:hover { filter: brightness(1.04); }
+.ds-btn--blue:active { box-shadow: 0 0 0 var(--color-sky-blue-dark); }
+
+/* Secondary outline button — flat, cloud border, sky-blue label. */
+.ds-btn--outline {
+  background-color: var(--color-snow);
+  color: var(--color-sky-blue-dark);
+  border: 2px solid var(--color-cloud);
+  box-shadow: 0 2px 0 var(--color-cloud);
+  padding: 12px 26px;
+}
+.ds-btn--outline:hover { background-color: #f7fdff; }
+.ds-btn--outline:active { box-shadow: 0 0 0 var(--color-cloud); }
+
+/* Flat content card defined by a soft cloud border (no elevation shadow). */
+.ds-card {
+  background-color: var(--color-snow);
+  border: 2px solid var(--color-cloud);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* Inline text link — Sky Blue with underline on hover. */
+.ds-link {
+  color: var(--color-sky-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+.ds-link:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------------------
+   Auth layer (login / register) — modern split-screen experience.
+--------------------------------------------------------------------------- */
+
+/* Floating decorative shapes on the brand panel. */
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(8deg); }
+}
+@keyframes auth-float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-26px) rotate(-6deg); }
+}
+.auth-float { animation: auth-float 6s ease-in-out infinite; }
+.auth-float-slow { animation: auth-float-slow 9s ease-in-out infinite; }
+
+/* Staggered entrance for the form card. */
+@keyframes auth-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.auth-rise { animation: auth-rise 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1) both; }
+
+/* Input field with leading icon + soft focus ring. */
+.auth-field-wrap { position: relative; }
+.auth-field {
+  width: 100%;
+  border: 2px solid var(--color-cloud, #e5e5e5);
+  border-radius: 14px;
+  padding: 13px 16px 13px 46px;
+  font-family: var(--font-din);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-almost-black, #3c3c3c);
+  background-color: var(--color-snow, #ffffff);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.auth-field::placeholder { color: var(--color-silver, #afafaf); font-weight: 500; }
+.auth-field:focus {
+  outline: none;
+  border-color: var(--color-sky-blue, #1cb0f6);
+  box-shadow: 0 0 0 4px rgba(28, 176, 246, 0.16);
+}
+.auth-field-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Selectable role cards on register. */
+.auth-role {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 12px;
+  border: 2px solid var(--color-cloud, #e5e5e5);
+  border-radius: 16px;
+  background-color: var(--color-snow, #ffffff);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-din);
+  font-weight: 700;
+}
+.auth-role:hover { border-color: var(--color-sky-blue, #1cb0f6); }
+.auth-role[data-active="true"] {
+  border-color: var(--color-duo-green, #58cc02);
+  background-color: var(--color-duo-green-light, #d7ffb8);
+  box-shadow: 0 4px 0 var(--color-duo-green-dark, #3f8f01);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-float,
+  .auth-float-slow,
+  .auth-rise {
+    animation: none !important;
+  }
+}
+
+/* Inline navigation spinner (used by PendingLink). Reserves no layout space
+   until pending, then fades in after a short delay so fast/prefetched
+   navigations never flash a spinner. */
+.nav-hint {
+  display: none;
+  align-items: center;
+  opacity: 0;
+}
+.nav-hint.is-pending {
+  display: inline-flex;
+  margin-left: 0.4rem;
+  animation: navHintIn 0.2s ease forwards;
+  animation-delay: 120ms;
+}
+@keyframes navHintIn {
+  to { opacity: 1; }
+}
+
+/* Skeleton shimmer used by route-level loading.tsx fallbacks. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-cloud);
+  border-radius: 12px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* ---------------------------------------------------------------------------
+   Festivity layer: celebratory micro-animations (rewards, mascot, feedback).
+   All gated behind prefers-reduced-motion at the bottom of this file.
+--------------------------------------------------------------------------- */
+
+/* Quick "pop" used when a correct answer is chosen. */
+@keyframes fx-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+.fx-pop { animation: fx-pop 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* Soft bounce for the mascot when cheering. */
+@keyframes fx-bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-10px) rotate(-3deg); }
+  60% { transform: translateY(-4px) rotate(2deg); }
+}
+.fx-bounce-soft { animation: fx-bounce-soft 0.7s ease-in-out; }
+.fx-bounce-loop { animation: fx-bounce-soft 1.1s ease-in-out infinite; }
+
+/* Horizontal shake for a wrong answer. */
+@keyframes fx-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.fx-shake { animation: fx-shake 0.4s ease-in-out; }
+
+/* Floating "+N XP" reward popup drifting up while fading out. */
+@keyframes fx-float-up {
+  0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+  15% { opacity: 1; transform: translateY(0) scale(1); }
+  80% { opacity: 1; transform: translateY(-26px) scale(1); }
+  100% { opacity: 0; transform: translateY(-44px) scale(0.96); }
+}
+.fx-float-up { animation: fx-float-up 1.6s ease-out forwards; }
+
+/* Badge toast sliding in from the side then easing out. */
+@keyframes fx-toast-in {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.fx-toast-in { animation: fx-toast-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* Completion card celebratory entrance. */
+@keyframes fx-zoom-in {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.fx-zoom-in { animation: fx-zoom-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-pop,
+  .fx-bounce-soft,
+  .fx-bounce-loop,
+  .fx-shake,
+  .fx-float-up,
+  .fx-toast-in,
+  .fx-zoom-in {
+    animation: none !important;
+  }
 }
