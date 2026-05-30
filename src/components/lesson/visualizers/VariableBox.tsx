@@ -27,7 +27,7 @@ export default function VariableBox({ name = "x", value = "", values }: Props) {
   const isText = /[^0-9.\-]/.test(current) && current !== "";
 
   return (
-    <div className="not-prose my-5 flex flex-col items-center gap-3 rounded-2xl border-2 border-[var(--color-cloud)] bg-white px-4 py-5">
+    <div className="not-prose my-5 flex flex-col items-center gap-3 rounded-2xl border-2 border-[var(--color-cloud)] bg-white px-4 pt-5 pb-9">
       <div className="flex items-end gap-3">
         <span className="font-mono text-lg font-bold text-[var(--color-charcoal)]">
           {name} =
@@ -43,7 +43,7 @@ export default function VariableBox({ name = "x", value = "", values }: Props) {
               <span>{current || "?"}</span>
             )}
           </div>
-          <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-wide text-[var(--color-silver)]">
+          <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] uppercase tracking-wide text-[var(--color-silver)]">
             {isText ? "teks (str)" : "angka (int)"}
           </span>
         </div>
