@@ -256,13 +256,18 @@ export default function MazeGame({
                       height: CELL,
                       background: isWall
                         ? "var(--color-graphite)"
-                        : "rgba(255,255,255,0.55)",
+                        : isGoal
+                          ? "rgba(88,204,2,0.18)"
+                          : "rgba(255,255,255,0.55)",
+                      boxShadow: isGoal
+                        ? "inset 0 0 0 2px var(--color-duo-green)"
+                        : undefined,
                     }}
                   >
-                    {isGoal && "🥬"}
+                    {isGoal && <span className="drop-shadow-sm">🥬</span>}
                     {isStart && !isGoal && (
-                      <span className="text-xs font-bold text-[var(--color-duo-green-dark)]">
-                        MULAI
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-[var(--color-duo-green)]/20 px-1.5 py-px text-[9px] font-bold uppercase tracking-wide text-[var(--color-duo-green-dark)]">
+                        Mulai
                       </span>
                     )}
                   </div>
@@ -281,14 +286,20 @@ export default function MazeGame({
                 transform: "translate(-50%, -50%)",
               }}
             >
-              <span className="relative text-3xl drop-shadow">
+              <span
+                className={`relative flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-2xl shadow-md ring-2 transition-colors ${
+                  status === "fail"
+                    ? "ring-[var(--color-error)]"
+                    : "ring-[var(--color-duo-green)]"
+                }`}
+              >
                 🐢
                 <span
-                  className="absolute left-1/2 top-1/2 text-sm text-[var(--color-bubblegum)] transition-transform duration-300"
+                  className="absolute left-1/2 top-1/2 text-[var(--color-bubblegum)] transition-transform duration-300"
                   style={{
                     transform: `translate(-50%, -50%) rotate(${
                       display.dir * 90
-                    }deg) translateY(-20px)`,
+                    }deg) translateY(-22px)`,
                   }}
                 >
                   ▲

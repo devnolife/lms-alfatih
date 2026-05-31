@@ -1,6 +1,7 @@
 import GameArcade from "@/components/lesson/games/GameArcade";
 import MascotSvg from "@/components/MascotSvg";
 import BackButton from "@/components/ui/BackButton";
+import FloatingDecor from "@/components/ui/FloatingDecor";
 
 export const metadata = {
   title: "Arena Game — FunPython",
@@ -9,6 +10,7 @@ export const metadata = {
 export default function GamesPage() {
   return (
     <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-10">
+      <FloatingDecor />
       <div className="mb-5">
         <BackButton href="/app" label="Home" />
       </div>

@@ -15,7 +15,7 @@ export default function GameArcade() {
 
   if (active) {
     return (
-      <div>
+      <div className="mx-auto max-w-2xl">
         <button
           onClick={() => setActive(null)}
           className="mb-5 inline-flex items-center gap-2 rounded-xl border-2 border-[var(--color-cloud)] bg-white px-4 py-2 text-sm font-bold text-[var(--color-charcoal)] hover:border-[var(--color-duo-green)]"
