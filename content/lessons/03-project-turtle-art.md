@@ -94,6 +94,18 @@ Lorong ini panjang! Daripada menaruh blok **Maju** berkali-kali, pakai tombol **
 
 ::game{type="maze" grid="S....G" dir="right" loop="true" title="Lorong Panjang" hint="Taruh 1 blok Maju, lalu atur 🔁 Ulangi agar cukup sampai daun 🥬"}
 
+:::callout{type="concept" title="Dari Blok ke Kode Python"}
+Permainan tadi memakai **blok**. Sekarang lihat ide yang sama dalam Python sungguhan:
+
+| Blok yang kamu susun | Kode Python |
+| --- | --- |
+| Maju | `turtle.forward(100)` |
+| Putar | `turtle.left(90)` |
+| 🔁 Ulangi 4× | `for _ in range(4):` |
+
+Jadi saat kamu menulis `for _ in range(4):` lalu `turtle.forward(100)`, itu **persis** seperti menaruh blok Maju di dalam blok Ulangi. Kamu sudah paham loop — sekarang tinggal mengetiknya! ⌨️
+:::
+
 ## 🎨 Inspirasi Proyek
 
 Coba kreasikan setelah selesai 3 tantangan:
@@ -105,3 +117,5 @@ Coba kreasikan setelah selesai 3 tantangan:
 ## 🏆 Selesaikan untuk Naik Level
 
 Selesaikan ketiga tantangan untuk membuka sertifikat digital **FunPython Certified** kamu!
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Hebat! Kamu resmi jadi Turtle Artist 🐢🎨" data="✓:Aku bisa membuat fungsi:Pakai def lalu memanggilnya|✓:Aku bisa memakai loop untuk pola:Mengulang baris tanpa menyalin kode|✓:Aku menggabungkan fungsi + loop:Menggambar pola dari kode sendiri"}

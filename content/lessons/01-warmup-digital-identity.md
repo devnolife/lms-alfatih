@@ -119,3 +119,5 @@ Selesaikan dua tantangan di bawah. Klik **Run** untuk menjalankan kodemu, lalu *
 :::callout{type="info" title="Cara kerja tombol"}
 **Run** = jalankan kode dan lihat hasilnya. **Periksa** = cek apakah jawabanmu sudah benar (kalau lulus, ada kejutan! 🎉).
 :::
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Mantap! Kamu siap melangkah ke logika 🎉" data="✓:Aku bisa pakai print():Menampilkan teks ke layar|✓:Aku bisa membuat variabel:Menyimpan nilai dalam sebuah nama|✓:Aku bisa menggabungkan teks:Memakai + atau f-string"}

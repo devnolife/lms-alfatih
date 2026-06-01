@@ -67,3 +67,5 @@ lencana **Teknisi Muda**! 🏅
 
 Hardware cocok semua ✅ dan kuis benar ✅? Kamu kini **Teknisi Siber**! Gerbang
 **Level 4 — Detektif Data** terbuka. 🛠️
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Kamu kini Teknisi Siber 🛠️" data="✓:Aku bisa bedakan hardware & software:Yang bisa dan tak bisa disentuh|✓:Aku tahu fungsi tiap perangkat:Keyboard, CPU, monitor, dan lainnya|✓:Aku paham cara website terbuka:Permintaan ke server lalu balasan"}

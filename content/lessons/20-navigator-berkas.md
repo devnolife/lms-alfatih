@@ -75,3 +75,5 @@ Pilih ketiga folder → klik kanan → **Compress** / **Kirim ke → Folder terk
 
 Setelah sortir berkas ✅ dan misi ZIP **LULUS**, gerbang **Level 3 — Teknisi
 Siber** terbuka. Navigasi yang hebat! 🧭
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Navigasi hebat! 🧭" data="✓:Aku bisa menata file & folder:Mengelompokkan berkas dengan rapi|✓:Aku bisa membuat ZIP:Memampatkan banyak file jadi satu|✓:Aku tahu di mana menyimpan berkas:Setiap jenis di folder yang tepat"}

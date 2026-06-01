@@ -94,3 +94,5 @@ Gurumu dapat menilai hasil karya kelompok lewat fitur **Sesi Kelas**. 👥🎬
 
 Kamu kini bisa **membuat** dan **menyebarkan** konten digital yang menarik dan
 beretika — keterampilan penting di abad digital! 🎨✨
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Kreator digital sejati! 🎨" data="✓:Aku bisa membuat konten digital:Poster atau video sederhana|✓:Aku menyebarkan dengan etika:Cek kebenaran dan izin sumber|✓:Aku memilih media yang tepat:Sesuai dengan audiensku"}

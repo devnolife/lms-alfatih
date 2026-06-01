@@ -68,3 +68,5 @@ buru-buru; nikmati setiap petualangan! 🎢
 
 Sekarang kamu paham **apa**, **mengapa**, dan **ke mana** arah perjalanan ini.
 Saatnya memulai dari **Ksatria Logika**. Selamat bertualang! 🎉
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Siap bertualang! 🎢" data="✓:Aku tahu 7 elemen Informatika:Dari logika sampai AI|✓:Aku paham level terbuka bertahap:Selesaikan satu, buka berikutnya|✓:Aku tahu tujuan belajarku:Apa dan mengapa aku belajar ini"}

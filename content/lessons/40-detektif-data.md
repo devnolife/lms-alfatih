@@ -137,3 +137,5 @@ makanan).
 
 Total dan rata-rata tepat ✅? Kamu **Detektif Data** sejati! Gerbang **Level 5 —
 Pembuat Game Pemula** terbuka — saatnya menulis kode Python! 🔎
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Detektif Data sejati! 🔎" data="✓:Aku bisa menghitung total:Menjumlahkan semua data|✓:Aku bisa menghitung rata-rata:Total dibagi banyak data|✓:Aku bisa membaca grafik:Memahami data lewat gambar"}

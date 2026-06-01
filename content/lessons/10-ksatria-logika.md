@@ -71,3 +71,5 @@ kotak rumpang pada diagram alir dari atas ke bawah!
 
 Kalau kedua tantangan sudah ✅, kamu resmi jadi **Ksatria Logika** dan gerbang
 **Level 2 — Navigator Digital** akan terbuka. Maju terus! ⚔️
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Kamu resmi Ksatria Logika ⚔️" data="✓:Aku paham algoritma:Urutan langkah yang runtut|✓:Aku paham dekomposisi:Memecah masalah jadi bagian kecil|✓:Aku bisa membaca diagram alir:Mengikuti alur dari atas ke bawah"}

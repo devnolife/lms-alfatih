@@ -88,6 +88,25 @@ for b in buah:
 Setiap `if`, `else`, dan `for` harus diakhiri tanda titik dua ( `:` ), dan baris di bawahnya menjorok ke dalam (4 spasi).
 :::
 
+## � Ayo Berlatih Dulu
+
+Sebelum menulis kode sungguhan, panaskan dulu logikamu lewat tiga permainan cepat ini. Tidak perlu mengetik — cukup klik dan pilih!
+
+### Isi Bagian Rumpang
+
+::game{type="fill" code='angka = 8\n___ angka > 5:\n    print("Besar")' options="if|for|print" answer="if" title="Pilih Kata Percabangan" question="Kata kunci apa yang dipakai untuk membuat percabangan (memeriksa sebuah syarat)?"}
+
+### Tebak Hasilnya
+
+::game{type="match" code='for i in range(3):\n    print(i)' options='0 1 2|1 2 3|0 1 2 3' answer="0" title="Tebak Hasil Perulangan" question="Angka apa saja yang muncul di layar?"}
+
+### Urutkan Baris Kode
+
+::game{type="order" lines='angka = 8|if angka > 5:|print("Besar")' title="Urutkan Logika If" hint="Variabel dibuat dulu, baru syaratnya diperiksa, baru hasilnya dicetak."}
+
 ## 🏆 Misi
 
 Selesaikan tiga tantangan di bawah untuk membangun mini-game tebak angkamu sendiri.
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Keren! Kamu sudah siap jadi pembuat game logika 🎉" data="✓:Aku paham if / else:Bisa memilih cabang sesuai syarat|✓:Aku paham for + range():Bisa mengulang kode beberapa kali|✓:Aku bisa looping list:Bisa memproses tiap item dalam daftar"}
+

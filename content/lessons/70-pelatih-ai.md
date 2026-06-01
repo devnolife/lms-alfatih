@@ -266,3 +266,5 @@ punya. 🧠
 Selamat, **Pelatih AI**! 🎉 Kamu sudah mengajari komputer mengenali gambar dari
 nol — persis cara kerja AI sungguhan: **contoh → latih → tebak → perbaiki**.
 Kamu kini paham rahasia di balik teknologi pintar di sekitarmu. 🤖✨
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Selamat, Pelatih AI! 🤖" data="✓:Aku bisa melatih AI dengan contoh:Memberi banyak gambar berlabel|✓:Aku paham alur kerja AI:Contoh, latih, tebak, perbaiki|✓:Aku tahu AI melihat pola:Bukan memahami isi sebenarnya"}

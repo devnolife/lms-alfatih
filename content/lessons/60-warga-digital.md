@@ -134,3 +134,5 @@ punya akibat — pilih dengan hati-hati!
 Kalau kamu sudah menyelesaikan skenario ini ✅ dan **keenam level** sebelumnya,
 kamu resmi jadi **Warga Digital Bijak** dan berhak atas **Sertifikat Informatika
 Kelas 7**! Selamat, kamu menyelesaikan seluruh petualangan! 🎓🎉
+
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Kamu Warga Digital Bijak 🛡️" data="✓:Aku berpikir sebelum membagikan:Benar, baik, dan perlu|✓:Aku menjaga data pribadi:Tidak memberi info ke orang asing|✓:Aku berani menolak hal buruk:Tidak ikut menyebarkannya"}
