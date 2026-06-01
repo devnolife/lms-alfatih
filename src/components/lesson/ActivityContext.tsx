@@ -47,3 +47,23 @@ export function reportActivityComplete(lessonSlug: string, activityId: string) {
     reported.delete(key);
   });
 }
+
+/**
+ * Persists the student's actual WORK for a game (answers, labels, chosen path,
+ * computed values, training data, etc.) into GameSubmission so teachers can
+ * review it. Fire-and-forget: a failed save never blocks the game. Each call
+ * stores a new attempt, so games should call this once per solve.
+ */
+export function reportActivityWork(
+  lessonSlug: string,
+  activityId: string,
+  game: string,
+  data: Record<string, unknown>,
+  score = 0
+) {
+  void fetch("/api/activities/work", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lessonSlug, activityId, game, data, score }),
+  }).catch(() => { });
+}

@@ -88,6 +88,22 @@ export const GAME_CATALOG: GameCategory[] = [
           hint: "Cukup 1 blok Maju, lalu Ulangi beberapa kali!",
         },
       },
+      {
+        id: "maze-4",
+        type: "maze",
+        title: "Belokan Pintar (Jika)",
+        blurb: "Pakai blok ❓ Jika agar kura-kura belok sendiri saat ada tembok.",
+        emoji: "❓",
+        level: 4,
+        props: {
+          grid: "S../.#./.#G",
+          dir: "right",
+          loop: "true",
+          branch: "true",
+          title: "Belokan Pintar",
+          hint: "Susun ❓ Jika lalu Maju, ulangi 4×. Kura-kura belok otomatis!",
+        },
+      },
     ],
   },
   {

@@ -75,7 +75,13 @@ export default function FileSortGame({
       setSelected(null);
       if (Object.keys(next).length === parsed.length && !awarded) {
         setAwarded(true);
-        fb.solved({ xp: Number(xp) || 20, label: `+${xp} XP` });
+        fb.solved({
+          xp: Number(xp) || 20,
+          label: `+${xp} XP`,
+          game: "filesort",
+          score: 100,
+          data: { ...next },
+        });
       } else {
         fb.correct();
       }
@@ -108,11 +114,10 @@ export default function FileSortGame({
             <button
               key={f.name}
               onClick={() => setSelected(selected === f.name ? null : f.name)}
-              className={`rounded-xl border-2 px-3 py-2 text-sm font-semibold transition-colors ${
-                selected === f.name
+              className={`rounded-xl border-2 px-3 py-2 text-sm font-semibold transition-colors ${selected === f.name
                   ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] text-[var(--color-sky-blue-dark)]"
                   : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sky-blue)]"
-              }`}
+                }`}
             >
               {f.name}
             </button>
@@ -129,11 +134,10 @@ export default function FileSortGame({
             <button
               key={folder}
               onClick={() => dropTo(folder)}
-              className={`flex min-h-[96px] flex-col rounded-2xl border-2 p-3 text-left transition-transform ${
-                shakeFolder === folder
+              className={`flex min-h-[96px] flex-col rounded-2xl border-2 p-3 text-left transition-transform ${shakeFolder === folder
                   ? "border-[#ff6b6b] bg-[#ffe9e9]"
                   : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sunshine-dark)]"
-              } ${selected ? "cursor-pointer" : ""}`}
+                } ${selected ? "cursor-pointer" : ""}`}
             >
               <span
                 className="mb-1 text-sm font-bold text-[var(--color-charcoal)]"

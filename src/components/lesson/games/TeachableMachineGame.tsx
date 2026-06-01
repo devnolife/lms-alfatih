@@ -129,7 +129,7 @@ export default function TeachableMachineGame({
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play().catch(() => {});
+        await videoRef.current.play().catch(() => { });
       }
       setCameraOn(true);
     } catch {
@@ -340,10 +340,19 @@ export default function TeachableMachineGame({
     setPredictCount(n);
     if (!awarded) {
       setAwarded(true);
+      const data: Record<string, unknown> = {
+        tebakan: result.label ?? "?",
+      };
+      for (const c of categories) {
+        data[`kategori: ${c.name}`] = `${c.examples.length} contoh`;
+      }
       fb.solved({
         xp: Number(xp) || 30,
         label: `+${xp} XP`,
         badge: { id: "pelatih-ai", label: "Pelatih AI", emoji: "🤖" },
+        game: "teachable",
+        score: Math.round((result.confidence ?? 0) * 100),
+        data,
       });
     } else {
       fb.correct();
@@ -377,21 +386,19 @@ export default function TeachableMachineGame({
       {/* Phase indicator */}
       <div className="mb-4 flex justify-center gap-2 text-xs font-bold">
         <span
-          className={`rounded-full px-3 py-1 ${
-            phase === "train"
-              ? "bg-[var(--color-sky-blue)] text-white"
-              : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
-          }`}
+          className={`rounded-full px-3 py-1 ${phase === "train"
+            ? "bg-[var(--color-sky-blue)] text-white"
+            : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
+            }`}
         >
           1 · Latih
         </span>
         <span className="text-[var(--color-silver)]">→</span>
         <span
-          className={`rounded-full px-3 py-1 ${
-            phase === "predict"
-              ? "bg-[var(--color-duo-green)] text-white"
-              : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
-          }`}
+          className={`rounded-full px-3 py-1 ${phase === "predict"
+            ? "bg-[var(--color-duo-green)] text-white"
+            : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
+            }`}
         >
           2 · Tebak
         </span>
@@ -401,21 +408,19 @@ export default function TeachableMachineGame({
       <div className="mb-4 flex justify-center gap-2 text-xs font-bold">
         <button
           onClick={() => chooseInput("draw")}
-          className={`rounded-full px-4 py-1.5 transition-colors ${
-            inputMode === "draw"
-              ? "bg-[var(--color-grape)] text-white"
-              : "bg-[var(--color-cloud)] text-[var(--color-graphite)] hover:brightness-95"
-          }`}
+          className={`rounded-full px-4 py-1.5 transition-colors ${inputMode === "draw"
+            ? "bg-[var(--color-grape)] text-white"
+            : "bg-[var(--color-cloud)] text-[var(--color-graphite)] hover:brightness-95"
+            }`}
         >
           ✏️ Gambar
         </button>
         <button
           onClick={() => chooseInput("camera")}
-          className={`rounded-full px-4 py-1.5 transition-colors ${
-            inputMode === "camera"
-              ? "bg-[var(--color-grape)] text-white"
-              : "bg-[var(--color-cloud)] text-[var(--color-graphite)] hover:brightness-95"
-          }`}
+          className={`rounded-full px-4 py-1.5 transition-colors ${inputMode === "camera"
+            ? "bg-[var(--color-grape)] text-white"
+            : "bg-[var(--color-cloud)] text-[var(--color-graphite)] hover:brightness-95"
+            }`}
         >
           📷 Kamera
         </button>
@@ -437,7 +442,7 @@ export default function TeachableMachineGame({
                 onPointerMove={moveDraw}
                 onPointerUp={endDraw}
                 onPointerLeave={endDraw}
-                className="aspect-square w-full max-w-[240px] touch-none rounded-2xl border-2 border-[var(--color-sky-blue)] bg-white shadow-inner"
+                className="aspect-square w-full max-w-[min(80vw,260px)] touch-none rounded-2xl border-2 border-[var(--color-sky-blue)] bg-white shadow-inner"
                 style={{ cursor: "crosshair" }}
               />
               <div className="mt-3 flex gap-2">
@@ -504,11 +509,10 @@ export default function TeachableMachineGame({
                 <button
                   onClick={shoot}
                   disabled={!cameraOn}
-                  className={`rounded-xl border-2 px-5 py-1.5 text-xs font-bold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:opacity-40 ${
-                    phase === "train"
-                      ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue)] hover:opacity-90"
-                      : "border-[var(--color-duo-green)] bg-[var(--color-duo-green)] hover:opacity-90"
-                  }`}
+                  className={`rounded-xl border-2 px-5 py-1.5 text-xs font-bold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:opacity-40 ${phase === "train"
+                    ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue)] hover:opacity-90"
+                    : "border-[var(--color-duo-green)] bg-[var(--color-duo-green)] hover:opacity-90"
+                    }`}
                 >
                   {phase === "train"
                     ? `📸 Jepret → “${categories.find((c) => c.id === activeCat)?.name ?? ""}”`
@@ -530,11 +534,10 @@ export default function TeachableMachineGame({
                 return (
                   <div
                     key={c.id}
-                    className={`rounded-2xl border-2 p-2.5 transition-colors ${
-                      active
-                        ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)]"
-                        : "border-[var(--color-cloud)] bg-white"
-                    }`}
+                    className={`rounded-2xl border-2 p-2.5 transition-colors ${active
+                      ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)]"
+                      : "border-[var(--color-cloud)] bg-white"
+                      }`}
                   >
                     <div className="flex items-center gap-2">
                       <span
@@ -549,11 +552,10 @@ export default function TeachableMachineGame({
                       />
                       <button
                         onClick={() => setActiveCat(c.id)}
-                        className={`rounded-lg px-2 py-1 text-xs font-bold ${
-                          active
-                            ? "bg-[var(--color-sky-blue)] text-white"
-                            : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
-                        }`}
+                        className={`rounded-lg px-2 py-1 text-xs font-bold ${active
+                          ? "bg-[var(--color-sky-blue)] text-white"
+                          : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
+                          }`}
                       >
                         {active ? "✏️ aktif" : "pilih"}
                       </button>

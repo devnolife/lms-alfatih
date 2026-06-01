@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useGameFeedback } from "@/hooks/useGameFeedback";
 
 type Dir = 0 | 1 | 2 | 3; // 0 up, 1 right, 2 down, 3 left
-type Block = "forward" | "left" | "right";
+type Block = "forward" | "left" | "right" | "ifWall";
 
 interface Cell {
   r: number;
@@ -26,6 +26,8 @@ interface Props {
   dir?: string;
   /** Set "true" to show the "Ulangi semua langkah" repeat control. */
   loop?: string;
+  /** Set "true" to add the "Jika tembok" conditional (If) block. */
+  branch?: string;
   title?: string;
   hint?: string;
 }
@@ -61,6 +63,12 @@ const BLOCK_META: Record<
     color: "var(--color-sunshine)",
     shadow: "var(--color-sunshine-dark)",
   },
+  ifWall: {
+    label: "Jika tembok → Kanan",
+    icon: "❓",
+    color: "var(--color-bubblegum)",
+    shadow: "#9c1f6a",
+  },
 };
 
 const CELL = 52;
@@ -91,13 +99,33 @@ export default function MazeGame({
   grid = "S./.G",
   dir = "right",
   loop,
+  branch,
   title = "Pandu Si Kura-kura",
   hint = "Susun blok agar kura-kura sampai ke daun 🥬",
 }: Props) {
   const { rows, start, goal, walls } = useMemo(() => parseGrid(grid), [grid]);
   const startDir = DIR_INDEX[dir] ?? 1;
   const cols = Math.max(...rows.map((r) => r.length));
+
+  // Responsive cell size: shrink the grid so it always fits narrow phones while
+  // never exceeding the comfortable desktop size (CELL). Recomputed on resize.
+  const [cell, setCell] = useState(CELL);
+  useEffect(() => {
+    function fit() {
+      // Leave room for the card's horizontal padding (~48px) and grid inset.
+      const avail = Math.min(window.innerWidth - 56, 520);
+      setCell(Math.max(34, Math.min(CELL, Math.floor(avail / cols))));
+    }
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, [cols]);
+
   const loopEnabled = loop === "true";
+  const branchEnabled = branch === "true";
+  const palette: Block[] = branchEnabled
+    ? ["forward", "left", "right", "ifWall"]
+    : ["forward", "left", "right"];
 
   const [program, setProgram] = useState<Block[]>([]);
   const [repeat, setRepeat] = useState(1);
@@ -149,7 +177,18 @@ export default function MazeGame({
         if (crashed) return;
         if (b === "left") d = ((d + 3) % 4) as Dir;
         else if (b === "right") d = ((d + 1) % 4) as Dir;
-        else {
+        else if (b === "ifWall") {
+          // Conditional (If): only turn right when a wall/edge is ahead.
+          const nr = r + VECT[d].dr;
+          const nc = c + VECT[d].dc;
+          const blocked =
+            nr < 0 ||
+            nc < 0 ||
+            nr >= rows.length ||
+            nc >= cols ||
+            walls[nr]?.[nc];
+          if (blocked) d = ((d + 1) % 4) as Dir;
+        } else {
           const nr = r + VECT[d].dr;
           const nc = c + VECT[d].dc;
           const off =
@@ -199,6 +238,9 @@ export default function MazeGame({
                 emoji: "🧩",
                 label: "Jago Blok!",
               },
+              game: "maze",
+              score: 100,
+              data: { program: [...program], repeat },
             });
           } else {
             fb.solved();
@@ -214,8 +256,8 @@ export default function MazeGame({
     }, 650);
   };
 
-  const markerLeft = display.c * CELL + CELL / 2;
-  const markerTop = display.r * CELL + CELL / 2;
+  const markerLeft = display.c * cell + cell / 2;
+  const markerTop = display.r * cell + cell / 2;
 
   return (
     <div className="not-prose my-6 rounded-3xl border-2 border-[var(--color-cloud)] bg-gradient-to-b from-[#f4fff0] to-white p-5">
@@ -233,11 +275,11 @@ export default function MazeGame({
         {/* Grid */}
         <div
           className="relative shrink-0 rounded-2xl bg-[var(--color-duo-green-light)] p-2"
-          style={{ width: cols * CELL + 16, height: rows.length * CELL + 16 }}
+          style={{ width: cols * cell + 16, height: rows.length * cell + 16 }}
         >
           <div
             className="relative"
-            style={{ width: cols * CELL, height: rows.length * CELL }}
+            style={{ width: cols * cell, height: rows.length * cell }}
           >
             {rows.map((row, r) =>
               Array.from({ length: cols }).map((_, c) => {
@@ -250,10 +292,10 @@ export default function MazeGame({
                     key={`${r}-${c}`}
                     className="absolute flex items-center justify-center rounded-lg border border-white/70 text-2xl"
                     style={{
-                      left: c * CELL,
-                      top: r * CELL,
-                      width: CELL,
-                      height: CELL,
+                      left: c * cell,
+                      top: r * cell,
+                      width: cell,
+                      height: cell,
                       background: isWall
                         ? "var(--color-graphite)"
                         : isGoal
@@ -281,25 +323,23 @@ export default function MazeGame({
               style={{
                 left: markerLeft,
                 top: markerTop,
-                width: CELL,
-                height: CELL,
+                width: cell,
+                height: cell,
                 transform: "translate(-50%, -50%)",
               }}
             >
               <span
-                className={`relative flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-2xl shadow-md ring-2 transition-colors ${
-                  status === "fail"
-                    ? "ring-[var(--color-error)]"
-                    : "ring-[var(--color-duo-green)]"
-                }`}
+                className={`relative flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-2xl shadow-md ring-2 transition-colors ${status === "fail"
+                  ? "ring-[var(--color-error)]"
+                  : "ring-[var(--color-duo-green)]"
+                  }`}
               >
                 🐢
                 <span
                   className="absolute left-1/2 top-1/2 text-[var(--color-bubblegum)] transition-transform duration-300"
                   style={{
-                    transform: `translate(-50%, -50%) rotate(${
-                      display.dir * 90
-                    }deg) translateY(-22px)`,
+                    transform: `translate(-50%, -50%) rotate(${display.dir * 90
+                      }deg) translateY(-22px)`,
                   }}
                 >
                   ▲
@@ -315,7 +355,7 @@ export default function MazeGame({
             Pilih blok
           </div>
           <div className="mb-4 flex flex-wrap gap-2">
-            {(Object.keys(BLOCK_META) as Block[]).map((b) => {
+            {palette.map((b) => {
               const m = BLOCK_META[b];
               return (
                 <button
@@ -335,6 +375,13 @@ export default function MazeGame({
             })}
           </div>
 
+          {branchEnabled && (
+            <p className="mb-4 -mt-1 rounded-lg bg-[#fff0f6] px-2 py-1 text-[11px] font-medium text-[var(--color-bubblegum)]">
+              ❓ Blok <b>Jika</b> hanya berputar saat ada tembok di depan. Kalau
+              jalan kosong, blok ini dilewati. Itulah <b>percabangan</b>!
+            </p>
+          )}
+
           <div className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-graphite)]">
             Programmu
           </div>
@@ -351,9 +398,8 @@ export default function MazeGame({
                   return (
                     <li
                       key={i}
-                      className={`flex items-center justify-between rounded-lg px-2 py-1 text-sm font-bold text-white transition-transform ${
-                        isActive ? "scale-105 ring-2 ring-white" : ""
-                      }`}
+                      className={`flex items-center justify-between rounded-lg px-2 py-1 text-sm font-bold text-white transition-transform ${isActive ? "scale-105 ring-2 ring-white" : ""
+                        }`}
                       style={{ background: m.color }}
                     >
                       <span className="flex items-center gap-1.5">

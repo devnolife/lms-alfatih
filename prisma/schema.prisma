@@ -44,6 +44,7 @@ model User {
   completions   ChallengeCompletion[]
   fileMissions  FileMissionSubmission[]
   activityCompletions ActivityCompletion[]
+  gameSubmissions GameSubmission[]
 }
 
 model Class {
@@ -282,6 +283,28 @@ model ActivityCompletion {
 
   @@id([userId, lessonSlug, activityId])
   @@index([userId, lessonSlug])
+}
+
+// Stores the actual WORK a student produces inside an interactive game
+// (labels, answers, chosen paths, training data, etc.) — not just that they
+// finished. Unlike ActivityCompletion this keeps every attempt so teachers can
+// inspect HOW a student solved it. `data` holds the game-specific payload and
+// `score` an optional 0-100 quality/correctness figure. Many rows per
+// (user, activity) are expected.
+model GameSubmission {
+  id         String   @id @default(cuid())
+  userId     String
+  lessonSlug String
+  activityId String
+  game       String
+  data       Json
+  score      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, activityId])
+  @@index([activityId])
 }
 
 model Badge {

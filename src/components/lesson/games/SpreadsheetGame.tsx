@@ -72,7 +72,13 @@ export default function SpreadsheetGame({
     if (s && a) {
       if (!awarded) {
         setAwarded(true);
-        fb.solved({ xp: Number(xp) || 20, label: `+${xp} XP` });
+        fb.solved({
+          xp: Number(xp) || 20,
+          label: `+${xp} XP`,
+          game: "spreadsheet",
+          score: 100,
+          data: { SUM: sumInput, AVERAGE: avgInput },
+        });
       }
     } else {
       fb.wrong();
@@ -144,13 +150,12 @@ export default function SpreadsheetGame({
             value={sumInput}
             onChange={(e) => setSumInput(e.target.value)}
             inputMode="numeric"
-            className={`w-28 rounded-xl border-2 px-3 py-2 font-mono text-sm ${
-              sumOk === null
+            className={`w-28 rounded-xl border-2 px-3 py-2 font-mono text-sm ${sumOk === null
                 ? "border-[var(--color-cloud)]"
                 : sumOk
                   ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)]"
                   : "border-[#ff6b6b] bg-[#ffe9e9]"
-            }`}
+              }`}
             placeholder="=SUM(...)"
           />
         </label>
@@ -160,13 +165,12 @@ export default function SpreadsheetGame({
             value={avgInput}
             onChange={(e) => setAvgInput(e.target.value)}
             inputMode="decimal"
-            className={`w-28 rounded-xl border-2 px-3 py-2 font-mono text-sm ${
-              avgOk === null
+            className={`w-28 rounded-xl border-2 px-3 py-2 font-mono text-sm ${avgOk === null
                 ? "border-[var(--color-cloud)]"
                 : avgOk
                   ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)]"
                   : "border-[#ff6b6b] bg-[#ffe9e9]"
-            }`}
+              }`}
             placeholder="rata-rata"
           />
         </label>

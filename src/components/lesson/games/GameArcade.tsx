@@ -8,6 +8,7 @@ const LEVEL_META: Record<number, { label: string; bg: string; fg: string }> = {
   1: { label: "Mudah", bg: "var(--color-duo-green-light)", fg: "var(--color-duo-green-dark)" },
   2: { label: "Sedang", bg: "var(--color-sky-blue-light)", fg: "var(--color-sky-blue-dark)" },
   3: { label: "Seru", bg: "var(--color-sunshine)", fg: "var(--color-almost-black)" },
+  4: { label: "Jago", bg: "var(--color-bubblegum)", fg: "white" },
 };
 
 export default function GameArcade() {
@@ -41,7 +42,7 @@ export default function GameArcade() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {cat.games.map((game) => {
-              const lvl = LEVEL_META[game.level];
+              const lvl = LEVEL_META[game.level] ?? LEVEL_META[1];
               return (
                 <button
                   key={game.id}

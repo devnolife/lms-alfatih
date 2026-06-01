@@ -1,0 +1,39 @@
+# Layanan khusus FunPython — terisolasi dari project lain.
+# Port host sengaja unik (5460 / 6395) agar tidak bentrok.
+services:
+  funpython-postgres:
+    image: postgres:16-alpine
+    container_name: funpython-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: funpython
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: funpython
+    ports:
+      - "5460:5432"
+    volumes:
+      - funpython-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U funpython -d funpython"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  funpython-redis:
+    image: redis:7-alpine
+    container_name: funpython-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6395:6379"
+    volumes:
+      - funpython-redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  funpython-pgdata:
+  funpython-redisdata:

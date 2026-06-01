@@ -42,6 +42,16 @@ export default async function DashboardHome() {
           mereka bisa bergabung.
         </p>
 
+        <div className="mb-8">
+          <Link
+            href="/dashboard/submissions"
+            className="inline-flex items-center gap-2 rounded-2xl border-2 border-[var(--color-cloud)] bg-white px-5 py-3 text-sm font-bold text-[var(--color-charcoal)] shadow-sm transition hover:border-[var(--color-duo-green)]"
+          >
+            📊 Lihat Hasil Kerja Siswa
+            <span className="text-[var(--color-graphite)]">→</span>
+          </Link>
+        </div>
+
         <TeacherClassManager initialClasses={classes} />
       </main>
     </div>

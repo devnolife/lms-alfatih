@@ -87,6 +87,9 @@ export default function HardwareMatchGame({
             label: "Teknisi Muda",
             emoji: "🛠️",
           },
+          game: "hardware",
+          score: 100,
+          data: { ...next },
         });
       } else {
         fb.correct();
@@ -122,13 +125,12 @@ export default function HardwareMatchGame({
                 key={p.device}
                 disabled={done}
                 onClick={() => setSelDevice(sel ? null : p.device)}
-                className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-bold transition-colors ${
-                  done
+                className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-bold transition-colors ${done
                     ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
                     : sel
                       ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] text-[var(--color-sky-blue-dark)]"
                       : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sky-blue)]"
-                }`}
+                  }`}
               >
                 {p.device} {done && "✓"}
               </button>
@@ -144,13 +146,12 @@ export default function HardwareMatchGame({
                 key={fn}
                 disabled={used}
                 onClick={() => pickFn(fn)}
-                className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition-colors ${
-                  used
+                className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition-colors ${used
                     ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
                     : isWrong
                       ? "border-[#ff6b6b] bg-[#ffe9e9] text-[#d33]"
                       : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sunshine-dark)]"
-                }`}
+                  }`}
               >
                 {fn}
               </button>

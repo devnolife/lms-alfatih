@@ -55,6 +55,10 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
   const [solved, setSolved] = useState<Set<number>>(new Set());
   const [checking, setChecking] = useState(false);
 
+  const [hint, setHint] = useState("");
+  const [hintLoading, setHintLoading] = useState(false);
+  const [hintError, setHintError] = useState<string | null>(null);
+
   const busy = status === "running" || checking;
   const booting = status === "loading";
 
@@ -75,6 +79,8 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
     setTestResults(null);
     setHasRun(false);
     setTab("text");
+    setHint("");
+    setHintError(null);
   }
 
   function applyRunOutput(result: RunResult) {
@@ -96,6 +102,8 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
   async function handleCheck() {
     if (busy || !active) return;
     setChecking(true);
+    setHint("");
+    setHintError(null);
     try {
       // Show the plain run first so students see their output, then grade.
       const result = await run(code);
@@ -138,6 +146,54 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
     }
   }
 
+  async function requestHint() {
+    if (!active || hintLoading) return;
+    setHintLoading(true);
+    setHintError(null);
+    setHint("");
+    const failedTests = (testResults ?? [])
+      .filter((r) => !r.passed)
+      .map((r) => (r.detail ? `${r.name}: ${r.detail}` : r.name));
+    try {
+      const res = await fetch("/api/ai/hint", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          challengeId: active.id,
+          lessonSlug: lesson.slug,
+          prompt: active.prompt,
+          code,
+          errorMessage: errorMsg ?? undefined,
+          failedTests,
+        }),
+      });
+      if (!res.ok || !res.body) {
+        let msg = "Asisten AI sedang sibuk. Coba lagi sebentar.";
+        try {
+          const data = (await res.json()) as { error?: string };
+          if (data.error) msg = data.error;
+        } catch {
+          /* no json body */
+        }
+        setHintError(msg);
+        return;
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let acc = "";
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        acc += decoder.decode(value, { stream: true });
+        setHint(acc);
+      }
+    } catch {
+      setHintError("Gagal terhubung ke asisten AI.");
+    } finally {
+      setHintLoading(false);
+    }
+  }
+
   async function persistSubmission(
     challengeId: string,
     code: string,
@@ -171,6 +227,8 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
   );
 
   const hasVisual = draw.length > 0;
+  const hasFailure =
+    Boolean(errorMsg) || Boolean(testResults && testResults.some((r) => !r.passed));
 
   return (
     <div className="bg-white border-[3px] border-[var(--color-almost-black)] rounded-3xl overflow-hidden shadow-[0_8px_0_var(--color-almost-black)]">
@@ -181,11 +239,10 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
               <button
                 key={c.id ?? i}
                 onClick={() => selectChallenge(i)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide border-2 inline-flex items-center gap-1 ${
-                  i === activeIdx
-                    ? "bg-[var(--color-duo-green)] text-white border-[var(--color-duo-green-dark)]"
-                    : "bg-white text-[var(--color-graphite)] border-[var(--color-cloud)]"
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide border-2 inline-flex items-center gap-1 ${i === activeIdx
+                  ? "bg-[var(--color-duo-green)] text-white border-[var(--color-duo-green-dark)]"
+                  : "bg-white text-[var(--color-graphite)] border-[var(--color-cloud)]"
+                  }`}
               >
                 {solved.has(i) && <span aria-hidden>✓</span>}
                 Tantangan {i + 1}
@@ -208,7 +265,7 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
 
       <div className="border-y-2 border-[var(--color-cloud)]">
         <MonacoEditor
-          height="320px"
+          height="clamp(220px, 45vh, 360px)"
           defaultLanguage="python"
           path={`challenge-${activeIdx}.py`}
           value={code}
@@ -258,22 +315,20 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
       <div className="flex items-center gap-1 px-5 pt-3">
         <button
           onClick={() => setTab("text")}
-          className={`px-3 py-1 rounded-t-lg text-xs font-bold uppercase tracking-wide ${
-            tab === "text"
-              ? "bg-[var(--color-almost-black)] text-white"
-              : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
-          }`}
+          className={`px-3 py-1 rounded-t-lg text-xs font-bold uppercase tracking-wide ${tab === "text"
+            ? "bg-[var(--color-almost-black)] text-white"
+            : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
+            }`}
         >
           Output
         </button>
         {hasVisual && (
           <button
             onClick={() => setTab("visual")}
-            className={`px-3 py-1 rounded-t-lg text-xs font-bold uppercase tracking-wide ${
-              tab === "visual"
-                ? "bg-[var(--color-almost-black)] text-white"
-                : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
-            }`}
+            className={`px-3 py-1 rounded-t-lg text-xs font-bold uppercase tracking-wide ${tab === "visual"
+              ? "bg-[var(--color-almost-black)] text-white"
+              : "bg-[var(--color-cloud)] text-[var(--color-graphite)]"
+              }`}
           >
             🎨 Visual
           </button>
@@ -319,11 +374,10 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
               {testResults.map((r, i) => (
                 <div
                   key={i}
-                  className={`rounded-xl border-2 px-4 py-2 text-sm ${
-                    r.passed
-                      ? "bg-[var(--color-duo-green-light)] border-[var(--color-duo-green)] text-[var(--color-duo-green-dark)]"
-                      : "bg-[var(--color-error-light)] border-[var(--color-error)] text-[var(--color-error)]"
-                  }`}
+                  className={`rounded-xl border-2 px-4 py-2 text-sm ${r.passed
+                    ? "bg-[var(--color-duo-green-light)] border-[var(--color-duo-green)] text-[var(--color-duo-green-dark)]"
+                    : "bg-[var(--color-error-light)] border-[var(--color-error)] text-[var(--color-error)]"
+                    }`}
                 >
                   <div className="font-bold">
                     {r.passed ? "✓" : "✗"} {r.name}
@@ -336,6 +390,49 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
                 </div>
               ))}
             </div>
+          )}
+        </div>
+      )}
+
+      {/* AI hint — only when the attempt failed, and only on demand. */}
+      {active && hasFailure && (
+        <div className="px-5 pb-5">
+          {!hint && !hintLoading && !hintError && (
+            <button
+              onClick={requestHint}
+              className="inline-flex items-center gap-2 rounded-xl border-2 border-[var(--color-grape)] bg-white px-4 py-2 text-sm font-bold uppercase tracking-wide text-[var(--color-grape)] hover:bg-[var(--color-grape)] hover:text-white"
+            >
+              <span aria-hidden>💡</span> Minta petunjuk AI
+            </button>
+          )}
+
+          {(hint || hintLoading) && (
+            <div className="rounded-2xl border-2 border-[var(--color-grape)] bg-[var(--color-grape-light,#f3edff)] px-4 py-3">
+              <div className="mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[var(--color-grape)]">
+                <span aria-hidden>🤖</span> Petunjuk dari Pyo
+              </div>
+              <p className="whitespace-pre-wrap text-sm text-[var(--color-charcoal)]">
+                {hint || (
+                  <span className="inline-flex items-center gap-2 text-[var(--color-grape)]">
+                    <Spinner size={14} /> Pyo sedang menyiapkan petunjuk…
+                  </span>
+                )}
+              </p>
+              {!hintLoading && hint && (
+                <button
+                  onClick={requestHint}
+                  className="mt-2 text-xs font-bold text-[var(--color-grape)] underline"
+                >
+                  Minta petunjuk lain
+                </button>
+              )}
+            </div>
+          )}
+
+          {hintError && (
+            <p className="mt-2 text-xs font-bold text-[var(--color-error)]">
+              {hintError}
+            </p>
           )}
         </div>
       )}

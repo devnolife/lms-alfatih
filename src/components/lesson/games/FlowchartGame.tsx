@@ -74,7 +74,17 @@ export default function FlowchartGame({
       if (next.length === blanksTotal && next.every((f, i) => f === answerList[i])) {
         if (!awarded) {
           setAwarded(true);
-          fb.solved({ xp: Number(xp) || 15, label: `+${xp} XP` });
+          const data: Record<string, unknown> = {};
+          next.forEach((f, i) => {
+            data[`isian ${i + 1}`] = f;
+          });
+          fb.solved({
+            xp: Number(xp) || 15,
+            label: `+${xp} XP`,
+            game: "flowchart",
+            score: 100,
+            data,
+          });
         }
       } else {
         fb.correct();
@@ -120,15 +130,14 @@ export default function FlowchartGame({
           return (
             <div key={i} className="flex w-full flex-col items-center">
               <div
-                className={`w-full rounded-xl border-2 px-4 py-2.5 text-center text-sm font-bold ${
-                  !isBlank
+                className={`w-full rounded-xl border-2 px-4 py-2.5 text-center text-sm font-bold ${!isBlank
                     ? "border-[var(--color-grape)] bg-white text-[var(--color-almost-black)]"
                     : correct
                       ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
                       : wrong
                         ? "border-[#ff6b6b] bg-[#ffe9e9] text-[#d33]"
                         : "border-dashed border-[var(--color-grape)] bg-[var(--color-cloud)] text-[var(--color-silver)]"
-                }`}
+                  }`}
               >
                 {isBlank ? filled ?? "❔ rumpang" : step}
               </div>

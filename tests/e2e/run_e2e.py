@@ -8,7 +8,7 @@ captured per page. Prints a summary table at the end.
 import sys, os, time, re, traceback
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 
-BASE = os.environ.get("E2E_BASE_URL", "http://localhost:3000")
+BASE = os.environ.get("E2E_BASE_URL", "http://localhost:3007")
 SHOTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "shots")
 os.makedirs(SHOTS, exist_ok=True)
 STAMP = str(int(time.time()))

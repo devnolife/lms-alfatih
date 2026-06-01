@@ -7,6 +7,15 @@ element: AD
 projectKey: detektif-data
 estimatedMinutes: 30
 activities:
+  - id: ad-dekomposisi
+    xp: 20
+    required: true
+  - id: ad-cleaning
+    xp: 20
+    required: true
+  - id: ad-klasifikasi
+    xp: 20
+    required: false
   - id: ad-spreadsheet
     xp: 25
     required: true
@@ -19,14 +28,76 @@ Data**, kamu akan mengolah angka penjualan dan menemukan polanya!
 
 Di level ini kamu belajar:
 
-- Membaca **tabel data** baris demi baris.
-- Menghitung **total (SUM)** dan **rata-rata (AVERAGE)**.
-- Membaca **grafik batang** untuk melihat pola.
+- **Memecah** masalah besar jadi bagian kecil (**dekomposisi**).
+- **Membersihkan** data dari kesalahan (duplikat, nilai aneh, data hilang).
+- **Mengelompokkan** data berdasarkan kategori (**klasifikasi**).
+- Menghitung **total (SUM)** dan **rata-rata (AVERAGE)** lalu membaca grafiknya.
 
-## 📊 Mengenal Data
+## 🧩 Pecahkan Dulu Masalahnya
 
-**Data** adalah kumpulan fakta — misalnya jumlah makanan terjual tiap hari.
-Setelah dikumpulkan, data bisa **dihitung** dan **digambar** agar mudah dipahami.
+Sebelum mengolah data, detektif hebat **memecah** masalah besar jadi pertanyaan
+kecil yang mudah dijawab. Ini disebut **dekomposisi**.
+
+:::callout{type="concept" title="Apa itu dekomposisi?"}
+Dekomposisi = memecah masalah besar menjadi sub-masalah yang lebih kecil sehingga
+data lebih mudah dikelola. Contoh: "Rute mana yang tercepat ke sekolah?" dipecah
+menjadi → data apa yang dibutuhkan? (jarak, waktu tempuh, kondisi lalu lintas) →
+dari mana sumbernya? (GPS, aplikasi navigasi, catatan harian). 🧩
+:::
+
+Urutkan langkah seorang Detektif Data dari awal sampai akhir — tekan ▶ Putar:
+
+::visual{type="step-sequence" title="Alur Mengolah Data" steps="Identifikasi data|Kumpulkan data|Bersihkan data|Kelompokkan data|Baca polanya" emojis="🔍|📥|🧹|🏷️|📊"}
+
+Lengkapi alur memecah masalah "makanan terlaris di kantin" berikut:
+
+::game{type="flowchart" activityId="ad-dekomposisi" title="Dekomposisi Masalah Kantin" steps="Tentukan pertanyaan|___|Kumpulkan data penjualan|___|Simpulkan yang terlaris" answers="Data apa yang dibutuhkan?;Hitung total tiap makanan" bank="Data apa yang dibutuhkan?;Hitung total tiap makanan;Hapus semua data;Beli makanan baru" hint="Setelah tahu pertanyaannya, tentukan data yang dibutuhkan; setelah data terkumpul, hitung dulu sebelum menyimpulkan."}
+
+## 🧹 Bersihkan Datanya
+
+Data mentah sering **kotor**: ada yang tertulis dua kali, ada nilai aneh, atau
+ada yang kosong. Data kotor membuat kesimpulan jadi salah, jadi harus
+**dibersihkan** dulu.
+
+:::reveal{title="4 masalah data yang sering muncul"}
+- **Duplikat** — baris data yang sama tercatat dua kali. ➜ hapus salinannya.
+- **Outlier** — nilai yang menyimpang jauh (mis. waktu tempuh 0,1 menit). ➜
+  periksa: salah catat atau memang nyata?
+- **Nilai hilang (missing)** — sel kosong karena lupa diisi. ➜ isi perkiraan
+  atau tandai untuk dicek.
+- **Format beda (standardisasi)** — tanggal "01-12" vs "12/01", satuan km vs
+  meter. ➜ samakan formatnya.
+:::
+
+:::callout{type="tip" title="Langkah terakhir: validasi"}
+Setelah dibersihkan, **periksa ulang** apakah semua nilai sudah masuk akal dan
+seragam. Inilah yang disebut **validasi data** — pemeriksaan akhir sebelum data
+dianalisis. ✅
+:::
+
+Uji pemahamanmu soal membersihkan data:
+
+::game{type="quiz" activityId="ad-cleaning" title="Detektif Pembersih Data" data="Catatan penjualan \"Bakso\" muncul dua kali dengan angka sama persis. Ini masalah...|Duplikat;Outlier;Nilai hilang|0|Data yang sama tercatat dua kali disebut duplikat — salah satunya dihapus.~Ada waktu tempuh tertulis 600 menit ke sekolah yang biasanya 15 menit. Ini...|Outlier;Duplikat;Standardisasi|0|Nilai yang menyimpang jauh disebut outlier — perlu diperiksa.~Tanggal ditulis campur \"01-12-2025\" dan \"12/01/2025\". Yang harus dilakukan?|Menyeragamkan formatnya;Menghapus semua tanggal;Membiarkannya|0|Menyamakan format disebut standardisasi agar data konsisten."}
+
+## 🏷️ Kelompokkan Datanya
+
+Setelah bersih, data **dikelompokkan** (klasifikasi) berdasarkan kategori agar
+polanya mudah terlihat — misalnya jarak "dekat / menengah / jauh", atau waktu
+"pagi / siang / sore".
+
+Seret tiap data ke kelompok jaraknya yang benar:
+
+::game{type="filesort" activityId="ad-klasifikasi" title="Klasifikasi Jarak Perjalanan" files="🏠 5 km:Dekat|🏫 25 km:Menengah|🏖️ 40 km:Jauh|🛒 8 km:Dekat|🏞️ 35 km:Jauh|🏪 20 km:Menengah"}
+
+:::callout{type="info" title="Kenapa dikelompokkan?"}
+Dengan mengelompokkan data, kita bisa membuat **variabel turunan** (mis.
+kecepatan rata-rata per kelompok) yang memperkaya analisis. 🏷️
+:::
+
+## 📊 Mengolah Angka
+
+Sekarang data sudah bersih dan terkelompok. Saatnya **menghitung**: data bisa
+**dijumlahkan** dan **digambar** agar mudah dipahami.
 
 ### SUM dan AVERAGE
 

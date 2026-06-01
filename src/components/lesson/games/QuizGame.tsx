@@ -65,7 +65,17 @@ export default function QuizGame({
       const done = items.every((it, i) => next[i] === it.answer);
       if (done && !awarded) {
         setAwarded(true);
-        fb.solved({ xp: Number(xp) || 15, label: `+${xp} XP kuis` });
+        const answers: Record<string, unknown> = {};
+        items.forEach((it, i) => {
+          answers[it.q || `Soal ${i + 1}`] = it.options[next[i]] ?? "";
+        });
+        fb.solved({
+          xp: Number(xp) || 15,
+          label: `+${xp} XP kuis`,
+          game: "quiz",
+          score: 100,
+          data: answers,
+        });
       } else {
         fb.correct();
       }
@@ -121,11 +131,10 @@ export default function QuizGame({
               </div>
               {answered && it.explain && (
                 <div
-                  className={`mt-3 rounded-xl px-3 py-2 text-sm ${
-                    right
+                  className={`mt-3 rounded-xl px-3 py-2 text-sm ${right
                       ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
                       : "bg-[#fff3f3] text-[#c0392b]"
-                  }`}
+                    }`}
                 >
                   <strong>{right ? "✅ Benar! " : "💡 "}</strong>
                   {it.explain}

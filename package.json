@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "data:quickdraw": "tsx scripts/build-quickdraw.ts",
     "db:seed": "tsx --env-file=.env prisma/seed.ts",
-    "test:e2e": "python tests/e2e/run_e2e.py"
+    "test:e2e": "python tests/e2e/run_e2e.py",
+    "test:e2e:roles": "python tests/e2e/run_role_pages.py"
   },
   "prisma": {
     "seed": "tsx --env-file=.env prisma/seed.ts"

@@ -7,9 +7,24 @@ element: AI
 projectKey: pelatih-ai
 estimatedMinutes: 25
 activities:
+  - id: ai-tools
+    xp: 15
+    required: false
+  - id: ai-prompt
+    xp: 20
+    required: true
+  - id: ai-oceans
+    xp: 25
+    required: true
+  - id: ai-quickdraw
+    xp: 25
+    required: true
   - id: ai-teachable
     xp: 30
     required: true
+  - id: ai-error-detective
+    xp: 20
+    required: false
 ---
 
 ## 🤖 Misi Pelatih AI
@@ -39,6 +54,48 @@ Di level ini kamu belajar:
 AI tidak "berpikir" seperti manusia. Ia mencari **pola** dari banyak contoh,
 lalu memakai pola itu untuk menebak hal baru. Itulah yang akan kamu lakukan
 hari ini! 🧠
+:::
+
+## 💬 Tools KA untuk Berkomunikasi
+
+Setiap hari kamu mungkin sudah memakai AI tanpa sadar! Banyak **alat (tools)**
+KA yang membantu kita **berkomunikasi**:
+
+| Jenis | Contoh | Gunanya |
+| --- | --- | --- |
+| Chatbot | ChatGPT, Gemini, Copilot | Menjawab pertanyaan otomatis |
+| Asisten Virtual | Google Assistant, Siri | Cari info, atur jadwal |
+| Penerjemah | Google Translate, DeepL | Terjemah antar bahasa |
+| Pengenal Suara | Speech-to-Text | Ubah ucapan jadi teks |
+
+Pasangkan tiap tools KA dengan fungsinya:
+
+::game{type="match" activityId="ai-tools" title="Tebak Fungsi Tools KA" question="Google Translate termasuk tools KA untuk apa?" code="Google Translate" options="Menerjemahkan antar bahasa|Mengedit video|Bermain musik" answer="0"}
+
+:::callout{type="info" title="Kenapa AI membantu komunikasi?"}
+AI mempercepat respon, membantu **terjemahan** antar bahasa secara instan, dan
+meningkatkan **aksesibilitas** — misalnya teks dibacakan untuk teman tunanetra. 🌍
+:::
+
+## ⌨️ Rahasia Prompt yang Baik
+
+AI berbasis **input**: kualitas jawabannya tergantung kualitas **pertanyaan**
+(disebut *prompt*) yang kamu beri. Prompt yang baik biasanya punya bagian ini:
+
+:::reveal{title="Pola prompt yang baik"}
+- **Peran** — minta AI berperan, mis. "Jadilah guru IPA."
+- **Konteks** — beri latar, mis. "untuk murid kelas 7."
+- **Tugas** — perintah jelas, mis. "jelaskan fotosintesis."
+- **Format** — bentuk jawaban, mis. "dalam 3 poin sederhana."
+:::
+
+Lengkapi prompt berikut agar lebih jelas dan terarah:
+
+::game{type="fill" activityId="ai-prompt" title="Susun Prompt yang Baik" code="Jadilah guru IPA. ___ fotosintesis untuk murid kelas 7 dalam 3 poin sederhana." options="Jelaskan|Hapus|Nyanyikan" answer="Jelaskan" question="Pilih kata tugas yang tepat untuk melengkapi prompt:"}
+
+:::callout{type="tip" title="Makin jelas, makin bagus"}
+Bandingkan "ceritakan tentang hewan" vs "sebutkan 3 ciri kucing dalam kalimat
+pendek untuk anak SD". Prompt kedua memberi hasil yang jauh lebih tepat! 🎯
 :::
 
 ## 🧠 Bagaimana AI Belajar?
@@ -71,6 +128,21 @@ mirip-mirip semua, AI gampang salah tebak — sama seperti murid yang cuma belaj
 satu soal lalu bingung saat soal diganti. 📚
 :::
 
+## 🌊 Coba Sendiri: Latih AI Pemilah Sampah Laut
+
+Sekarang giliranmu jadi pelatih! Beri label tiap benda — **Ikan** atau
+**Sampah** — untuk **melatih** AI. Setelah itu AI akan memilah benda **baru**
+sendirian. Perhatikan: kalau labelmu konsisten, AI menebak tepat. Kalau asal,
+AI ikut salah!
+
+::game{type="oceans" activityId="ai-oceans" title="Latih AI Pemilah Sampah Laut" xp="25"}
+
+:::callout{type="concept" title="AI hanya sebaik datanya"}
+Inilah pelajaran terpenting: **AI belajar dari contoh yang KAMU berikan**. Data
+latih yang baik → AI pintar. Data latih yang salah/berat sebelah → AI ikut keliru
+(disebut **bias**). 🧭
+:::
+
 ## 👁️ Bagaimana Komputer Melihat Gambar?
 
 Saat kamu menggambar, mata kita melihat **bentuk**. Tapi komputer tidak punya
@@ -99,7 +171,30 @@ Mau bar keyakinannya makin tinggi? Beri lebih banyak contoh yang **jelas
 berbeda** antar kategori, lalu latih ulang. 📈
 :::
 
-## 🎮 Lab: Latih AI-mu Sendiri
+:::callout{type="concept" title="Inilah Supervised Learning"}
+Saat kamu memberi contoh **berlabel** ("ini kategori A, itu kategori B") lalu AI
+belajar darinya, itu disebut **supervised machine learning** (pembelajaran
+terbimbing). Makin banyak **training data** berlabel yang benar, makin tinggi
+**akurasi** tebakan AI. 🎓
+:::
+
+## � AI yang Sudah Terlatih: Tebak Gambar Hewan
+
+Kalau AI sudah dilatih dengan **jutaan** contoh, ia bisa langsung menebak tanpa
+kamu latih dulu! AI di bawah ini sudah belajar dari **Google Quick, Draw!** —
+kumpulan jutaan coretan dari orang di seluruh dunia. Gambar seekor hewan, lalu
+lihat AI menebaknya beserta tingkat keyakinannya. 🖍️
+
+::game{type="quickdraw" activityId="ai-quickdraw" title="AI Tebak Gambar Hewan" xp="25"}
+
+:::callout{type="info" title="Dari mana AI tahu?"}
+AI ini memakai **dataset** (kumpulan data) bernama *Quick, Draw!* yang berisi
+jutaan gambar berlabel. Ia membandingkan coretanmu dengan pola yang sudah
+dipelajari, lalu memilih hewan yang **paling mirip**. Inilah kekuatan **data**
+dalam KA! 📚
+:::
+
+## �🎮 Lab: Latih AI-mu Sendiri
 
 Sekarang giliranmu! Ikuti **dua tahap** berikut:
 
@@ -139,6 +234,31 @@ kadang keliru mengenali wajah atau menyaring informasi.
 Karena AI bisa salah, jangan telan mentah-mentah jawabannya. Selalu **periksa
 ulang** dengan akal sehat — sama seperti yang kamu pelajari di **Level 6: Warga
 Digital Bijak**. 🛡️
+:::
+
+## 🕵️ Lab 2: Detektif Error
+
+Tadi kamu melatih AI mengenali **gambar**. Sekarang kita pakai ide yang sama —
+**klasifikasi** — tapi untuk **kode Python**! Kamu akan melatih AI menebak:
+sebuah kode itu **AMAN** (bisa jalan) atau **AKAN ERROR**?
+
+Cara mainnya sama persis dengan Pelatih AI:
+
+1. **Latih** — AI sudah punya contoh kode berlabel *aman* dan *error*. Kamu
+   boleh menambah contohmu sendiri, lalu tekan **🚀 Latih AI**.
+2. **Tebak & Buktikan** — tulis atau pilih sebuah kode. AI menebak *aman/error*
+   beserta **petunjuk** yang ia lihat (kurung seimbang? titik dua ada?). Lalu
+   tekan **Jalankan & Buktikan** untuk menjalankan kode sungguhan dan melihat
+   apakah tebakan AI benar!
+
+::game{type="errorguard" activityId="ai-error-detective" title="Detektif Error" hint="Latih AI menebak kode aman atau error" xp="20"}
+
+:::callout{type="concept" title="AI melihat 'bentuk', bukan 'isi'"}
+Coba kode `umur = 12` lalu `print(Umur)` (huruf U besar). AI menebak **AMAN**
+karena semua tanda kurung dan titik dua rapi — padahal saat dijalankan justru
+**error** (`Umur` tidak dikenal)! AI hanya melihat **pola bentuk** kode, bukan
+memahami isinya. Persis seperti tadi: AI sepintar contoh dan petunjuk yang ia
+punya. 🧠
 :::
 
 ## 🏆 Selesai!

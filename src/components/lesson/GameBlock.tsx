@@ -11,6 +11,9 @@ import HardwareMatchGame from "@/components/lesson/games/HardwareMatchGame";
 import SpreadsheetGame from "@/components/lesson/games/SpreadsheetGame";
 import BranchingGame from "@/components/lesson/games/BranchingGame";
 import TeachableMachineGame from "@/components/lesson/games/TeachableMachineGame";
+import QuickDrawGame from "@/components/lesson/games/QuickDrawGame";
+import OceansGame from "@/components/lesson/games/OceansGame";
+import ErrorDetectiveGame from "@/components/lesson/games/ErrorDetectiveGame";
 import { ActivityProvider } from "@/components/lesson/ActivityContext";
 
 interface Props {
@@ -43,6 +46,12 @@ function renderGame(type: string | undefined, rest: Record<string, string | unde
       return <BranchingGame {...rest} />;
     case "teachable":
       return <TeachableMachineGame {...rest} />;
+    case "quickdraw":
+      return <QuickDrawGame {...rest} />;
+    case "oceans":
+      return <OceansGame {...rest} />;
+    case "errorguard":
+      return <ErrorDetectiveGame {...rest} />;
     default:
       return null;
   }

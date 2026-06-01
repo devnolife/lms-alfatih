@@ -5,6 +5,7 @@ import type { Lesson } from "@/lib/content";
 import LessonContent from "@/components/lesson/LessonContent";
 import LessonEditor from "@/components/editor/LessonEditor";
 import MascotSvg from "@/components/MascotSvg";
+import AiTutorPanel from "@/components/lesson/AiTutorPanel";
 import CompletionCard from "@/components/festivity/CompletionCard";
 import { useSound } from "@/components/festivity/SoundProvider";
 import { burstConfetti } from "@/lib/client/celebrate";
@@ -124,7 +125,7 @@ export default function LessonPlayer({ lesson }: Props) {
         <button
           onClick={() => goTo(step - 1)}
           disabled={step === 0}
-          className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-[var(--color-cloud)] bg-white px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-[var(--color-graphite)] disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-[var(--color-cloud)] bg-white px-5 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--color-graphite)] disabled:opacity-40 sm:py-2.5"
         >
           ← Kembali
         </button>
@@ -132,14 +133,14 @@ export default function LessonPlayer({ lesson }: Props) {
         {step < totalSteps - 1 ? (
           <button
             onClick={() => goTo(step + 1)}
-            className="btn-3d inline-flex items-center gap-1.5 rounded-2xl bg-[var(--color-duo-green)] px-7 py-2.5 text-sm font-bold uppercase tracking-wide text-white shadow-[0_4px_0_var(--color-duo-green-dark)]"
+            className="btn-3d inline-flex items-center gap-1.5 rounded-2xl bg-[var(--color-duo-green)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[0_4px_0_var(--color-duo-green-dark)] sm:py-2.5"
           >
             Lanjut →
           </button>
         ) : (
           <button
             onClick={finish}
-            className="btn-3d inline-flex items-center gap-1.5 rounded-2xl bg-[var(--color-grape)] px-7 py-2.5 text-sm font-bold uppercase tracking-wide text-white shadow-[0_4px_0_var(--color-grape-dark)]"
+            className="btn-3d inline-flex items-center gap-1.5 rounded-2xl bg-[var(--color-grape)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[0_4px_0_var(--color-grape-dark)] sm:py-2.5"
           >
             Selesai ✓
           </button>
@@ -147,6 +148,9 @@ export default function LessonPlayer({ lesson }: Props) {
       </div>
 
       {showComplete && <CompletionCard lessonTitle={lesson.title} href="/app" />}
+
+      {/* Floating AI tutor, grounded in this lesson. */}
+      <AiTutorPanel lessonSlug={lesson.slug} lessonTitle={lesson.title} />
     </div>
   );
 }

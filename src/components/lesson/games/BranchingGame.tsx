@@ -79,7 +79,19 @@ export default function BranchingGame({
       if (!awarded) {
         setAwarded(true);
         const gained = choice.wise ? Number(xp) || 20 : Math.floor((Number(xp) || 20) / 2);
-        fb.solved({ xp: gained, label: `+${gained} XP` });
+        const finalPath = [...path, { text: choice.text, wise: choice.wise }];
+        const wiseTotal = wiseCount + (choice.wise ? 1 : 0);
+        const data: Record<string, unknown> = {};
+        finalPath.forEach((p, i) => {
+          data[`langkah ${i + 1}`] = `${p.text}${p.wise ? " (bijak)" : ""}`;
+        });
+        fb.solved({
+          xp: gained,
+          label: `+${gained} XP`,
+          game: "branching",
+          score: Math.round((wiseTotal / finalPath.length) * 100),
+          data,
+        });
       }
     } else {
       setCurrentId(choice.next);
@@ -108,11 +120,10 @@ export default function BranchingGame({
           {path.map((p, i) => (
             <li
               key={i}
-              className={`rounded-lg px-3 py-1.5 text-sm ${
-                p.wise
+              className={`rounded-lg px-3 py-1.5 text-sm ${p.wise
                   ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
                   : "bg-[#fff3f3] text-[#c0392b]"
-              }`}
+                }`}
             >
               {p.wise ? "✅" : "⚠️"} {p.text}
             </li>
