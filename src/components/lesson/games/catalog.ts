@@ -19,8 +19,10 @@ export interface GameEntry {
   /** One-line description of what the player does. */
   blurb: string;
   emoji: string;
-  /** 1 = mudah, 2 = sedang, 3 = seru. */
-  level: 1 | 2 | 3;
+  /** Optional Lottie animation in /public/lottie that replaces the emoji icon. */
+  lottie?: string;
+  /** 1 = mudah, 2 = sedang, 3 = seru, 4 = jago. */
+  level: 1 | 2 | 3 | 4;
   /** Props forwarded to the matching game component. */
   props: Record<string, string>;
 }
@@ -51,6 +53,7 @@ export const GAME_CATALOG: GameCategory[] = [
         title: "Kura-kura ke Daun",
         blurb: "Susun blok Maju & Putar agar kura-kura sampai ke daun.",
         emoji: "🐢",
+        lottie: "/lottie/turtle.json",
         level: 1,
         props: {
           grid: "S./.G",
@@ -79,6 +82,7 @@ export const GAME_CATALOG: GameCategory[] = [
         title: "Jalan Panjang (Ulangi)",
         blurb: "Pakai blok 🔁 Ulangi agar tidak menyusun blok berkali-kali.",
         emoji: "🔁",
+        lottie: "/lottie/loader.json",
         level: 3,
         props: {
           grid: "S....G",
@@ -94,6 +98,7 @@ export const GAME_CATALOG: GameCategory[] = [
         title: "Belokan Pintar (Jika)",
         blurb: "Pakai blok ❓ Jika agar kura-kura belok sendiri saat ada tembok.",
         emoji: "❓",
+        lottie: "/lottie/question.json",
         level: 4,
         props: {
           grid: "S../.#./.#G",
@@ -244,6 +249,7 @@ export const GAME_CATALOG: GameCategory[] = [
         title: "Alur Membuat Teh",
         blurb: "Lengkapi diagram alir langkah-langkah yang hilang.",
         emoji: "🧠",
+        lottie: "/lottie/brain.json",
         level: 1,
         props: {
           steps: "Mulai|Didihkan air|___|Tuang air panas|___|Selesai",

@@ -1,4 +1,5 @@
 import PendingLink from "@/components/ui/PendingLink";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 import type { LevelGroup } from "@/lib/curriculum";
 
 function StatePill({ group }: { group: LevelGroup }) {
@@ -35,16 +36,25 @@ function LevelCard({ group }: { group: LevelGroup }) {
 
   const inner = (
     <div
-      className={`relative flex items-center gap-4 rounded-3xl border-[3px] border-[var(--color-almost-black)] p-5 shadow-[0_6px_0_var(--color-almost-black)] transition-transform ${
-        clickable ? "hover:-translate-y-0.5" : "opacity-70"
-      }`}
+      className={`relative flex items-center gap-4 rounded-3xl border-[3px] border-[var(--color-almost-black)] p-5 shadow-[0_6px_0_var(--color-almost-black)] transition-transform ${clickable ? "hover:-translate-y-0.5" : "opacity-70"
+        }`}
       style={{ backgroundColor: clickable ? meta.color : "var(--color-cloud)" }}
     >
       <div
         className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/85 text-3xl"
         aria-hidden
       >
-        {state === "locked" ? "🔒" : meta.emoji}
+        {state === "locked" ? (
+          "🔒"
+        ) : meta.lottie ? (
+          <LottiePlayer
+            src={meta.lottie}
+            className="h-14 w-14"
+            fallback={<span className="text-3xl">{meta.emoji}</span>}
+          />
+        ) : (
+          meta.emoji
+        )}
       </div>
       <div className="min-w-0 flex-1 text-white">
         <div className="flex flex-wrap items-center gap-2">

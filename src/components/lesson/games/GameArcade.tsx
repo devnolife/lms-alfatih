@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import GameBlock from "@/components/lesson/GameBlock";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 import { GAME_CATALOG, type GameEntry } from "@/components/lesson/games/catalog";
 
 const LEVEL_META: Record<number, { label: string; bg: string; fg: string }> = {
@@ -50,7 +51,15 @@ export default function GameArcade() {
                   className="duo-card group flex flex-col items-start p-5 text-left"
                 >
                   <div className="flex w-full items-center justify-between">
-                    <span className="text-3xl">{game.emoji}</span>
+                    {game.lottie ? (
+                      <LottiePlayer
+                        src={game.lottie}
+                        className="h-12 w-12"
+                        fallback={<span className="text-3xl">{game.emoji}</span>}
+                      />
+                    ) : (
+                      <span className="text-3xl">{game.emoji}</span>
+                    )}
                     <span
                       className="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide"
                       style={{ backgroundColor: lvl.bg, color: lvl.fg }}

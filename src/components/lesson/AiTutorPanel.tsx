@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAiChat } from "@/hooks/useAiChat";
 import Spinner from "@/components/ui/Spinner";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 
 interface Props {
   /** Lesson slug for grounding the tutor's answers. */
@@ -53,7 +54,15 @@ export default function AiTutorPanel({ lessonSlug, lessonTitle }: Props) {
         aria-label={open ? "Tutup tutor AI" : "Buka tutor AI"}
         className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-grape)] text-2xl text-white shadow-[0_6px_0_var(--color-grape-dark,#5b3a9e)] transition-transform hover:scale-105 active:translate-y-0.5 active:shadow-[0_3px_0_var(--color-grape-dark,#5b3a9e)]"
       >
-        {open ? "✕" : "🤖"}
+        {open ? (
+          "✕"
+        ) : (
+          <LottiePlayer
+            src="/lottie/robot.json"
+            className="h-11 w-11"
+            fallback={<span className="text-2xl">🤖</span>}
+          />
+        )}
       </button>
 
       {open && (
@@ -61,7 +70,11 @@ export default function AiTutorPanel({ lessonSlug, lessonTitle }: Props) {
           {/* Header */}
           <div className="flex items-center gap-3 bg-[var(--color-grape)] px-4 py-3 text-white">
             <span className="text-2xl" aria-hidden>
-              🤖
+              <LottiePlayer
+                src="/lottie/robot.json"
+                className="h-8 w-8"
+                fallback={<span>🤖</span>}
+              />
             </span>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-bold leading-tight">Pyo · Tutor AI</div>

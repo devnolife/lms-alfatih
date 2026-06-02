@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 
 const cols = [
   {
@@ -39,16 +40,22 @@ export default function MarketingFooter() {
             href="/"
             className="flex items-center gap-2 font-[family-name:var(--font-feather)] text-[22px] font-bold text-duo-green"
           >
-            <svg className="w-9 h-9" viewBox="0 0 100 100" aria-hidden>
-              <path
-                d="M20,50 Q35,20 50,50 T80,50"
-                stroke="#58cc02"
-                strokeWidth="14"
-                fill="none"
-                strokeLinecap="round"
-              />
-              <circle cx="30" cy="45" r="5" fill="#3c3c3c" />
-            </svg>
+            <LottiePlayer
+              src="/lottie/snake.json"
+              className="w-10 h-10"
+              fallback={
+                <svg className="w-9 h-9" viewBox="0 0 100 100" aria-hidden>
+                  <path
+                    d="M20,50 Q35,20 50,50 T80,50"
+                    stroke="#58cc02"
+                    strokeWidth="14"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="30" cy="45" r="5" fill="#3c3c3c" />
+                </svg>
+              }
+            />
             FunPython
           </Link>
           <p className="mt-4 text-[13.5px] font-bold text-graphite leading-relaxed max-w-xs">

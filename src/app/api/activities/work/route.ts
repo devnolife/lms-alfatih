@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { readSession } from "@/lib/auth";
 import { rateLimit } from "@/lib/redis";
@@ -70,7 +71,7 @@ export async function POST(req: Request) {
       activityId,
       game,
       score,
-      data,
+      data: data as Prisma.InputJsonValue,
     },
     select: { id: true },
   });

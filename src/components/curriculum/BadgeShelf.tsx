@@ -1,4 +1,5 @@
 import { LEVELS } from "@/lib/curriculum";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 import type { EarnedBadge } from "@/lib/badges";
 
 /**
@@ -41,14 +42,21 @@ export default function BadgeShelf({ earned }: { earned: EarnedBadge[] }) {
           <div
             key={t.code}
             title={t.name}
-            className={`flex flex-col items-center gap-1 rounded-2xl border-2 p-3 text-center ${
-              t.got
-                ? "border-[var(--color-sunshine-dark)] bg-[#fff7e0]"
-                : "border-[var(--color-cloud)] bg-[var(--color-cloud)] opacity-60"
-            }`}
+            className={`flex flex-col items-center gap-1 rounded-2xl border-2 p-3 text-center ${t.got
+              ? "border-[var(--color-sunshine-dark)] bg-[#fff7e0]"
+              : "border-[var(--color-cloud)] bg-[var(--color-cloud)] opacity-60"
+              }`}
           >
             <span className={`text-3xl ${t.got ? "" : "grayscale"}`}>
-              {t.got ? t.iconKey : "🔒"}
+              {t.got ? (
+                <LottiePlayer
+                  src="/lottie/medal.json"
+                  className="mx-auto h-12 w-12"
+                  fallback={<span className="text-3xl">{t.iconKey}</span>}
+                />
+              ) : (
+                "🔒"
+              )}
             </span>
             <span className="text-[11px] font-bold leading-tight text-[var(--color-charcoal)]">
               {t.name}

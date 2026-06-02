@@ -8,6 +8,8 @@ export interface LevelMeta {
   /** Human label for the element. */
   elementLabel: string;
   emoji: string;
+  /** Optional Lottie animation in /public/lottie that replaces the emoji icon. */
+  lottie?: string;
   /** CSS color var used for accents. */
   color: string;
   blurb: string;
@@ -22,6 +24,7 @@ export const LEVELS: LevelMeta[] = [
     element: "BK",
     elementLabel: "Berpikir Komputasional",
     emoji: "🧠",
+    lottie: "/lottie/brain.json",
     color: "var(--color-grape)",
     blurb: "Latih logika, pecahkan teka-teki, dan lengkapi diagram alir.",
     badgeCode: "level-1-bk",
@@ -32,6 +35,7 @@ export const LEVELS: LevelMeta[] = [
     element: "TIK",
     elementLabel: "Teknologi Informasi & Komunikasi",
     emoji: "🧭",
+    lottie: "/lottie/compass.json",
     color: "var(--color-sky-blue)",
     blurb: "Kuasai file & folder, lalu selesaikan Misi Penyelamatan Berkas.",
     badgeCode: "level-2-tik",
@@ -42,6 +46,7 @@ export const LEVELS: LevelMeta[] = [
     element: "SK_JKI",
     elementLabel: "Sistem Komputer & Jaringan",
     emoji: "🛠️",
+    lottie: "/lottie/toolbox.json",
     color: "var(--color-sunshine-dark)",
     blurb: "Kenali perangkat keras, lunak, dan cara internet bekerja.",
     badgeCode: "level-3-skjki",
@@ -52,6 +57,7 @@ export const LEVELS: LevelMeta[] = [
     element: "AD",
     elementLabel: "Analisis Data",
     emoji: "🔎",
+    lottie: "/lottie/search.json",
     color: "var(--color-bubblegum)",
     blurb: "Olah data kantin sekolah dengan spreadsheet dan grafik.",
     badgeCode: "level-4-ad",
@@ -62,6 +68,7 @@ export const LEVELS: LevelMeta[] = [
     element: "AP",
     elementLabel: "Algoritma & Pemrograman",
     emoji: "🎮",
+    lottie: "/lottie/console.json",
     color: "var(--color-duo-green)",
     blurb: "Bikin program sendiri dengan Python dan blok visual Scratch.",
     badgeCode: "level-5-ap",
@@ -72,6 +79,7 @@ export const LEVELS: LevelMeta[] = [
     element: "DSI",
     elementLabel: "Dampak Sosial Informatika",
     emoji: "🛡️",
+    lottie: "/lottie/shield.json",
     color: "var(--color-sky-blue-dark)",
     blurb: "Pilih keputusan bijak lewat skenario dunia digital bercabang.",
     badgeCode: "level-6-dsi",
@@ -82,6 +90,7 @@ export const LEVELS: LevelMeta[] = [
     element: "AI",
     elementLabel: "Kecerdasan Artifisial",
     emoji: "🤖",
+    lottie: "/lottie/robot.json",
     color: "var(--color-grape)",
     blurb: "Latih AI-mu sendiri: beri contoh gambar, lalu lihat AI menebak!",
     badgeCode: "level-7-ai",
@@ -149,7 +158,6 @@ export async function getCurriculum(userId?: string): Promise<LevelGroup[]> {
   }
 
   const groups: LevelGroup[] = [];
-  let priorIncomplete = false; // any earlier level with lessons not fully done
 
   for (const meta of LEVELS) {
     const levelLessons = (byLevel.get(meta.level) ?? []).sort(
@@ -169,19 +177,15 @@ export async function getCurriculum(userId?: string): Promise<LevelGroup[]> {
     const completed = cards.filter((c) => c.status === "COMPLETED").length;
     const xp = cards.reduce((s, c) => s + c.xp, 0);
 
+    // All levels are accessible to students; sequential locking is disabled.
     let state: LevelState;
     if (total === 0) {
       state = "empty";
     } else if (completed === total) {
       state = "done";
-    } else if (priorIncomplete) {
-      state = "locked";
     } else {
       state = "open";
     }
-
-    // Only levels that actually have lessons gate the next ones.
-    if (total > 0 && completed < total) priorIncomplete = true;
 
     groups.push({ meta, lessons: cards, total, completed, xp, state });
   }

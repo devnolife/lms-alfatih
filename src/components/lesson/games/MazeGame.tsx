@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useGameFeedback } from "@/hooks/useGameFeedback";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 
 type Dir = 0 | 1 | 2 | 3; // 0 up, 1 right, 2 down, 3 left
 type Block = "forward" | "left" | "right" | "ifWall";
@@ -306,7 +307,13 @@ export default function MazeGame({
                         : undefined,
                     }}
                   >
-                    {isGoal && <span className="drop-shadow-sm">🥬</span>}
+                    {isGoal && (
+                      <LottiePlayer
+                        src="/lottie/leaf-goal.json"
+                        className="h-7 w-7 drop-shadow-sm"
+                        fallback={<span className="drop-shadow-sm">🥬</span>}
+                      />
+                    )}
                     {isStart && !isGoal && (
                       <span className="absolute bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-[var(--color-duo-green)]/20 px-1.5 py-px text-[9px] font-bold uppercase tracking-wide text-[var(--color-duo-green-dark)]">
                         Mulai

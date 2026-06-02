@@ -3,12 +3,14 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
     icon: "🚫💾",
+    lottie: "/lottie/code.json",
     iconBg: "bg-duo-green-light border-duo-green",
     title: "Zero Setup",
     desc: "Tanpa install Python, tanpa konfigurasi IDE. Editor & runtime jalan langsung di browser pakai WebAssembly.",
@@ -16,6 +18,7 @@ const features = [
   },
   {
     icon: "🛠️",
+    lottie: "/lottie/toolbox.json",
     iconBg: "bg-sky-blue-light border-sky-blue",
     title: "Project-Based",
     desc: "Modul 1-hari yang fokus: dari Hello-World sampai Turtle Art jadi dalam satu sesi. Belajar dari ngerjain, bukan ngapal.",
@@ -23,6 +26,7 @@ const features = [
   },
   {
     icon: "👩‍🏫",
+    lottie: "/lottie/robot.json",
     iconBg: "bg-[#f3e8ff] border-grape",
     title: "Mode Guru",
     desc: "Monitor progres seluruh kelas secara real-time. Tombol Push-to-Screen langsung pancarkan kode siswa ke proyektor.",
@@ -30,6 +34,7 @@ const features = [
   },
   {
     icon: "🏅",
+    lottie: "/lottie/medal.json",
     iconBg: "bg-[#fff8d6] border-sunshine",
     title: "Gamifikasi Nyata",
     desc: "XP, badge, dan sertifikat digital “FunPython Certified” yang bisa siswa pamerkan. Setiap tantangan punya hadiah.",
@@ -79,7 +84,11 @@ export default function FeaturesGrid() {
               <div
                 className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl border-2 text-2xl mb-5 group-hover:rotate-6 group-hover:scale-110 transition-transform ${f.iconBg}`}
               >
-                {f.icon}
+                <LottiePlayer
+                  src={f.lottie}
+                  className="h-12 w-12"
+                  fallback={<span>{f.icon}</span>}
+                />
               </div>
               <h3 className="font-[family-name:var(--font-feather)] text-[22px] mb-2 leading-tight">
                 {f.title}

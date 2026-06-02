@@ -1,6 +1,7 @@
 "use client";
 
 import MascotSvg from "@/components/MascotSvg";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 import { useReward } from "@/components/festivity/RewardProvider";
 
 /**
@@ -17,7 +18,12 @@ export default function CompletionCard({
   const { sessionXp } = useReward();
   return (
     <div className="fixed inset-0 z-[65] flex items-center justify-center bg-black/40 px-4">
-      <div className="fx-zoom-in w-full max-w-md rounded-3xl border-[3px] border-[var(--color-almost-black)] bg-white p-7 text-center shadow-[0_10px_0_var(--color-almost-black)]">
+      <LottiePlayer
+        src="/lottie/confetti.json"
+        loop={false}
+        className="pointer-events-none absolute inset-0 h-full w-full"
+      />
+      <div className="fx-zoom-in relative w-full max-w-md rounded-3xl border-[3px] border-[var(--color-almost-black)] bg-white p-7 text-center shadow-[0_10px_0_var(--color-almost-black)]">
         <MascotSvg className="mx-auto h-28 w-28" mood="cheer" />
         <h2
           className="mt-2 text-3xl text-[var(--color-duo-green-dark)]"

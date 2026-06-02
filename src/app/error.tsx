@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import LottiePlayer from "@/components/ui/LottiePlayer";
 
 /**
  * Friendly root error boundary. Catches errors thrown while rendering pages and
@@ -21,7 +22,13 @@ export default function GlobalRouteError({
   return (
     <div className="dotted-bg flex min-h-screen flex-col items-center justify-center px-6 text-center">
       <div className="w-full max-w-md rounded-3xl border-2 border-[var(--color-cloud)] bg-white p-8 shadow-[0_6px_0_var(--color-cloud)]">
-        <div className="mb-3 text-6xl">🐍</div>
+        <div className="mb-3 text-6xl">
+          <LottiePlayer
+            src="/lottie/error.json"
+            className="mx-auto h-32 w-32"
+            fallback={<span>🐍</span>}
+          />
+        </div>
         <h1
           className="mb-2 text-2xl text-[var(--color-charcoal)]"
           style={{ fontFamily: "var(--font-feather)" }}
