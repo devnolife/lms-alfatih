@@ -13,6 +13,28 @@ activities:
   - id: orient-elemen
     xp: 20
     required: true
+teacherNotes: |
+  Buka dengan pertanyaan ringan: "Siapa hari ini sudah pakai aplikasi atau game?"
+  Tegaskan dua kata kunci. KODING = memberi perintah ke komputer langkah demi
+  langkah (seperti menulis resep masakan). AI/KA = komputer yang belajar dari
+  banyak contoh (seperti anak yang hafal wajah kucing setelah lihat banyak kucing).
+  Tunjukkan peta 7 elemen sebagai "level petualangan" — siswa tidak perlu hafal,
+  cukup paham arah perjalanannya. Tutup dengan: tiap level terbuka bertahap.
+answerKey:
+  - ref: "Tebak Istilah — Soal 1"
+    answer: "Koding"
+    note: "Memberi perintah langkah demi langkah kepada komputer."
+  - ref: "Tebak Istilah — Soal 2"
+    answer: "Kecerdasan Artifisial"
+    note: "Mesin belajar dari contoh & mengenali pola."
+  - ref: "Tebak Istilah — Soal 3"
+    answer: "KA belajar dari data & contoh"
+  - ref: "Cocokkan Misi — Soal 1"
+    answer: "Analisis Data"
+  - ref: "Cocokkan Misi — Soal 2"
+    answer: "Kecerdasan Artifisial"
+  - ref: "Cocokkan Misi — Soal 3"
+    answer: "Berpikir Komputasional"
 ---
 
 ## 🗺️ Selamat Datang, Petualang!

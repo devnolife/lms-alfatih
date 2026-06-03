@@ -16,6 +16,27 @@ activities:
   - id: tik-diseminasi
     xp: 15
     required: false
+teacherNotes: |
+  Pesan utama: punya informasi bagus belum cukup — harus dikemas menarik dan
+  disebarkan dengan etika. Ajak siswa selalu mulai dari TUJUAN ("mau apa?") dan
+  AUDIENS ("untuk siapa?"). Untuk prinsip desain, tunjukkan contoh poster dan minta
+  siswa menebak prinsipnya (penekanan, kontras, kesatuan). Tekankan etika
+  diseminasi: cek kebenaran (anti-hoaks) dan minta izin / sebut sumber.
+answerKey:
+  - ref: "Kenali Unsur Komunikasi"
+    answer: "Komunikan (penerima pesan)"
+  - ref: "Detektif Desain — Soal 1"
+    answer: "Penekanan (Dominance)"
+  - ref: "Detektif Desain — Soal 2"
+    answer: "Kontras"
+  - ref: "Detektif Desain — Soal 3"
+    answer: "Kesatuan (Unity)"
+  - ref: "Etika Menyebarkan Konten — Soal 1"
+    answer: "Apakah isinya benar & tidak menyesatkan"
+  - ref: "Etika Menyebarkan Konten — Soal 2"
+    answer: "Minta izin / mencantumkan sumber"
+  - ref: "Etika Menyebarkan Konten — Soal 3"
+    answer: "Grup kelas / media yang mereka pakai"
 ---
 
 ## 🎨 Misi Kreator Konten Digital

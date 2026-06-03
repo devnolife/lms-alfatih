@@ -19,6 +19,26 @@ activities:
   - id: ad-spreadsheet
     xp: 25
     required: true
+teacherNotes: |
+  Bawa konteks nyata: "makanan apa yang paling laris di kantin?" Empat langkah:
+  pecah masalah (dekomposisi) → bersihkan data (duplikat/outlier/data hilang/format
+  beda) → kelompokkan → hitung. Jelaskan SUM = jumlahkan semua angka; AVERAGE =
+  total dibagi banyaknya data. Trik cek: rata-rata selalu di antara nilai terkecil
+  dan terbesar. Grafik batang: makin tinggi batang, makin besar angkanya.
+answerKey:
+  - ref: "Dekomposisi Masalah Kantin"
+    answer: "Kotak rumpang: 'Data apa yang dibutuhkan?' lalu 'Hitung total tiap makanan'"
+  - ref: "Detektif Pembersih Data — Soal 1"
+    answer: "Duplikat"
+  - ref: "Detektif Pembersih Data — Soal 2"
+    answer: "Outlier"
+  - ref: "Detektif Pembersih Data — Soal 3"
+    answer: "Menyeragamkan formatnya (standardisasi)"
+  - ref: "Klasifikasi Jarak Perjalanan"
+    answer: "Dekat: 5 km & 8 km · Menengah: 25 km & 20 km · Jauh: 40 km & 35 km"
+  - ref: "Data Kantin Sekolah (SUM & AVERAGE)"
+    answer: "Total = 150 porsi; Rata-rata = 150 ÷ 5 = 30 porsi"
+    note: "32 (Bakso) + 25 (Mie Ayam) + 40 (Es Teh) + 18 (Gorengan) + 35 (Nasi Goreng) = 150."
 ---
 
 ## 🔎 Misi Detektif Data

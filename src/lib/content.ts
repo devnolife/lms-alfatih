@@ -30,6 +30,16 @@ export interface MissionSpec {
   required: boolean;
 }
 
+/** A single answer-key entry for the teacher handbook. */
+export interface AnswerKeyItem {
+  /** What this answer refers to, e.g. "Kuis 1" or challenge id. */
+  ref: string;
+  /** The correct answer or canonical solution. */
+  answer: string;
+  /** Optional teaching note explaining the answer. */
+  note?: string;
+}
+
 /** Kurikulum Merdeka Informatika Fase D element codes. */
 export type ElementCode = "BK" | "TIK" | "SK_JKI" | "AD" | "AP" | "DSI" | "AI";
 
@@ -50,6 +60,10 @@ export interface LessonMeta {
   activities: ActivitySpec[];
   /** File-upload missions that count toward completion. */
   missions: MissionSpec[];
+  /** Facilitator notes shown only in the teacher handbook (Markdown allowed). */
+  teacherNotes?: string;
+  /** Answer key entries shown only in the teacher handbook. */
+  answerKey: AnswerKeyItem[];
 }
 
 export interface Lesson extends LessonMeta {
@@ -75,8 +89,23 @@ async function readLessonFile(file: string): Promise<Lesson> {
     challenges: (data.challenges ?? []) as ChallengeSpec[],
     activities: normalizeActivities(data.activities),
     missions: normalizeMissions(data.missions),
+    teacherNotes:
+      typeof data.teacherNotes === "string" ? data.teacherNotes : undefined,
+    answerKey: normalizeAnswerKey(data.answerKey),
     body: parsed.content,
   };
+}
+
+function normalizeAnswerKey(raw: unknown): AnswerKeyItem[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((a): a is Record<string, unknown> => Boolean(a) && typeof a === "object")
+    .map((a) => ({
+      ref: String(a.ref ?? ""),
+      answer: String(a.answer ?? ""),
+      note: typeof a.note === "string" ? a.note : undefined,
+    }))
+    .filter((a) => a.ref.length > 0 && a.answer.length > 0);
 }
 
 function normalizeActivities(raw: unknown): ActivitySpec[] {

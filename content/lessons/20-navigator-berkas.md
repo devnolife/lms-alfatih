@@ -13,6 +13,18 @@ activities:
 missions:
   - key: berkas-rescue
     required: true
+teacherNotes: |
+  Tujuan: siswa rapi mengelola file & folder, lalu membuat ZIP sungguhan. Analogi
+  folder = sekat lemari supaya barang mudah dicari; ekstensi (.jpg, .docx, .mp3)
+  = "nama belakang" yang menunjukkan jenis berkas. Bagian tersulit adalah MEMBUAT
+  ZIP — dampingi langkah klik kanan → Compress/Kirim ke folder zip. Pastikan tiap
+  siswa berhasil mengunggah ZIP (misi harus LULUS) sebelum lanjut ke Level 3.
+answerKey:
+  - ref: "Rapikan Berkas"
+    answer: "foto-kucing.jpg → Gambar · tugas-ipa.docx → Dokumen · lagu-indah.mp3 → Musik · poster.png → Gambar · jadwal.pdf → Dokumen"
+  - ref: "Misi Penyelamatan Berkas (ZIP)"
+    answer: "Unduh berkas → buat folder Gambar/Dokumen/Musik → pindahkan tiap file → kompres jadi .zip → unggah."
+    note: "Diperiksa otomatis: ZIP harus berisi 3 folder dengan file yang benar."
 ---
 
 ## 🧭 Misi Navigator Digital

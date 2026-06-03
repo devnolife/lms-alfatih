@@ -13,6 +13,23 @@ activities:
   - id: bk-flowchart
     xp: 30
     required: true
+teacherNotes: |
+  Inti level ini: berpikir runtut sebelum menyentuh kode. Pakai contoh nyata
+  (resep mie instan, urutan berangkat sekolah) untuk menjelaskan ALGORITMA =
+  urutan langkah yang jelas dan berurutan. Jelaskan DEKOMPOSISI sebagai "memecah
+  tugas besar jadi langkah-langkah kecil". Untuk diagram alir, tonjolkan bentuk
+  Keputusan (belah ketupat) yang memecah alur jadi cabang Ya/Tidak. Minta siswa
+  menyebut keputusan sehari-hari, mis. "kalau hujan → bawa payung".
+answerKey:
+  - ref: "Teka-teki Ksatria — Soal 1"
+    answer: "Algoritma"
+  - ref: "Teka-teki Ksatria — Soal 2"
+    answer: "Dekomposisi"
+  - ref: "Teka-teki Ksatria — Soal 3"
+    answer: "Bangun, mandi, sarapan, berangkat"
+  - ref: "Diagram Alir Kelulusan"
+    answer: "Kotak rumpang: 'Apakah nilai >= 75?' lalu 'Tampilkan hasil'"
+    note: "Urutan: Mulai → Baca nilai → Apakah nilai>=75? → Tampilkan hasil → Selesai."
 ---
 
 ## 🎯 Misi Ksatria Logika

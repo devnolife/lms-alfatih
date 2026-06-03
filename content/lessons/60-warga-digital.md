@@ -19,6 +19,28 @@ activities:
   - id: dsi-branching
     xp: 25
     required: true
+teacherNotes: |
+  Level etika digital. Jelaskan hierarki AI → ML → Deep Learning → GenAI dengan
+  bahasa sederhana (GenAI = AI yang MEMBUAT konten baru: teks/gambar/suara).
+  Tekankan "sampah masuk, sampah keluar": AI sepintar datanya. Bahas DEEPFAKE
+  (konten palsu yang tampak nyata) dan cara mengeceknya. Ajarkan THINK (True,
+  Helpful, Inspiring, Necessary, Kind) sebelum posting, dan lindungi data pribadi.
+  Bawakan sebagai DISKUSI kelas, bukan sekadar memilih jawaban benar.
+answerKey:
+  - ref: "Penjaga Kualitas Data — Soal 1"
+    answer: "AI bisa salah karena datanya kurang beragam"
+  - ref: "Penjaga Kualitas Data — Soal 2"
+    answer: "Karena AI belajar dari data — data buruk, hasil buruk"
+  - ref: "Penjaga Kualitas Data — Soal 3"
+    answer: "Menjaga privasi & izin pemilik data"
+  - ref: "Detektif Deepfake — Soal 1"
+    answer: "Cek dari sumber resmi sebelum percaya/menyebar"
+  - ref: "Detektif Deepfake — Soal 2"
+    answer: "Konten palsu (video/foto/suara) buatan AI yang tampak nyata"
+  - ref: "Detektif Deepfake — Soal 3"
+    answer: "Menolak — itu melanggar etika dan bisa menyakiti"
+  - ref: "Skenario Bercabang Keputusan Digital"
+    answer: "Pilih keputusan paling bijak di tiap cabang: verifikasi sebelum percaya, jaga data pribadi, bersikap baik, dan pikirkan akibat sebelum mengeklik."
 ---
 
 ## 🛡️ Misi Warga Digital Bijak

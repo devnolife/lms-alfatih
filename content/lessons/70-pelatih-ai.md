@@ -25,6 +25,21 @@ activities:
   - id: ai-error-detective
     xp: 20
     required: false
+teacherNotes: |
+  Inti: AI belajar dari CONTOH, bukan aturan kaku. Bedakan program biasa (kita
+  tulis aturan persis) vs AI (kita beri contoh, AI cari pola sendiri). Tunjukkan
+  alur 4 langkah: kumpulkan contoh → latih → tebak → perbaiki. Untuk prompt,
+  ajarkan pola Peran-Konteks-Tugas-Format. Saat main Quick Draw / Teachable
+  Machine, tonjolkan momen AI SALAH = "AI melihat bentuk/pola, bukan isi" — beri
+  lebih banyak & beragam contoh supaya tebakannya makin pintar.
+answerKey:
+  - ref: "Tebak Fungsi Tools KA"
+    answer: "Menerjemahkan antar bahasa"
+  - ref: "Susun Prompt yang Baik"
+    answer: "Jelaskan"
+    note: "Prompt jadi: 'Jadilah guru IPA. Jelaskan fotosintesis untuk murid kelas 7 dalam 3 poin sederhana.'"
+  - ref: "Quick Draw / Oceans / Teachable Machine"
+    answer: "Tidak ada satu jawaban benar — siswa melatih AI dengan contoh lalu menguji. Tekankan: makin banyak & beragam contoh, makin akurat tebakan AI."
 ---
 
 ## 🤖 Misi Pelatih AI

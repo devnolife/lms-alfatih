@@ -26,6 +26,19 @@ challenges:
     tests:
       - name: "Print kalimat perkenalan"
         expectedStdout: "Aku Budi\n"
+teacherNotes: |
+  Pertama kali menulis Python. Tekankan: Python jalan baris per baris dari atas
+  ke bawah. print() = cara komputer "berbicara", teks harus dibungkus tanda kutip.
+  Variabel = kotak berlabel untuk menyimpan satu nilai, isinya bisa diganti.
+  Dampingi siswa mengetik persis termasuk tanda kutip dan kurung — kesalahan
+  paling umum: lupa kutip atau lupa kurung pada print.
+answerKey:
+  - ref: "Tantangan 1 — Halo, dunia!"
+    answer: 'print("Halo, dunia!")'
+    note: "Output: Halo, dunia!"
+  - ref: "Tantangan 2 — Perkenalan"
+    answer: 'print(f"Aku {nama}")   (atau: print("Aku", nama))'
+    note: "Output: Aku Budi"
 ---
 
 ## 🎯 Tujuan

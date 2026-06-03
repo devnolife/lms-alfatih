@@ -40,6 +40,20 @@ challenges:
     tests:
       - name: "kotak(4) menghasilkan 4x4"
         expectedStdout: "####\n####\n####\n####\n"
+teacherNotes: |
+  Project penutup: gabungan FUNGSI (def) + LOOP untuk menggambar pola. Jelaskan
+  fungsi = "mesin mini" yang bisa dipakai berulang tanpa menulis ulang kode. Mulai
+  dari garis(n) (loop sederhana), naik ke segitiga (jumlah bintang bertambah tiap
+  baris), lalu kotak. Beri pendampingan ekstra — ini bagian tersulit di hari itu.
+  Rayakan: menyelesaikan project ini membuka sertifikat FunPython.
+answerKey:
+  - ref: "Tantangan 1 — garis(n)"
+    answer: 'def garis(n): print("*" * n)   → garis(5) mencetak *****'
+  - ref: "Tantangan 2 — Segitiga"
+    answer: 'for i in range(1, 6): print("*" * i)'
+    note: "Output: *, **, ***, ****, ***** (tiap baris)"
+  - ref: "Tantangan 3 — kotak(sisi)"
+    answer: 'def kotak(sisi): for _ in range(sisi): print("#" * sisi)   → kotak(4) = kotak 4×4 dari #'
 ---
 
 ## 🎯 Tujuan Akhir 1-Day Bootcamp

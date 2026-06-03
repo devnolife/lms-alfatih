@@ -13,6 +13,21 @@ activities:
   - id: sk-quiz
     xp: 20
     required: true
+teacherNotes: |
+  Bedakan HARDWARE (bisa disentuh: keyboard, layar, mouse) vs SOFTWARE (program:
+  game, browser, Python). Analogi: hardware = tubuh, software = pikiran yang
+  menyuruh tubuh bergerak. Untuk bagian dalam komputer pakai analogi: CPU = otak,
+  RAM = meja kerja, penyimpanan = lemari. Saat menjelaskan internet, gambarkan
+  alur "komputermu minta → server membalas → halaman tampil" dalam hitungan detik.
+answerKey:
+  - ref: "Kenali Perangkat (pasangan)"
+    answer: "Keyboard → Mengetik teks · Monitor → Menampilkan gambar · Mouse → Menggerakkan kursor · CPU → Memproses perintah · Penyimpanan → Menyimpan file"
+  - ref: "Kuis Teknisi — Soal 1"
+    answer: "Hardware"
+  - ref: "Kuis Teknisi — Soal 2"
+    answer: "CPU"
+  - ref: "Kuis Teknisi — Soal 3"
+    answer: "Server"
 ---
 
 ## 🛠️ Misi Teknisi Siber

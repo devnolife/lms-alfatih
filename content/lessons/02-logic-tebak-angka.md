@@ -37,6 +37,22 @@ challenges:
     tests:
       - name: "Game tebak angka"
         expectedStdout: "Salah\nBenar!\nSalah\n"
+teacherNotes: |
+  Tiga konsep: if/else (percabangan), for + range (perulangan), dan loop list.
+  Analogi if/else = persimpangan jalan (kalau ... maka ..., kalau tidak ...).
+  range(1, 6) menghasilkan 1..5 — batas akhir tidak ikut. Untuk game tebak angka,
+  jelaskan loop memeriksa tiap tebakan satu per satu. Ingatkan INDENTASI (spasi
+  menjorok) wajib di Python — error paling sering muncul di sini.
+answerKey:
+  - ref: "Tantangan 1 — Besar/Kecil"
+    answer: 'if angka > 5: print("Besar")  else: print("Kecil")'
+    note: "angka = 7 → Besar"
+  - ref: "Tantangan 2 — Cetak 1..5"
+    answer: 'for i in range(1, 6): print(i)'
+    note: "Output: 1 2 3 4 5 (tiap baris)"
+  - ref: "Tantangan 3 — Game Tebak Angka"
+    answer: 'for t in tebakan: print("Benar!" if t == jawaban else "Salah")'
+    note: "Output: Salah, Benar!, Salah"
 ---
 
 ## 🎯 Tujuan
