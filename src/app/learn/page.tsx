@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCurriculum } from "@/lib/curriculum";
+import { hasCompletedPreTest } from "@/lib/test-status";
 import LevelMap from "@/components/curriculum/LevelMap";
 import BackButton from "@/components/ui/BackButton";
 
@@ -10,6 +12,12 @@ export default async function LearnIndex({
 }) {
   const { locked } = await searchParams;
   const user = await getCurrentUser();
+
+  // Students must complete pre-test first
+  if (user && !(await hasCompletedPreTest(user.id, user.role))) {
+    redirect("/test/pre");
+  }
+
   const groups = await getCurriculum(user?.id);
 
   return (

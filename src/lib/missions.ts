@@ -1,16 +1,26 @@
 /**
- * Server-side registry of "file rescue" missions (Level 2 — Navigator Digital).
+ * Server-side registry of file missions (Level 2 — Navigator Digital).
  *
- * The expected folder layout is defined here and NEVER trusted from the client.
- * A submission ZIP passes when every required file is found inside its correct
- * top-level folder.
+ * The mission asks students to RECOGNISE file types by uploading one real file
+ * per category (image, document, music). The expected categories and their
+ * allowed extensions are defined here and NEVER trusted from the client.
+ *
+ * No ZIP / no folders — to keep it friendly for SMP beginners who have not
+ * learned to compress folders. We only read file NAMES (extensions); files are
+ * never written to disk, so there is no path-traversal surface.
  */
 
-export interface MissionFile {
-  /** File name the student must place (case-insensitive match on basename). */
-  name: string;
-  /** Correct top-level folder it belongs in. */
-  folder: string;
+export interface MissionCategory {
+  /** Stable id used in feedback. */
+  id: string;
+  /** Friendly label shown to students, e.g. "Gambar". */
+  label: string;
+  /** Emoji shown next to the label. */
+  emoji: string;
+  /** Allowed file extensions (without the dot, lowercase). */
+  extensions: string[];
+  /** Short hint of example files. */
+  examples: string;
 }
 
 export interface FileMission {
@@ -20,23 +30,37 @@ export interface FileMission {
   xp: number;
   /** Lesson slug this mission belongs to (drives lesson completion). */
   lessonSlug: string;
-  folders: string[];
-  files: MissionFile[];
+  categories: MissionCategory[];
 }
 
 export const FILE_MISSIONS: Record<string, FileMission> = {
   "berkas-rescue": {
     key: "berkas-rescue",
-    title: "Misi Penyelamatan Berkas",
+    title: "Misi Pengenal Berkas",
     xp: 40,
     lessonSlug: "navigator-berkas",
-    folders: ["Gambar", "Dokumen", "Musik"],
-    files: [
-      { name: "foto-liburan.jpg", folder: "Gambar" },
-      { name: "screenshot.png", folder: "Gambar" },
-      { name: "tugas-ipa.docx", folder: "Dokumen" },
-      { name: "jadwal.pdf", folder: "Dokumen" },
-      { name: "lagu-favorit.mp3", folder: "Musik" },
+    categories: [
+      {
+        id: "gambar",
+        label: "Gambar",
+        emoji: "🖼️",
+        extensions: ["jpg", "jpeg", "png", "gif", "webp", "bmp", "heic"],
+        examples: "foto .jpg / .png",
+      },
+      {
+        id: "dokumen",
+        label: "Dokumen",
+        emoji: "📄",
+        extensions: ["pdf", "doc", "docx", "txt", "ppt", "pptx", "xls", "xlsx", "odt"],
+        examples: "tugas .pdf / .docx",
+      },
+      {
+        id: "musik",
+        label: "Musik / Suara",
+        emoji: "🎵",
+        extensions: ["mp3", "wav", "m4a", "ogg", "aac", "flac"],
+        examples: "lagu .mp3 / .wav",
+      },
     ],
   },
 };
@@ -45,67 +69,56 @@ export function getMission(key: string): FileMission | undefined {
   return FILE_MISSIONS[key];
 }
 
-export interface FileFeedback {
-  name: string;
-  expectedFolder: string;
-  foundFolder: string | null;
-  status: "correct" | "wrong-folder" | "missing";
+export interface CategoryFeedback {
+  id: string;
+  label: string;
+  emoji: string;
+  /** Name of the uploaded file that matched this category, if any. */
+  matchedFile: string | null;
+  status: "correct" | "missing";
 }
 
 export interface MissionResult {
   passed: boolean;
   correct: number;
   total: number;
-  details: FileFeedback[];
+  details: CategoryFeedback[];
+}
+
+/** Lowercased extension (without dot) of a filename, or "" if none. */
+function extOf(name: string): string {
+  const i = name.lastIndexOf(".");
+  if (i < 0) return "";
+  return name.slice(i + 1).toLowerCase();
 }
 
 /**
- * Grades a flat list of zip entry paths (e.g. "Gambar/foto-liburan.jpg")
- * against a mission spec. Pure function — no IO — so it is easy to unit test.
+ * Grades a list of uploaded file names against a mission's categories. A
+ * category is satisfied when at least one uploaded file has a matching
+ * extension. Pure function — no IO — so it is easy to unit test.
  */
 export function gradeMission(
   mission: FileMission,
-  entryPaths: string[]
+  fileNames: string[]
 ): MissionResult {
-  // Map basename(lowercased) -> the file's IMMEDIATE parent folder.
-  // We use the immediate parent (not the top segment) so that a wrapper folder
-  // added by the OS when zipping — e.g. "berkas-rescue/Gambar/foto.jpg" — still
-  // grades correctly. OS metadata entries (__MACOSX, .DS_Store, ._*, Thumbs.db)
-  // are ignored so a re-zipped/rearranged archive does not fail validation.
-  const placement = new Map<string, string>();
-  for (const raw of entryPaths) {
-    const norm = raw.replace(/\\/g, "/").replace(/^\/+/, "");
-    if (norm.endsWith("/")) continue; // directory entry
-    const segments = norm.split("/").filter(Boolean);
-    if (segments.length < 2) continue; // file at root, no folder
+  const exts = fileNames.map(extOf);
 
-    // Skip OS metadata that compressors add automatically.
-    if (segments.some((s) => s === "__MACOSX")) continue;
-    const base = segments[segments.length - 1].toLowerCase();
-    if (base === ".ds_store" || base === "thumbs.db" || base.startsWith("._")) {
-      continue;
-    }
-
-    // The folder that actually contains the file (immediate parent), so any
-    // number of wrapper folders above it is tolerated.
-    const parentFolder = segments[segments.length - 2];
-    if (!placement.has(base)) placement.set(base, parentFolder);
-  }
-
-  const details: FileFeedback[] = mission.files.map((f) => {
-    const found = placement.get(f.name.toLowerCase()) ?? null;
-    let status: FileFeedback["status"];
-    if (found === null) status = "missing";
-    else if (found.toLowerCase() === f.folder.toLowerCase()) status = "correct";
-    else status = "wrong-folder";
-    return { name: f.name, expectedFolder: f.folder, foundFolder: found, status };
+  const details: CategoryFeedback[] = mission.categories.map((cat) => {
+    const idx = exts.findIndex((e) => cat.extensions.includes(e));
+    return {
+      id: cat.id,
+      label: cat.label,
+      emoji: cat.emoji,
+      matchedFile: idx >= 0 ? fileNames[idx] : null,
+      status: idx >= 0 ? "correct" : "missing",
+    };
   });
 
   const correct = details.filter((d) => d.status === "correct").length;
   return {
-    passed: correct === mission.files.length,
+    passed: correct === mission.categories.length,
     correct,
-    total: mission.files.length,
+    total: mission.categories.length,
     details,
   };
 }

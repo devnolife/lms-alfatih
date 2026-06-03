@@ -29,10 +29,11 @@ function StatePill({ group }: { group: LevelGroup }) {
   );
 }
 
-function LevelCard({ group }: { group: LevelGroup }) {
+function LevelCard({ group, blockedBy }: { group: LevelGroup; blockedBy?: number }) {
   const { meta, state, completed, total, xp } = group;
   const clickable = state === "open" || state === "done";
   const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const remaining = total - completed;
 
   const inner = (
     <div
@@ -91,6 +92,20 @@ function LevelCard({ group }: { group: LevelGroup }) {
             )}
           </div>
         )}
+
+        {/* Helper line: what the learner needs to do */}
+        {state === "open" && remaining > 0 && (
+          <p className="mt-2 text-xs font-bold text-white/90">
+            ⚡ Selesaikan {remaining} misi lagi untuk meLULUSkan Level ini &
+            membuka Level {meta.level + 1}.
+          </p>
+        )}
+        {state === "locked" && (
+          <p className="mt-2 text-xs font-bold text-[var(--color-graphite)]">
+            🔒 Harus LULUS Level {blockedBy ?? meta.level - 1} dulu (selesaikan
+            semua misinya) baru Level ini terbuka.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -106,10 +121,24 @@ function LevelCard({ group }: { group: LevelGroup }) {
 }
 
 export default function LevelMap({ groups }: { groups: LevelGroup[] }) {
+  // For each locked level, find the first PRIOR non-empty level that isn't done
+  // — that's the one the learner must finish to unlock it.
+  const blockerFor = (index: number): number | undefined => {
+    for (let i = index - 1; i >= 0; i--) {
+      const g = groups[i];
+      if (g.state !== "empty" && g.state !== "done") return g.meta.level;
+    }
+    return undefined;
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      {groups.map((g) => (
-        <LevelCard key={g.meta.level} group={g} />
+      {groups.map((g, i) => (
+        <LevelCard
+          key={g.meta.level}
+          group={g}
+          blockedBy={g.state === "locked" ? blockerFor(i) : undefined}
+        />
       ))}
     </div>
   );

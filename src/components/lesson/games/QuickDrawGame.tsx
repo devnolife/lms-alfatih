@@ -199,6 +199,13 @@ export default function QuickDrawGame({
     const feats = extractFeatures(gray, w, h, { grid: FEATURE_GRID });
     const result = classify(samples, feats, 7);
     setPrediction(result);
+    // Only award completion when confidence is at least 60% — the student
+    // must draw clearly enough for the AI to recognise the animal.
+    const confident = (result.confidence ?? 0) >= 0.6;
+    if (!confident) {
+      fb.wrong();
+      return;
+    }
     if (!awarded) {
       setAwarded(true);
       fb.solved({

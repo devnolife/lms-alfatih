@@ -76,22 +76,27 @@ export default function BranchingGame({
     }
     if (choice.next === "end" || !nodes[choice.next]) {
       setFinished(true);
-      if (!awarded) {
+      const finalPath = [...path, { text: choice.text, wise: choice.wise }];
+      const wiseTotal = wiseCount + (choice.wise ? 1 : 0);
+      // Completion is only granted when EVERY decision along the path is wise.
+      // An unwise ending shows the recap + "coba lagi" prompt but awards no XP
+      // and leaves the lesson incomplete — you cannot pass by choosing poorly.
+      const allWise = wiseTotal === finalPath.length;
+      if (allWise && !awarded) {
         setAwarded(true);
-        const gained = choice.wise ? Number(xp) || 20 : Math.floor((Number(xp) || 20) / 2);
-        const finalPath = [...path, { text: choice.text, wise: choice.wise }];
-        const wiseTotal = wiseCount + (choice.wise ? 1 : 0);
         const data: Record<string, unknown> = {};
         finalPath.forEach((p, i) => {
           data[`langkah ${i + 1}`] = `${p.text}${p.wise ? " (bijak)" : ""}`;
         });
         fb.solved({
-          xp: gained,
-          label: `+${gained} XP`,
+          xp: Number(xp) || 20,
+          label: `+${xp} XP`,
           game: "branching",
-          score: Math.round((wiseTotal / finalPath.length) * 100),
+          score: 100,
           data,
         });
+      } else if (!allWise) {
+        fb.wrong();
       }
     } else {
       setCurrentId(choice.next);

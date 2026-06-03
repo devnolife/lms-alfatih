@@ -177,14 +177,19 @@ export async function getCurriculum(userId?: string): Promise<LevelGroup[]> {
     const completed = cards.filter((c) => c.status === "COMPLETED").length;
     const xp = cards.reduce((s, c) => s + c.xp, 0);
 
-    // All levels are accessible to students; sequential locking is disabled.
+    // Lock rule: a level is `open` only if every PRIOR level that has
+    // lessons is fully completed. Empty levels don't block.
     let state: LevelState;
     if (total === 0) {
       state = "empty";
     } else if (completed === total) {
       state = "done";
     } else {
-      state = "open";
+      // Check all prior levels — if any non-empty level isn't done, lock this one.
+      const priorAllDone = groups.every(
+        (g) => g.state === "empty" || g.state === "done"
+      );
+      state = priorAllDone ? "open" : "locked";
     }
 
     groups.push({ meta, lessons: cards, total, completed, xp, state });

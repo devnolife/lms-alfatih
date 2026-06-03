@@ -7,7 +7,9 @@ import LogoutButton from "@/components/ui/LogoutButton";
 
 const TABS = [
   { href: "/dashboard", label: "Kelas Saya", emoji: "🏫", exact: true },
+  { href: "/dashboard/students", label: "Daftar Siswa", emoji: "🧑‍🎓" },
   { href: "/dashboard/submissions", label: "Hasil Siswa", emoji: "📊" },
+  { href: "/dashboard/test-results", label: "Hasil Test", emoji: "📝" },
   { href: "/dashboard/materials", label: "Materi & Presentasi", emoji: "📚" },
 ];
 
@@ -57,8 +59,8 @@ export default function TeacherNav({ displayName }: { displayName: string }) {
                 key={tab.href}
                 href={tab.href}
                 className={`flex shrink-0 items-center gap-1.5 border-b-2 px-4 py-3 text-sm font-bold transition ${active
-                    ? "border-[var(--color-duo-green)] text-white"
-                    : "border-transparent text-white/55 hover:text-white/85"
+                  ? "border-[var(--color-duo-green)] text-white"
+                  : "border-transparent text-white/55 hover:text-white/85"
                   }`}
               >
                 <span aria-hidden>{tab.emoji}</span>

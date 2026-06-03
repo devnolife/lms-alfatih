@@ -5,7 +5,8 @@ import { prisma } from "@/lib/db";
 import type { Role } from "@prisma/client";
 
 const COOKIE_NAME = process.env.SESSION_COOKIE_NAME || "funpython_session";
-const SECRET = process.env.SESSION_SECRET || "dev-only-insecure-secret-change";
+const SECRET = process.env.SESSION_SECRET;
+if (!SECRET) throw new Error("SESSION_SECRET env var is required");
 const ENC_SECRET = new TextEncoder().encode(SECRET);
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 14; // 14 days
 

@@ -86,64 +86,93 @@ export default async function LevelPage({ params }: PageProps) {
           </p>
         </div>
       ) : (
-        <ol className="space-y-4">
-          {group.lessons.map((lesson, i) => {
-            const status = STATUS_LABEL[lesson.status] ?? STATUS_LABEL.NOT_STARTED;
-            return (
-              <li key={lesson.slug}>
-                <PendingLink
-                  href={`/learn/${lesson.slug}`}
-                  className="duo-card group flex items-center gap-4 px-5 py-4"
-                >
-                  <div
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-lg font-bold text-white"
-                    style={{
-                      backgroundColor: meta.color,
-                      fontFamily: "var(--font-feather)",
-                    }}
+        <>
+          {/* Completion banner — clarifies that ALL lessons must be finished */}
+          {group.state === "done" ? (
+            <div className="mb-5 flex items-center gap-3 rounded-2xl border-[3px] border-[var(--color-almost-black)] bg-[var(--color-duo-green)] px-5 py-4 text-white shadow-[0_4px_0_var(--color-almost-black)]">
+              <span className="text-2xl" aria-hidden>🎉</span>
+              <p className="text-sm font-bold">
+                Level ini sudah LULUS! Semua {group.total} misi selesai — Level
+                berikutnya sudah terbuka.
+              </p>
+            </div>
+          ) : (
+            <div className="mb-5 rounded-2xl border-[3px] border-[var(--color-almost-black)] bg-[var(--color-sunshine)] px-5 py-4 text-[var(--color-almost-black)] shadow-[0_4px_0_var(--color-almost-black)]">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl" aria-hidden>📋</span>
+                <p className="text-sm font-bold">
+                  Kamu sudah menuntaskan {group.completed} dari {group.total} misi.
+                  Selesaikan SEMUA misi (status ✓ Selesai) untuk meLULUSkan Level
+                  ini & membuka Level {level + 1}.
+                </p>
+              </div>
+              <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-black/15">
+                <div
+                  className="h-full rounded-full bg-[var(--color-duo-green)] transition-all"
+                  style={{ width: `${Math.round((group.completed / group.total) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+          <ol className="space-y-4">
+            {group.lessons.map((lesson, i) => {
+              const status = STATUS_LABEL[lesson.status] ?? STATUS_LABEL.NOT_STARTED;
+              return (
+                <li key={lesson.slug}>
+                  <PendingLink
+                    href={`/learn/${lesson.slug}`}
+                    className="duo-card group flex items-center gap-4 px-5 py-4"
                   >
-                    {i + 1}
-                  </div>
-                  <div className="min-w-0 flex-1">
                     <div
-                      className="text-lg leading-tight"
-                      style={{ fontFamily: "var(--font-feather)" }}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-lg font-bold text-white"
+                      style={{
+                        backgroundColor: meta.color,
+                        fontFamily: "var(--font-feather)",
+                      }}
                     >
-                      {lesson.title}
+                      {i + 1}
                     </div>
-                    <p className="mt-1 text-sm text-[var(--color-graphite)]">
-                      {lesson.summary}
-                    </p>
-                    <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-wide">
-                      <span
-                        className="rounded-full px-2.5 py-1"
-                        style={{ backgroundColor: status.bg, color: status.fg }}
+                    <div className="min-w-0 flex-1">
+                      <div
+                        className="text-lg leading-tight"
+                        style={{ fontFamily: "var(--font-feather)" }}
                       >
-                        {status.label}
-                      </span>
-                      {lesson.estimatedMinutes ? (
-                        <span className="rounded-full bg-[var(--color-cloud)] px-2.5 py-1 text-[var(--color-charcoal)]">
-                          ⏱ {lesson.estimatedMinutes} mnt
+                        {lesson.title}
+                      </div>
+                      <p className="mt-1 text-sm text-[var(--color-graphite)]">
+                        {lesson.summary}
+                      </p>
+                      <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-wide">
+                        <span
+                          className="rounded-full px-2.5 py-1"
+                          style={{ backgroundColor: status.bg, color: status.fg }}
+                        >
+                          {status.label}
                         </span>
-                      ) : null}
-                      {lesson.xp > 0 ? (
-                        <span className="rounded-full bg-[var(--color-sunshine)] px-2.5 py-1 text-[var(--color-almost-black)]">
-                          ⭐ {lesson.xp} XP
-                        </span>
-                      ) : null}
+                        {lesson.estimatedMinutes ? (
+                          <span className="rounded-full bg-[var(--color-cloud)] px-2.5 py-1 text-[var(--color-charcoal)]">
+                            ⏱ {lesson.estimatedMinutes} mnt
+                          </span>
+                        ) : null}
+                        {lesson.xp > 0 ? (
+                          <span className="rounded-full bg-[var(--color-sunshine)] px-2.5 py-1 text-[var(--color-almost-black)]">
+                            ⭐ {lesson.xp} XP
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
-                  </div>
-                  <span className="inline-flex items-center text-sm font-bold text-[var(--color-sky-blue-dark)]">
-                    {lesson.status === "COMPLETED" ? "Ulangi" : "Mulai"}
-                    <span className="ml-1 transition-transform group-hover:translate-x-1">
-                      →
+                    <span className="inline-flex items-center text-sm font-bold text-[var(--color-sky-blue-dark)]">
+                      {lesson.status === "COMPLETED" ? "Ulangi" : "Mulai"}
+                      <span className="ml-1 transition-transform group-hover:translate-x-1">
+                        →
+                      </span>
                     </span>
-                  </span>
-                </PendingLink>
-              </li>
-            );
-          })}
-        </ol>
+                  </PendingLink>
+                </li>
+              );
+            })}
+          </ol>
+        </>
       )}
     </div>
   );

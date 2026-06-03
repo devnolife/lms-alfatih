@@ -6,9 +6,7 @@ import LessonContent from "@/components/lesson/LessonContent";
 import LessonEditor from "@/components/editor/LessonEditor";
 import MascotSvg from "@/components/MascotSvg";
 import AiTutorPanel from "@/components/lesson/AiTutorPanel";
-import CompletionCard from "@/components/festivity/CompletionCard";
 import { useSound } from "@/components/festivity/SoundProvider";
-import { burstConfetti } from "@/lib/client/celebrate";
 
 interface Props {
   lesson: Lesson;
@@ -40,7 +38,6 @@ export default function LessonPlayer({ lesson }: Props) {
 
   const [step, setStep] = useState(0);
   const [mascotMood, setMascotMood] = useState<"idle" | "cheer">("idle");
-  const [showComplete, setShowComplete] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
   const cheerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { play } = useSound();
@@ -57,12 +54,6 @@ export default function LessonPlayer({ lesson }: Props) {
     requestAnimationFrame(() => {
       topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  };
-
-  const finish = () => {
-    play("win");
-    burstConfetti();
-    setShowComplete(true);
   };
 
   const isPractice = (i: number) => i === practiceStep;
@@ -138,16 +129,14 @@ export default function LessonPlayer({ lesson }: Props) {
             Lanjut →
           </button>
         ) : (
-          <button
-            onClick={finish}
+          <a
+            href="/app"
             className="btn-3d inline-flex items-center gap-1.5 rounded-2xl bg-[var(--color-grape)] px-7 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[0_4px_0_var(--color-grape-dark)] sm:py-2.5"
           >
-            Selesai ✓
-          </button>
+            Kembali ke Beranda →
+          </a>
         )}
       </div>
-
-      {showComplete && <CompletionCard lessonTitle={lesson.title} href="/app" />}
 
       {/* Floating AI tutor, grounded in this lesson. */}
       <AiTutorPanel lessonSlug={lesson.slug} lessonTitle={lesson.title} />

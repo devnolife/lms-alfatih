@@ -77,25 +77,43 @@ export default function FlowchartDiagram({
         <Connector />
         <Diamond>{decision}</Diamond>
 
+        {/* Split connector from the diamond into two branches */}
+        <div className="relative h-6 w-full max-w-md">
+          {/* short stem down from the diamond */}
+          <div className="absolute left-1/2 top-0 h-3 w-0.5 -translate-x-1/2 bg-[var(--color-silver)]" />
+          {/* horizontal bar */}
+          <div className="absolute left-1/4 right-1/4 top-3 h-0.5 bg-[var(--color-silver)]" />
+          {/* drops to each branch */}
+          <div className="absolute left-1/4 top-3 h-3 w-0.5 -translate-x-1/2 bg-[var(--color-silver)]" />
+          <div className="absolute right-1/4 top-3 h-3 w-0.5 translate-x-1/2 bg-[var(--color-silver)]" />
+        </div>
+
         {/* Branch labels + boxes */}
         <div className="grid w-full max-w-md grid-cols-2 gap-3">
           <div className="flex flex-col items-center">
-            <span className="text-xs font-extrabold text-[var(--color-duo-green-dark)]">
-              ▲ Ya
+            <span className="rounded-full bg-[var(--color-duo-green-light)] px-2 py-0.5 text-xs font-extrabold text-[var(--color-duo-green-dark)]">
+              Ya ✓
             </span>
             <Connector />
             <Process>{yes}</Process>
+            <Connector />
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-xs font-extrabold text-[var(--color-bubblegum)]">
-              ▲ Tidak
+            <span className="rounded-full bg-[var(--color-bubblegum)]/15 px-2 py-0.5 text-xs font-extrabold text-[var(--color-bubblegum)]">
+              Tidak ✗
             </span>
             <Connector />
             <Process>{no}</Process>
+            <Connector />
           </div>
         </div>
 
-        <Connector />
+        {/* Merge connector back into one before Selesai */}
+        <div className="relative h-3 w-full max-w-md">
+          <div className="absolute left-1/4 right-1/4 bottom-0 h-0.5 bg-[var(--color-silver)]" />
+          <div className="absolute left-1/2 bottom-0 h-3 w-0.5 -translate-x-1/2 bg-[var(--color-silver)]" />
+        </div>
+
         <Oval>Selesai</Oval>
       </div>
     </div>

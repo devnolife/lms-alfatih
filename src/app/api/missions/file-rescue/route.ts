@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { unzipSync } from "fflate";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { readSession } from "@/lib/auth";
@@ -10,15 +9,15 @@ import { recomputeLessonProgress } from "@/lib/progress";
 
 export const runtime = "nodejs";
 
-const MAX_ZIP_BYTES = 2 * 1024 * 1024; // 2 MB
-const MAX_ENTRIES = 200;
+const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5 MB per file
+const MAX_FILES = 10;
 
 /**
- * Grades a "file rescue" mission. The student uploads a ZIP they have organised
- * into folders. We read entry names IN MEMORY only (never extract to disk) so
- * there is no zip-slip / path-traversal surface. The expected layout comes from
- * the server-side mission registry, never the client. XP is awarded once per
- * (user, mission) — guarded by checking for a prior passing submission.
+ * Grades a "Navigator Digital" file mission. The student uploads one or more
+ * real files (image, document, music). We only read the file NAMES to classify
+ * each by extension — files are never written to disk, so there is no upload /
+ * path-traversal surface. The expected categories come from the server-side
+ * mission registry, never the client. XP is awarded once per (user, mission).
  */
 export async function POST(req: Request) {
   const session = await readSession();
@@ -39,7 +38,7 @@ export async function POST(req: Request) {
   }
 
   const missionKey = form.get("missionKey");
-  const file = form.get("file");
+  const files = form.getAll("file").filter((f): f is File => f instanceof File);
 
   if (typeof missionKey !== "string") {
     return NextResponse.json({ error: "missionKey wajib." }, { status: 400 });
@@ -48,45 +47,29 @@ export async function POST(req: Request) {
   if (!mission) {
     return NextResponse.json({ error: "Misi tidak ditemukan." }, { status: 404 });
   }
-  if (!(file instanceof File)) {
-    return NextResponse.json({ error: "File ZIP wajib diunggah." }, { status: 400 });
+  if (files.length === 0) {
+    return NextResponse.json({ error: "Pilih minimal satu berkas." }, { status: 400 });
   }
-  if (file.size === 0) {
-    return NextResponse.json({ error: "File kosong." }, { status: 400 });
-  }
-  if (file.size > MAX_ZIP_BYTES) {
+  if (files.length > MAX_FILES) {
     return NextResponse.json(
-      { error: "File terlalu besar (maks 2 MB)." },
-      { status: 413 }
-    );
-  }
-  const lowerName = file.name.toLowerCase();
-  if (!lowerName.endsWith(".zip")) {
-    return NextResponse.json(
-      { error: "Harus berupa file .zip." },
-      { status: 415 }
-    );
-  }
-
-  let entryPaths: string[];
-  try {
-    const buf = new Uint8Array(await file.arrayBuffer());
-    const files = unzipSync(buf);
-    entryPaths = Object.keys(files);
-    if (entryPaths.length > MAX_ENTRIES) {
-      return NextResponse.json(
-        { error: "Terlalu banyak berkas di dalam ZIP." },
-        { status: 400 }
-      );
-    }
-  } catch {
-    return NextResponse.json(
-      { error: "Tidak bisa membaca ZIP. Pastikan filenya benar." },
+      { error: `Maksimal ${MAX_FILES} berkas sekaligus.` },
       { status: 400 }
     );
   }
+  for (const f of files) {
+    if (f.size === 0) {
+      return NextResponse.json({ error: `Berkas "${f.name}" kosong.` }, { status: 400 });
+    }
+    if (f.size > MAX_FILE_BYTES) {
+      return NextResponse.json(
+        { error: `Berkas "${f.name}" terlalu besar (maks 5 MB).` },
+        { status: 413 }
+      );
+    }
+  }
 
-  const result = gradeMission(mission, entryPaths);
+  const fileNames = files.map((f) => f.name);
+  const result = gradeMission(mission, fileNames);
   const userId = session.userId;
 
   const persisted = await prisma.$transaction(async (tx) => {
@@ -129,7 +112,7 @@ export async function POST(req: Request) {
   });
 
   if (result.passed) {
-    await syncUserBadges(userId).catch(() => {});
+    await syncUserBadges(userId).catch(() => { });
   }
 
   return NextResponse.json({

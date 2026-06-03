@@ -2,10 +2,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 const COOKIE_NAME = process.env.SESSION_COOKIE_NAME || "funpython_session";
-const SECRET = process.env.SESSION_SECRET || "dev-only-insecure-secret-change";
+const SECRET = process.env.SESSION_SECRET;
+if (!SECRET) throw new Error("SESSION_SECRET env var is required");
 const ENC_SECRET = new TextEncoder().encode(SECRET);
 
-const PROTECTED_PREFIXES = ["/app", "/learn", "/dashboard"];
+const PROTECTED_PREFIXES = ["/app", "/learn", "/dashboard", "/test"];
 const TEACHER_PREFIXES = ["/dashboard"];
 
 export async function proxy(req: NextRequest) {
@@ -44,5 +45,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/app/:path*", "/learn/:path*", "/dashboard/:path*"],
+  matcher: ["/app/:path*", "/learn/:path*", "/dashboard/:path*", "/test/:path*"],
 };

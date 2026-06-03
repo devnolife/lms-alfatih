@@ -99,6 +99,14 @@ export default function OceansGame({
     if (!allLabelled) return;
     setPhase("result");
     const accuracy = Math.round((correctCount / TEST_ITEMS.length) * 100);
+    // Completion is only granted when the trained AI sorts EVERY new item
+    // correctly. Mislabelling the data yields a wrong-feedback prompt to retry
+    // (no XP, lesson stays incomplete) — you cannot pass without good labels.
+    const passed = correctCount === TEST_ITEMS.length;
+    if (!passed) {
+      fb.wrong();
+      return;
+    }
     if (!awarded) {
       setAwarded(true);
       // Capture the student's labels (by item name) as the training data.
@@ -123,6 +131,7 @@ export default function OceansGame({
   function retry() {
     setPhase("train");
     setLabels({});
+    setAwarded(false);
     fb.click();
   }
 

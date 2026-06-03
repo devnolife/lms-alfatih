@@ -1,7 +1,10 @@
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCurriculum } from "@/lib/curriculum";
 import { getGlobalLeaderboard } from "@/lib/leaderboard";
 import { syncUserBadges, getUserBadges } from "@/lib/badges";
+import { hasCompletedPreTest } from "@/lib/test-status";
+import { prisma } from "@/lib/db";
 import LevelMap from "@/components/curriculum/LevelMap";
 import LeaderboardBoard from "@/components/curriculum/LeaderboardBoard";
 import BadgeShelf from "@/components/curriculum/BadgeShelf";
@@ -11,6 +14,11 @@ import MascotSvg from "@/components/MascotSvg";
 export default async function AppHome() {
   const user = await getCurrentUser();
   if (!user) return null;
+
+  // Students must complete pre-test first
+  if (!(await hasCompletedPreTest(user.id, user.role))) {
+    redirect("/test/pre");
+  }
 
   await syncUserBadges(user.id);
   const [groups, leaderboard, badges] = await Promise.all([
@@ -22,6 +30,19 @@ export default async function AppHome() {
   const totalXp = groups.reduce((sum, g) => sum + g.xp, 0);
   const lessonCount = groups.reduce((sum, g) => sum + g.total, 0);
   const completedLevels = groups.filter((g) => g.state === "done").length;
+
+  // Check if all levels done → show post-test CTA
+  const allLevelsDone =
+    user.role === "STUDENT" &&
+    groups.every((g) => g.state === "done" || g.state === "empty");
+  let showPostTestCTA = false;
+  if (allLevelsDone) {
+    const postAttempt = await prisma.testAttempt.findUnique({
+      where: { userId_type: { userId: user.id, type: "POST" } },
+      select: { id: true },
+    });
+    showPostTestCTA = !postAttempt;
+  }
 
   return (
     <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-10">
@@ -57,6 +78,30 @@ export default async function AppHome() {
           </div>
         </div>
       </header>
+
+      {showPostTestCTA && (
+        <PendingLink
+          href="/test/post"
+          className="group mb-6 flex items-center gap-4 overflow-hidden rounded-3xl border-[3px] border-[var(--color-almost-black)] bg-[var(--color-sunshine)] px-6 py-5 shadow-[0_6px_0_var(--color-almost-black)] transition-transform hover:-translate-y-0.5"
+        >
+          <span className="text-4xl">📝</span>
+          <span className="min-w-0 flex-1">
+            <span
+              className="block text-xl text-[var(--color-almost-black)]"
+              style={{ fontFamily: "var(--font-feather)" }}
+            >
+              Post-Test Tersedia!
+            </span>
+            <span className="block text-sm text-[var(--color-charcoal)]">
+              Semua level sudah selesai. Kerjakan post-test untuk mengukur kemajuanmu!
+            </span>
+          </span>
+          <span className="inline-flex shrink-0 items-center rounded-full bg-white px-4 py-2 text-sm font-bold text-[var(--color-almost-black)]">
+            Mulai
+            <span className="ml-1 transition-transform group-hover:translate-x-1">▶</span>
+          </span>
+        </PendingLink>
+      )}
 
       <PendingLink
         href="/app/games"

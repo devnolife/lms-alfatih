@@ -45,6 +45,7 @@ model User {
   fileMissions  FileMissionSubmission[]
   activityCompletions ActivityCompletion[]
   gameSubmissions GameSubmission[]
+  testAttempts    TestAttempt[]
 }
 
 model Class {
@@ -235,6 +236,9 @@ model Submission {
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([challengeId])
 }
 
 model LessonProgress {
@@ -339,4 +343,24 @@ model Certificate {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, projectKey])
+}
+
+enum TestType {
+  PRE
+  POST
+}
+
+model TestAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  type           TestType
+  answers        Json
+  score          Int
+  totalQuestions Int
+  startedAt      DateTime
+  submittedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
 }

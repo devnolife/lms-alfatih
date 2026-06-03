@@ -362,6 +362,13 @@ export default function TeachableMachineGame({
     setPrediction(result);
     const n = predictCount + 1;
     setPredictCount(n);
+    // Only award completion when confidence is at least 50% — meaning the
+    // student provided enough clear, distinct examples to train a useful model.
+    const confident = (result.confidence ?? 0) >= 0.5;
+    if (!confident) {
+      fb.wrong();
+      return;
+    }
     if (!awarded) {
       setAwarded(true);
       const data: Record<string, unknown> = {

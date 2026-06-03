@@ -1,6 +1,6 @@
 ---
 title: "Level 2 — Navigator Digital"
-summary: "Kuasai dunia file & folder, lalu buktikan kemampuanmu di Misi Penyelamatan Berkas dengan upload ZIP sungguhan!"
+summary: "Kuasai dunia file & folder, lalu buktikan kemampuanmu di Misi Pengenal Berkas dengan mengunggah gambar, dokumen, dan musik sungguhan!"
 order: 20
 level: 2
 element: TIK
@@ -14,17 +14,19 @@ missions:
   - key: berkas-rescue
     required: true
 teacherNotes: |
-  Tujuan: siswa rapi mengelola file & folder, lalu membuat ZIP sungguhan. Analogi
-  folder = sekat lemari supaya barang mudah dicari; ekstensi (.jpg, .docx, .mp3)
-  = "nama belakang" yang menunjukkan jenis berkas. Bagian tersulit adalah MEMBUAT
-  ZIP — dampingi langkah klik kanan → Compress/Kirim ke folder zip. Pastikan tiap
-  siswa berhasil mengunggah ZIP (misi harus LULUS) sebelum lanjut ke Level 3.
+  Tujuan: siswa rapi mengelola file & folder, lalu mengenali jenis berkas dari
+  ekstensinya. Analogi folder = sekat lemari supaya barang mudah dicari; ekstensi
+  (.jpg, .docx, .mp3) = "nama belakang" yang menunjukkan jenis berkas. Untuk misi
+  upload, siswa cukup memilih 3 berkas nyata di komputernya: satu gambar, satu
+  dokumen, satu musik — TIDAK perlu membuat ZIP. Sistem mengenali jenisnya dari
+  ekstensi. Dampingi cara memilih beberapa file sekaligus (tahan Ctrl/Cmd).
+  Pastikan tiap siswa misinya LULUS sebelum lanjut ke Level 3.
 answerKey:
   - ref: "Rapikan Berkas"
     answer: "foto-kucing.jpg → Gambar · tugas-ipa.docx → Dokumen · lagu-indah.mp3 → Musik · poster.png → Gambar · jadwal.pdf → Dokumen"
-  - ref: "Misi Penyelamatan Berkas (ZIP)"
-    answer: "Unduh berkas → buat folder Gambar/Dokumen/Musik → pindahkan tiap file → kompres jadi .zip → unggah."
-    note: "Diperiksa otomatis: ZIP harus berisi 3 folder dengan file yang benar."
+  - ref: "Misi Pengenal Berkas (Upload)"
+    answer: "Unggah satu Gambar (.jpg/.png), satu Dokumen (.pdf/.docx), dan satu Musik (.mp3/.wav)."
+    note: "Diperiksa otomatis: sistem mengenali jenis tiap berkas dari ekstensinya."
 ---
 
 ## 🧭 Misi Navigator Digital
@@ -36,7 +38,7 @@ Di level ini kamu belajar:
 
 - Mengenal jenis **berkas (file)**: gambar, dokumen, musik, video.
 - Memahami **folder** sebagai tempat menyimpan berkas yang serupa.
-- Membuat file **ZIP** untuk membungkus banyak berkas jadi satu.
+- Mengenali jenis berkas dari **ekstensinya** (.jpg, .docx, .mp3).
 
 ## 📁 File & Folder
 
@@ -66,26 +68,27 @@ Klik sebuah berkas, lalu klik **folder** yang tepat. Rapikan semuanya!
 
 ::game{type="filesort" activityId="tik-filesort" title="Rapikan Berkas" files="🖼️ foto-kucing.jpg:Gambar|📄 tugas-ipa.docx:Dokumen|🎵 lagu-indah.mp3:Musik|🖼️ poster.png:Gambar|📄 jadwal.pdf:Dokumen"}
 
-## 📦 Misi Penyelamatan Berkas (Upload Nyata!)
+## � Misi Pengenal Berkas (Upload Nyata!)
 
-Sekarang misi sesungguhnya! Ikuti langkah berikut di komputermu:
+Sekarang misi sesungguhnya! Buktikan kamu bisa mengenali **jenis berkas** dengan
+mengunggah 3 berkas berbeda dari komputermu — **tidak perlu ZIP**:
 
-1. **Unduh** berkas latihan yang masih berantakan di bawah.
-2. Buat 3 folder: **Gambar**, **Dokumen**, **Musik**.
-3. Pindahkan tiap berkas ke folder yang benar.
-4. **Kompres** ketiga folder itu menjadi satu file `.zip`.
-5. **Unggah** ZIP-mu di bawah untuk diperiksa otomatis!
+1. Cari **satu Gambar** 🖼️ (mis. foto `.jpg` atau `.png`).
+2. Cari **satu Dokumen** 📄 (mis. tugas `.pdf` atau `.docx`).
+3. Cari **satu Musik/Suara** 🎵 (mis. lagu `.mp3` atau `.wav`).
+4. **Unggah** ketiganya sekaligus di bawah untuk diperiksa otomatis!
 
-:::callout{type="info" title="Cara membuat ZIP"}
-Pilih ketiga folder → klik kanan → **Compress** / **Kirim ke → Folder terkompres
-(zip)**. Mudah, kan? 📦
+:::callout{type="info" title="Tips memilih berkas"}
+Saat menekan tombol unggah, kamu bisa memilih **beberapa berkas sekaligus** —
+tahan tombol **Ctrl** (Windows) atau **Cmd** (Mac) saat mengklik. Sistem akan
+mengenali jenis tiap berkas dari **ekstensinya**. 🎯
 :::
 
-::filemission{missionKey="berkas-rescue" folders="Gambar;Dokumen;Musik" download="/missions/berkas-rescue.zip"}
+::filemission{missionKey="berkas-rescue"}
 
 ## 🏆 Selesai!
 
-Setelah sortir berkas ✅ dan misi ZIP **LULUS**, gerbang **Level 3 — Teknisi
-Siber** terbuka. Navigasi yang hebat! 🧭
+Setelah sortir berkas ✅ dan misi pengenal berkas **LULUS**, gerbang
+**Level 3 — Teknisi Siber** terbuka. Navigasi yang hebat! 🧭
 
-::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Navigasi hebat! 🧭" data="✓:Aku bisa menata file & folder:Mengelompokkan berkas dengan rapi|✓:Aku bisa membuat ZIP:Memampatkan banyak file jadi satu|✓:Aku tahu di mana menyimpan berkas:Setiap jenis di folder yang tepat"}
+::visual{type="think-check" title="Cek Pemahamanku 🎯" done="Navigasi hebat! 🧭" data="✓:Aku bisa menata file & folder:Mengelompokkan berkas dengan rapi|✓:Aku tahu jenis-jenis berkas:Gambar, dokumen, dan musik dari ekstensinya|✓:Aku tahu di mana menyimpan berkas:Setiap jenis di folder yang tepat"}
