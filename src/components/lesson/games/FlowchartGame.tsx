@@ -119,7 +119,7 @@ export default function FlowchartGame({
         {hint}
       </p>
 
-      <div className="mx-auto flex max-w-[360px] flex-col items-center gap-1">
+      <div className="mx-auto flex max-w-[460px] flex-col items-center gap-1">
         {stepList.map((step, i) => {
           const isBlank = step.includes("___");
           if (isBlank) blankIndex += 1;
@@ -131,12 +131,12 @@ export default function FlowchartGame({
             <div key={i} className="flex w-full flex-col items-center">
               <div
                 className={`w-full rounded-xl border-2 px-4 py-2.5 text-center text-sm font-bold ${!isBlank
-                    ? "border-[var(--color-grape)] bg-white text-[var(--color-almost-black)]"
-                    : correct
-                      ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-                      : wrong
-                        ? "border-[#ff6b6b] bg-[#ffe9e9] text-[#d33]"
-                        : "border-dashed border-[var(--color-grape)] bg-[var(--color-cloud)] text-[var(--color-silver)]"
+                  ? "border-[var(--color-grape)] bg-white text-[var(--color-almost-black)]"
+                  : correct
+                    ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+                    : wrong
+                      ? "border-[#ff6b6b] bg-[#ffe9e9] text-[#d33]"
+                      : "border-dashed border-[var(--color-grape)] bg-[var(--color-cloud)] text-[var(--color-silver)]"
                   }`}
               >
                 {isBlank ? filled ?? "❔ rumpang" : step}
@@ -149,7 +149,7 @@ export default function FlowchartGame({
         })}
       </div>
 
-      <div className="mx-auto mt-5 flex max-w-[420px] flex-wrap justify-center gap-2">
+      <div className="mx-auto mt-5 flex max-w-[620px] flex-wrap justify-center gap-2">
         {tokens.map((token, i) => {
           const allowedUses = answerList.filter((a) => a === token).length;
           const exhausted = (usedCounts[token] ?? 0) >= Math.max(allowedUses, 1);
@@ -176,7 +176,7 @@ export default function FlowchartGame({
       </div>
 
       {allCorrect && (
-        <div className="mx-auto mt-4 max-w-[420px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
+        <div className="mx-auto mt-4 max-w-[620px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
           🎉 Diagram alirnya lengkap dan benar!
         </div>
       )}

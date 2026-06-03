@@ -72,7 +72,7 @@ const BLOCK_META: Record<
   },
 };
 
-const CELL = 52;
+const CELL = 124;
 
 function parseGrid(raw: string) {
   const rows = raw.split("/").map((r) => r.trim());
@@ -114,8 +114,8 @@ export default function MazeGame({
   useEffect(() => {
     function fit() {
       // Leave room for the card's horizontal padding (~48px) and grid inset.
-      const avail = Math.min(window.innerWidth - 56, 520);
-      setCell(Math.max(34, Math.min(CELL, Math.floor(avail / cols))));
+      const avail = Math.min(window.innerWidth - 56, 780);
+      setCell(Math.max(52, Math.min(CELL, Math.floor(avail / cols))));
     }
     fit();
     window.addEventListener("resize", fit);
@@ -310,7 +310,8 @@ export default function MazeGame({
                     {isGoal && (
                       <LottiePlayer
                         src="/lottie/leaf-goal.json"
-                        className="h-7 w-7 drop-shadow-sm"
+                        className="drop-shadow-sm"
+                        style={{ width: cell * 0.5, height: cell * 0.5 }}
                         fallback={<span className="drop-shadow-sm">🥬</span>}
                       />
                     )}
@@ -336,17 +337,23 @@ export default function MazeGame({
               }}
             >
               <span
-                className={`relative flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-2xl shadow-md ring-2 transition-colors ${status === "fail"
+                className={`relative flex items-center justify-center rounded-full bg-white/80 shadow-md ring-2 transition-colors ${status === "fail"
                   ? "ring-[var(--color-error)]"
                   : "ring-[var(--color-duo-green)]"
                   }`}
+                style={{
+                  width: cell * 0.72,
+                  height: cell * 0.72,
+                  fontSize: cell * 0.46,
+                }}
               >
                 🐢
                 <span
                   className="absolute left-1/2 top-1/2 text-[var(--color-bubblegum)] transition-transform duration-300"
                   style={{
+                    fontSize: cell * 0.26,
                     transform: `translate(-50%, -50%) rotate(${display.dir * 90
-                      }deg) translateY(-22px)`,
+                      }deg) translateY(-${cell * 0.42}px)`,
                   }}
                 >
                   ▲
@@ -357,7 +364,7 @@ export default function MazeGame({
         </div>
 
         {/* Controls + program */}
-        <div className="w-full max-w-[280px]">
+        <div className="w-full max-w-[420px]">
           <div className="mb-2 text-xs font-bold uppercase tracking-wide text-[var(--color-graphite)]">
             Pilih blok
           </div>

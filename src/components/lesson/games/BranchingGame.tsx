@@ -116,13 +116,13 @@ export default function BranchingGame({
       </div>
 
       {path.length > 0 && (
-        <ol className="mx-auto mb-4 max-w-[560px] space-y-1">
+        <ol className="mx-auto mb-4 max-w-[760px] space-y-1">
           {path.map((p, i) => (
             <li
               key={i}
               className={`rounded-lg px-3 py-1.5 text-sm ${p.wise
-                  ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-                  : "bg-[#fff3f3] text-[#c0392b]"
+                ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+                : "bg-[#fff3f3] text-[#c0392b]"
                 }`}
             >
               {p.wise ? "✅" : "⚠️"} {p.text}
@@ -132,7 +132,7 @@ export default function BranchingGame({
       )}
 
       {!finished && current && (
-        <div className="mx-auto max-w-[560px]">
+        <div className="mx-auto max-w-[760px]">
           <p className="mb-3 rounded-2xl border-2 border-[var(--color-cloud)] bg-white px-4 py-3 text-center font-semibold text-[var(--color-almost-black)]">
             {current.text}
           </p>
@@ -151,7 +151,7 @@ export default function BranchingGame({
       )}
 
       {finished && (
-        <div className="mx-auto max-w-[560px] text-center">
+        <div className="mx-auto max-w-[760px] text-center">
           <div className="rounded-xl bg-[var(--color-duo-green-light)] px-3 py-3 text-sm font-bold text-[var(--color-duo-green-dark)]">
             {wiseCount === path.length
               ? "🌟 Luar biasa! Semua keputusanmu bijak sebagai warga digital!"

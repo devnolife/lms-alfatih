@@ -59,9 +59,8 @@ export default function FillBlankGame({
         </span>
       ) : (
         <span
-          className={`rounded px-2 py-0.5 ${
-            isCorrect ? "bg-[var(--color-duo-green)]" : "bg-[#ff6b6b]"
-          } text-white`}
+          className={`rounded px-2 py-0.5 ${isCorrect ? "bg-[var(--color-duo-green)]" : "bg-[#ff6b6b]"
+            } text-white`}
         >
           {picked}
         </span>
@@ -87,11 +86,11 @@ export default function FillBlankGame({
         {question}
       </p>
 
-      <pre className="mx-auto mb-4 max-w-[420px] overflow-x-auto whitespace-pre-wrap rounded-2xl bg-[#1e1e1e] px-4 py-3 text-base leading-relaxed text-white">
+      <pre className="mx-auto mb-4 max-w-[680px] overflow-x-auto whitespace-pre-wrap rounded-2xl bg-[#1e1e1e] px-4 py-3 text-base leading-relaxed text-white">
         {renderCode()}
       </pre>
 
-      <div className="mx-auto flex max-w-[420px] flex-wrap justify-center gap-2">
+      <div className="mx-auto flex max-w-[680px] flex-wrap justify-center gap-2">
         {opts.map((opt) => {
           const chosen = picked === opt;
           let cls =
@@ -105,9 +104,8 @@ export default function FillBlankGame({
             <button
               key={opt}
               onClick={() => handlePick(opt)}
-              className={`rounded-xl border-2 px-4 py-2 font-mono text-sm font-bold transition-colors ${
-                chosen && opt === answer ? "fx-pop" : ""
-              } ${cls}`}
+              className={`rounded-xl border-2 px-4 py-2 font-mono text-sm font-bold transition-colors ${chosen && opt === answer ? "fx-pop" : ""
+                } ${cls}`}
             >
               {opt}
             </button>
@@ -117,11 +115,10 @@ export default function FillBlankGame({
 
       {picked !== null && (
         <div
-          className={`mx-auto mt-3 max-w-[420px] rounded-xl px-3 py-2 text-center text-sm font-bold ${
-            isCorrect
+          className={`mx-auto mt-3 max-w-[680px] rounded-xl px-3 py-2 text-center text-sm font-bold ${isCorrect
               ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
               : "bg-[#ffe9e9] text-[#d33]"
-          }`}
+            }`}
         >
           {isCorrect
             ? "⭐ Pas sekali! Kotaknya terisi dengan benar! 🎉"

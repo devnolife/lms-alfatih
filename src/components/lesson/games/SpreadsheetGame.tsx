@@ -99,7 +99,7 @@ export default function SpreadsheetGame({
         {hint}
       </p>
 
-      <div className="mx-auto grid max-w-[620px] gap-4 sm:grid-cols-2">
+      <div className="mx-auto grid max-w-[880px] gap-4 sm:grid-cols-2">
         {/* Table */}
         <table className="w-full overflow-hidden rounded-xl border-2 border-[var(--color-cloud)] text-sm">
           <thead>
@@ -143,7 +143,7 @@ export default function SpreadsheetGame({
         </div>
       </div>
 
-      <div className="mx-auto mt-5 flex max-w-[620px] flex-wrap items-end justify-center gap-4">
+      <div className="mx-auto mt-5 flex max-w-[880px] flex-wrap items-end justify-center gap-4">
         <label className="flex flex-col gap-1 text-xs font-bold text-[var(--color-charcoal)]">
           Total (SUM)
           <input
@@ -151,10 +151,10 @@ export default function SpreadsheetGame({
             onChange={(e) => setSumInput(e.target.value)}
             inputMode="numeric"
             className={`w-28 rounded-xl border-2 px-3 py-2 font-mono text-sm ${sumOk === null
-                ? "border-[var(--color-cloud)]"
-                : sumOk
-                  ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)]"
-                  : "border-[#ff6b6b] bg-[#ffe9e9]"
+              ? "border-[var(--color-cloud)]"
+              : sumOk
+                ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)]"
+                : "border-[#ff6b6b] bg-[#ffe9e9]"
               }`}
             placeholder="=SUM(...)"
           />
@@ -166,10 +166,10 @@ export default function SpreadsheetGame({
             onChange={(e) => setAvgInput(e.target.value)}
             inputMode="decimal"
             className={`w-28 rounded-xl border-2 px-3 py-2 font-mono text-sm ${avgOk === null
-                ? "border-[var(--color-cloud)]"
-                : avgOk
-                  ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)]"
-                  : "border-[#ff6b6b] bg-[#ffe9e9]"
+              ? "border-[var(--color-cloud)]"
+              : avgOk
+                ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)]"
+                : "border-[#ff6b6b] bg-[#ffe9e9]"
               }`}
             placeholder="rata-rata"
           />
@@ -183,7 +183,7 @@ export default function SpreadsheetGame({
       </div>
 
       {both && (
-        <div className="mx-auto mt-4 max-w-[620px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
+        <div className="mx-auto mt-4 max-w-[880px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
           🎉 Tepat! Total {sum} dan rata-rata {avg.toFixed(1)}.
         </div>
       )}

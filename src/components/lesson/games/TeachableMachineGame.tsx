@@ -127,6 +127,8 @@ export default function TeachableMachineGame({
         audio: false,
       });
       streamRef.current = stream;
+      // The <video> may not be mounted yet when this resolves; the attach
+      // effect below wires the stream up once the element exists.
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         await videoRef.current.play().catch(() => { });
@@ -140,12 +142,34 @@ export default function TeachableMachineGame({
     }
   }, []);
 
+  // Start/stop the camera AFTER the <video> element has been (un)mounted, so the
+  // stream always attaches to a real DOM node. Calling startCamera() directly in
+  // the click handler raced ahead of the render and left video.videoWidth at 0.
+  useEffect(() => {
+    if (inputMode === "camera") {
+      void startCamera();
+    } else {
+      stopCamera();
+    }
+  }, [inputMode, startCamera, stopCamera]);
+
+  // Make sure the acquired stream is bound to the (now mounted) <video>.
+  useEffect(() => {
+    const video = videoRef.current;
+    const stream = streamRef.current;
+    if (inputMode === "camera" && cameraOn && video && stream) {
+      if (video.srcObject !== stream) {
+        video.srcObject = stream;
+        void video.play().catch(() => { });
+      }
+    }
+  }, [inputMode, cameraOn]);
+
+  // Stop the camera when the component unmounts.
   useEffect(() => stopCamera, [stopCamera]);
 
   function chooseInput(mode: "draw" | "camera") {
     setInputMode(mode);
-    if (mode === "camera") startCamera();
-    else stopCamera();
   }
 
   // ---- Canvas setup & drawing -------------------------------------------------
@@ -643,7 +667,7 @@ export default function TeachableMachineGame({
       </div>
 
       {phase === "predict" && predictCount > 0 && (
-        <div className="mx-auto mt-4 max-w-[460px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
+        <div className="mx-auto mt-4 max-w-[680px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
           🎉 Kamu berhasil melatih AI dengan {totalExamples} contoh! Coba gambar
           yang lain dan lihat apakah tebakannya tepat.
         </div>

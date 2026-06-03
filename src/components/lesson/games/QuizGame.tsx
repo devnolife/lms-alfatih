@@ -96,7 +96,7 @@ export default function QuizGame({
         {correctCount}/{items.length} benar
       </p>
 
-      <div className="mx-auto flex max-w-[560px] flex-col gap-5">
+      <div className="mx-auto grid max-w-[920px] gap-5 lg:grid-cols-2">
         {items.map((it, qi) => {
           const chosen = picked[qi];
           const answered = chosen !== undefined;
@@ -132,8 +132,8 @@ export default function QuizGame({
               {answered && it.explain && (
                 <div
                   className={`mt-3 rounded-xl px-3 py-2 text-sm ${right
-                      ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-                      : "bg-[#fff3f3] text-[#c0392b]"
+                    ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+                    : "bg-[#fff3f3] text-[#c0392b]"
                     }`}
                 >
                   <strong>{right ? "✅ Benar! " : "💡 "}</strong>
@@ -147,7 +147,7 @@ export default function QuizGame({
 
       {allCorrect && (
         <div
-          className="mx-auto mt-4 max-w-[560px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]"
+          className="mx-auto mt-4 max-w-[920px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]"
         >
           🎉 Hebat! Semua jawaban benar!
         </div>

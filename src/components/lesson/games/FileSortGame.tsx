@@ -104,7 +104,7 @@ export default function FileSortGame({
         {hint}
       </p>
 
-      <div className="mx-auto mb-4 flex min-h-[52px] max-w-[560px] flex-wrap justify-center gap-2 rounded-2xl border-2 border-dashed border-[var(--color-cloud)] bg-white/60 p-3">
+      <div className="mx-auto mb-4 flex min-h-[52px] max-w-[820px] flex-wrap justify-center gap-2 rounded-2xl border-2 border-dashed border-[var(--color-cloud)] bg-white/60 p-3">
         {remaining.length === 0 ? (
           <span className="text-sm text-[var(--color-silver)]">
             Semua berkas sudah rapi! ✨
@@ -115,8 +115,8 @@ export default function FileSortGame({
               key={f.name}
               onClick={() => setSelected(selected === f.name ? null : f.name)}
               className={`rounded-xl border-2 px-3 py-2 text-sm font-semibold transition-colors ${selected === f.name
-                  ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] text-[var(--color-sky-blue-dark)]"
-                  : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sky-blue)]"
+                ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] text-[var(--color-sky-blue-dark)]"
+                : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sky-blue)]"
                 }`}
             >
               {f.name}
@@ -125,7 +125,7 @@ export default function FileSortGame({
         )}
       </div>
 
-      <div className="mx-auto grid max-w-[560px] gap-3 sm:grid-cols-3">
+      <div className="mx-auto grid max-w-[820px] gap-3 sm:grid-cols-3">
         {folders.map((folder) => {
           const contents = Object.entries(placed)
             .filter(([, c]) => c === folder)
@@ -135,8 +135,8 @@ export default function FileSortGame({
               key={folder}
               onClick={() => dropTo(folder)}
               className={`flex min-h-[96px] flex-col rounded-2xl border-2 p-3 text-left transition-transform ${shakeFolder === folder
-                  ? "border-[#ff6b6b] bg-[#ffe9e9]"
-                  : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sunshine-dark)]"
+                ? "border-[#ff6b6b] bg-[#ffe9e9]"
+                : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sunshine-dark)]"
                 } ${selected ? "cursor-pointer" : ""}`}
             >
               <span
@@ -161,7 +161,7 @@ export default function FileSortGame({
       </div>
 
       {done && (
-        <div className="mx-auto mt-4 max-w-[560px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
+        <div className="mx-auto mt-4 max-w-[820px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
           🎉 Semua berkas tersimpan di folder yang benar!
         </div>
       )}

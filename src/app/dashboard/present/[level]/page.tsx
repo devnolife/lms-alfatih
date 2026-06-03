@@ -29,6 +29,9 @@ export default async function PresentLevelPage({
       levelTitle={`Level ${levelGuide.meta.level} · ${levelGuide.meta.title}`}
       color={levelGuide.meta.color}
       backHref="/dashboard/materials"
+      variant="presenter"
+      channelKey={`funpython-present-${levelGuide.meta.level}`}
+      audienceHref={`/dashboard/present/${levelGuide.meta.level}/layar`}
     />
   );
 }

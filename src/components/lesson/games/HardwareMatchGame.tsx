@@ -115,7 +115,7 @@ export default function HardwareMatchGame({
         {hint}
       </p>
 
-      <div className="mx-auto grid max-w-[560px] grid-cols-2 gap-4">
+      <div className="mx-auto grid max-w-[820px] grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           {parsed.map((p) => {
             const done = matched[p.device] !== undefined;
@@ -126,10 +126,10 @@ export default function HardwareMatchGame({
                 disabled={done}
                 onClick={() => setSelDevice(sel ? null : p.device)}
                 className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-bold transition-colors ${done
-                    ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-                    : sel
-                      ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] text-[var(--color-sky-blue-dark)]"
-                      : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sky-blue)]"
+                  ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+                  : sel
+                    ? "border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] text-[var(--color-sky-blue-dark)]"
+                    : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sky-blue)]"
                   }`}
               >
                 {p.device} {done && "✓"}
@@ -147,10 +147,10 @@ export default function HardwareMatchGame({
                 disabled={used}
                 onClick={() => pickFn(fn)}
                 className={`rounded-xl border-2 px-3 py-2.5 text-left text-sm font-semibold transition-colors ${used
-                    ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-                    : isWrong
-                      ? "border-[#ff6b6b] bg-[#ffe9e9] text-[#d33]"
-                      : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sunshine-dark)]"
+                  ? "border-[var(--color-duo-green)] bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+                  : isWrong
+                    ? "border-[#ff6b6b] bg-[#ffe9e9] text-[#d33]"
+                    : "border-[var(--color-cloud)] bg-white hover:border-[var(--color-sunshine-dark)]"
                   }`}
               >
                 {fn}
@@ -161,7 +161,7 @@ export default function HardwareMatchGame({
       </div>
 
       {allMatched && (
-        <div className="mx-auto mt-4 max-w-[560px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
+        <div className="mx-auto mt-4 max-w-[820px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
           🏅 Mantap! Kamu mendapat lencana Teknisi Muda!
         </div>
       )}

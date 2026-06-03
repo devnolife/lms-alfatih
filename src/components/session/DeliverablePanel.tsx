@@ -6,6 +6,7 @@ import type {
   DeliverableType,
   ReviewStatus,
 } from "@/hooks/useSessionStream";
+import Select from "@/components/ui/Select";
 
 interface Props {
   sessionId: string;
@@ -97,18 +98,19 @@ export default function DeliverablePanel({
       {!locked && (
         <form onSubmit={submit} className="mb-4 space-y-2">
           <div className="flex flex-wrap gap-2">
-            <select
+            <Select
               value={type}
               onChange={(e) => setType(e.target.value as DeliverableType)}
               aria-label="Tipe hasil"
-              className="auth-field w-auto"
+              selectSize="sm"
+              className="w-auto"
             >
               {TYPE_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
                   {o.label}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <textarea
             value={content}

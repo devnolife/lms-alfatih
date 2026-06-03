@@ -5,6 +5,8 @@ export interface GameSubmissionRow {
   id: string;
   studentId: string;
   studentName: string;
+  /** Whether the submitter is a real student or a teacher trying the game out. */
+  isTeacher: boolean;
   className: string | null;
   lessonSlug: string;
   lessonTitle: string;
@@ -16,15 +18,20 @@ export interface GameSubmissionRow {
 }
 
 /**
- * Fetches the actual WORK students produced inside interactive games
- * (GameSubmission rows) for every class taught by `teacherId`. Each row carries
- * the game-specific `data` payload plus a 0-100 `score`, so a teacher can see
- * not just THAT a student finished but HOW they answered/trained. Newest first.
+ * Fetches the actual WORK produced inside interactive games (GameSubmission
+ * rows) across the WHOLE school. Each row carries the game-specific `data`
+ * payload plus a 0-100 `score`, so any teacher can see not just THAT someone
+ * finished but HOW they answered/trained. Newest first.
+ *
+ * Results are intentionally NOT scoped to the classes a teacher owns: there is a
+ * single shared roster, so every teacher account sees everyone's work. Teacher
+ * test-runs are included too (flagged via `isTeacher`) so an instructor can
+ * verify their own attempts.
  *
  * Optional filters narrow by lesson, activity, or a single class.
  */
 export async function getTeacherGameSubmissions(
-  teacherId: string,
+  _teacherId: string,
   filters: { lessonSlug?: string; activityId?: string; classId?: string } = {},
   limit = 200
 ): Promise<GameSubmissionRow[]> {
@@ -32,14 +39,9 @@ export async function getTeacherGameSubmissions(
     where: {
       ...(filters.lessonSlug ? { lessonSlug: filters.lessonSlug } : {}),
       ...(filters.activityId ? { activityId: filters.activityId } : {}),
-      user: {
-        enrollments: {
-          some: {
-            class: { teacherId },
-            ...(filters.classId ? { classId: filters.classId } : {}),
-          },
-        },
-      },
+      ...(filters.classId
+        ? { user: { enrollments: { some: { classId: filters.classId } } } }
+        : {}),
     },
     orderBy: { createdAt: "desc" },
     take: limit,
@@ -55,8 +57,8 @@ export async function getTeacherGameSubmissions(
         select: {
           id: true,
           displayName: true,
+          role: true,
           enrollments: {
-            where: { class: { teacherId } },
             take: 1,
             select: { class: { select: { name: true } } },
           },
@@ -72,6 +74,7 @@ export async function getTeacherGameSubmissions(
     id: s.id,
     studentId: s.user.id,
     studentName: s.user.displayName,
+    isTeacher: s.user.role === "TEACHER" || s.user.role === "ADMIN",
     className: s.user.enrollments[0]?.class.name ?? null,
     lessonSlug: s.lessonSlug,
     lessonTitle: titleBySlug.get(s.lessonSlug) ?? s.lessonSlug,

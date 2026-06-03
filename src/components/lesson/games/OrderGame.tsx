@@ -67,7 +67,7 @@ export default function OrderGame({
         {hint}
       </p>
 
-      <ol className="mx-auto flex max-w-[420px] flex-col gap-2">
+      <ol className="mx-auto flex max-w-[680px] flex-col gap-2">
         {order.map((line, i) => (
           <li
             key={`${line}-${i}`}
@@ -109,12 +109,12 @@ export default function OrderGame({
       </div>
 
       {status === "success" && (
-        <div className="mx-auto mt-3 max-w-[420px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
+        <div className="mx-auto mt-3 max-w-[680px] rounded-xl bg-[var(--color-duo-green-light)] px-3 py-2 text-center text-sm font-bold text-[var(--color-duo-green-dark)]">
           ⭐ Tepat! Urutannya sudah benar! 🎉
         </div>
       )}
       {status === "fail" && (
-        <div className="mx-auto mt-3 max-w-[420px] rounded-xl bg-[#ffe9e9] px-3 py-2 text-center text-sm font-bold text-[#d33]">
+        <div className="mx-auto mt-3 max-w-[680px] rounded-xl bg-[#ffe9e9] px-3 py-2 text-center text-sm font-bold text-[#d33]">
           Belum pas 😅 Coba pindahkan barisnya lagi.
         </div>
       )}

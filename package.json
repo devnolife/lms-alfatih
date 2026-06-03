@@ -10,7 +10,9 @@
     "data:quickdraw": "tsx scripts/build-quickdraw.ts",
     "db:seed": "tsx --env-file=.env prisma/seed.ts",
     "test:e2e": "python tests/e2e/run_e2e.py",
-    "test:e2e:roles": "python tests/e2e/run_role_pages.py"
+    "test:e2e:roles": "python tests/e2e/run_role_pages.py",
+    "test:student": "python tests/e2e/run_student_api.py",
+    "test:games": "node tests/e2e/run_games.mjs"
   },
   "prisma": {
     "seed": "tsx --env-file=.env prisma/seed.ts"

@@ -60,11 +60,11 @@ export default function MatchGame({
         {question}
       </p>
 
-      <pre className="mx-auto mb-4 max-w-[420px] overflow-x-auto rounded-2xl bg-[#1e1e1e] px-4 py-3 text-sm leading-relaxed text-white">
+      <pre className="mx-auto mb-4 max-w-[680px] overflow-x-auto rounded-2xl bg-[#1e1e1e] px-4 py-3 text-sm leading-relaxed text-white">
         <code className="font-mono">{codeLines.join("\n")}</code>
       </pre>
 
-      <div className="mx-auto flex max-w-[420px] flex-col gap-2">
+      <div className="mx-auto flex max-w-[680px] flex-col gap-2">
         {opts.map((opt, i) => {
           const isPicked = picked === i;
           const isCorrect = i === correctIndex;
@@ -79,9 +79,8 @@ export default function MatchGame({
             <button
               key={i}
               onClick={() => handlePick(i)}
-              className={`flex items-center justify-between rounded-xl border-2 px-4 py-2 text-left font-mono text-sm font-bold transition-colors ${
-                picked !== null && isCorrect ? "fx-pop" : ""
-              } ${cls}`}
+              className={`flex items-center justify-between rounded-xl border-2 px-4 py-2 text-left font-mono text-sm font-bold transition-colors ${picked !== null && isCorrect ? "fx-pop" : ""
+                } ${cls}`}
             >
               <span className="whitespace-pre-wrap">{opt}</span>
               {picked !== null && isCorrect && <span>✅</span>}
@@ -93,11 +92,10 @@ export default function MatchGame({
 
       {picked !== null && (
         <div
-          className={`mx-auto mt-3 max-w-[420px] rounded-xl px-3 py-2 text-center text-sm font-bold ${
-            picked === correctIndex
+          className={`mx-auto mt-3 max-w-[680px] rounded-xl px-3 py-2 text-center text-sm font-bold ${picked === correctIndex
               ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
               : "bg-[#ffe9e9] text-[#d33]"
-          }`}
+            }`}
         >
           {picked === correctIndex
             ? "⭐ Benar! Kamu paham cara membaca kode! 🎉"

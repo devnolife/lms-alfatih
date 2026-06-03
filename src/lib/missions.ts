@@ -67,16 +67,29 @@ export function gradeMission(
   mission: FileMission,
   entryPaths: string[]
 ): MissionResult {
-  // Map basename(lowercased) -> its immediate parent folder (top segment).
+  // Map basename(lowercased) -> the file's IMMEDIATE parent folder.
+  // We use the immediate parent (not the top segment) so that a wrapper folder
+  // added by the OS when zipping — e.g. "berkas-rescue/Gambar/foto.jpg" — still
+  // grades correctly. OS metadata entries (__MACOSX, .DS_Store, ._*, Thumbs.db)
+  // are ignored so a re-zipped/rearranged archive does not fail validation.
   const placement = new Map<string, string>();
   for (const raw of entryPaths) {
     const norm = raw.replace(/\\/g, "/").replace(/^\/+/, "");
     if (norm.endsWith("/")) continue; // directory entry
     const segments = norm.split("/").filter(Boolean);
     if (segments.length < 2) continue; // file at root, no folder
+
+    // Skip OS metadata that compressors add automatically.
+    if (segments.some((s) => s === "__MACOSX")) continue;
     const base = segments[segments.length - 1].toLowerCase();
-    const topFolder = segments[0];
-    if (!placement.has(base)) placement.set(base, topFolder);
+    if (base === ".ds_store" || base === "thumbs.db" || base.startsWith("._")) {
+      continue;
+    }
+
+    // The folder that actually contains the file (immediate parent), so any
+    // number of wrapper folders above it is tolerated.
+    const parentFolder = segments[segments.length - 2];
+    if (!placement.has(base)) placement.set(base, parentFolder);
   }
 
   const details: FileFeedback[] = mission.files.map((f) => {
