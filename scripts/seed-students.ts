@@ -15,6 +15,9 @@ const prisma = new PrismaClient();
 /** Shared class password (min 6 chars). Students can change it later. */
 const CLASS_PASSWORD = "funpython";
 
+/** STUDENT usernames to keep (not deleted). e.g. the demo "siswa" account. */
+const KEEP_USERNAMES = ["siswa"];
+
 const AKHWAT: string[] = [
   "Afiyah Permata Achmad",
   "Afza Danisya Hulwah",
@@ -97,8 +100,10 @@ async function main() {
 
   console.log(`Roster: ${roster.length} siswa (${AKHWAT.length} akhwat + ${IKHWAN.length} ikhwan)`);
 
-  const deleted = await prisma.user.deleteMany({ where: { role: Role.STUDENT } });
-  console.log(`Deleted ${deleted.count} akun STUDENT lama.`);
+  const deleted = await prisma.user.deleteMany({
+    where: { role: Role.STUDENT, username: { notIn: KEEP_USERNAMES } },
+  });
+  console.log(`Deleted ${deleted.count} akun STUDENT lama (dipertahankan: ${KEEP_USERNAMES.join(", ")}).`);
 
   for (const r of roster) {
     await prisma.user.create({
