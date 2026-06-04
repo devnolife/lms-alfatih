@@ -16,21 +16,21 @@ const Connector = () => (
 );
 
 const Oval = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-full border-2 border-[var(--color-grape)] bg-[var(--color-grape)]/10 px-5 py-2 text-sm font-bold text-[var(--color-grape-dark)]">
+  <div className="rounded-full border-2 border-[var(--color-grape)] bg-[var(--color-grape)]/10 px-5 py-2 text-center text-sm font-bold text-[var(--color-grape-dark)]">
     {children}
   </div>
 );
 
 const Process = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-lg border-2 border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] px-4 py-2 text-sm font-bold text-[var(--color-sky-blue-dark)]">
+  <div className="max-w-full rounded-lg border-2 border-[var(--color-sky-blue)] bg-[var(--color-sky-blue-light)] px-4 py-2 text-center text-sm font-bold text-balance text-[var(--color-sky-blue-dark)]">
     {children}
   </div>
 );
 
 const Diamond = ({ children }: { children: React.ReactNode }) => (
-  <div className="relative flex h-24 w-44 items-center justify-center">
-    <div className="absolute inset-0 m-auto h-[88px] w-[88px] rotate-45 rounded-md border-2 border-[var(--color-sunshine-dark)] bg-[var(--color-sunshine)]/20" />
-    <span className="relative z-10 px-2 text-center text-xs font-bold text-[var(--color-sunshine-dark)]">
+  <div className="relative flex h-36 w-44 items-center justify-center">
+    <div className="absolute inset-0 m-auto h-[124px] w-[124px] rotate-45 rounded-lg border-2 border-[var(--color-sunshine-dark)] bg-[var(--color-sunshine)]/20" />
+    <span className="relative z-10 w-[112px] text-center text-xs font-bold leading-tight text-balance text-[var(--color-sunshine-dark)]">
       {children}
     </span>
   </div>
@@ -90,7 +90,7 @@ export default function FlowchartDiagram({
 
         {/* Branch labels + boxes */}
         <div className="grid w-full max-w-md grid-cols-2 gap-3">
-          <div className="flex flex-col items-center">
+          <div className="flex min-w-0 flex-col items-center">
             <span className="rounded-full bg-[var(--color-duo-green-light)] px-2 py-0.5 text-xs font-extrabold text-[var(--color-duo-green-dark)]">
               Ya ✓
             </span>
@@ -98,7 +98,7 @@ export default function FlowchartDiagram({
             <Process>{yes}</Process>
             <Connector />
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex min-w-0 flex-col items-center">
             <span className="rounded-full bg-[var(--color-bubblegum)]/15 px-2 py-0.5 text-xs font-extrabold text-[var(--color-bubblegum)]">
               Tidak ✗
             </span>

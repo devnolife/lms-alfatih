@@ -21,8 +21,8 @@ const features = [
     lottie: "/lottie/toolbox.json",
     iconBg: "bg-sky-blue-light border-sky-blue",
     title: "Project-Based",
-    desc: "Modul 1-hari yang fokus: dari Hello-World sampai Turtle Art jadi dalam satu sesi. Belajar dari ngerjain, bukan ngapal.",
-    badge: "3 Modul · 1 Hari",
+    desc: "Modul yang fokus: dari Hello-World sampai Turtle Art. Belajar dari ngerjain, bukan ngapal.",
+    badge: "Project-Based",
   },
   {
     icon: "👩‍🏫",

@@ -27,6 +27,12 @@ teacherNotes: |
   Helpful, Inspiring, Necessary, Kind) sebelum posting, dan lindungi data pribadi.
   Bawakan sebagai DISKUSI kelas, bukan sekadar memilih jawaban benar.
 answerKey:
+  - ref: "Paham AI Generatif — Soal 1"
+    answer: "Bisa membuat konten baru seperti teks, gambar, dan suara"
+  - ref: "Paham AI Generatif — Soal 2"
+    answer: "AI → Machine Learning → Deep Learning → GenAI"
+  - ref: "Paham AI Generatif — Soal 3"
+    answer: "Karena GenAI hanya menebak pola sehingga bisa salah (halusinasi)"
   - ref: "Penjaga Kualitas Data — Soal 1"
     answer: "AI bisa salah karena datanya kurang beragam"
   - ref: "Penjaga Kualitas Data — Soal 2"
@@ -80,6 +86,8 @@ GenAI bekerja dengan **menebak** keluaran berdasarkan pola yang dipelajari. Kare
 hanya "menebak", jawabannya **berpotensi salah** walau terdengar meyakinkan. Inilah
 kenapa kamu harus selalu **memeriksa ulang** jawaban AI. ⚠️
 :::
+
+::game{type="quiz" activityId="dsi-genai" title="Paham AI Generatif" data="Apa yang membuat AI Generatif (GenAI) istimewa?|Bisa membuat konten baru seperti teks, gambar, dan suara;Hanya bisa menghitung angka;Hanya bisa menyalakan komputer|0|GenAI dapat MENGHASILKAN konten baru, bukan sekadar memilih jawaban yang sudah ada.~Urutkan dari yang paling luas ke paling khusus.|AI lalu Machine Learning lalu Deep Learning lalu GenAI;GenAI lalu AI lalu Machine Learning;Deep Learning lalu AI lalu GenAI|0|GenAI adalah bagian dari Deep Learning, yang merupakan cabang Machine Learning, yang merupakan bagian dari AI.~Kenapa jawaban GenAI harus selalu kita periksa ulang?|Karena GenAI hanya menebak pola sehingga bisa salah (halusinasi);Karena GenAI tidak punya listrik;Karena GenAI selalu benar|0|GenAI menebak keluaran dari pola, jadi jawabannya bisa keliru walau terdengar meyakinkan."}
 
 ## 📊 Sampah Masuk, Sampah Keluar
 

@@ -101,6 +101,15 @@ export function getLevelMeta(level: number): LevelMeta | undefined {
   return LEVELS.find((l) => l.level === level);
 }
 
+/**
+ * Staff (teachers/admins) bypass the sequential level lock so they can preview
+ * any lesson without finishing student progress. Pass the result as
+ * `{ unlockAll }` to getCurriculum/isLessonLocked.
+ */
+export function isStaffRole(role?: string | null): boolean {
+  return role === "TEACHER" || role === "ADMIN";
+}
+
 export type LessonStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
 export type LevelState = "open" | "locked" | "done" | "empty";
 
@@ -137,8 +146,17 @@ function lessonXp(lesson: Lesson): number {
  * Lock rule: a level is `open` only if every PRIOR level that has lessons is
  * fully completed. Levels with no lessons yet are `empty` ("segera hadir") and
  * do NOT block later levels, so authored content stays reachable.
+ *
+ * When `unlockAll` is true (teachers/admins), the sequential lock is bypassed:
+ * every non-empty level is `open`/`done` so staff can preview any lesson without
+ * having to complete student progress first. Per-lesson completion status is
+ * still computed from real rows, so it stays accurate if they do play.
  */
-export async function getCurriculum(userId?: string): Promise<LevelGroup[]> {
+export async function getCurriculum(
+  userId?: string,
+  options?: { unlockAll?: boolean }
+): Promise<LevelGroup[]> {
+  const unlockAll = options?.unlockAll ?? false;
   const lessons = await getAllLessons();
 
   const progressMap = new Map<string, LessonStatus>();
@@ -184,6 +202,9 @@ export async function getCurriculum(userId?: string): Promise<LevelGroup[]> {
       state = "empty";
     } else if (completed === total) {
       state = "done";
+    } else if (unlockAll) {
+      // Teachers/admins can open any level regardless of prior progress.
+      state = "open";
     } else {
       // Check all prior levels — if any non-empty level isn't done, lock this one.
       const priorAllDone = groups.every(
@@ -204,9 +225,10 @@ export async function getCurriculum(userId?: string): Promise<LevelGroup[]> {
  */
 export async function isLessonLocked(
   slug: string,
-  userId?: string
+  userId?: string,
+  options?: { unlockAll?: boolean }
 ): Promise<boolean> {
-  const groups = await getCurriculum(userId);
+  const groups = await getCurriculum(userId, options);
   for (const g of groups) {
     if (g.lessons.some((l) => l.slug === slug)) {
       return g.state === "locked";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useGameFeedback } from "@/hooks/useGameFeedback";
 
 interface Props {
@@ -26,7 +26,15 @@ export default function FillBlankGame({
   title = "Isi Bagian Rumpang",
   question = "Pilih kata yang tepat untuk mengisi kotak kosong:",
 }: Props) {
-  const opts = options.split("|").map((o) => o.trim());
+  // Shuffle the options once on mount so the correct token isn't always first.
+  const opts = useMemo(() => {
+    const arr = options.split("|").map((o) => o.trim());
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [options]);
   const [picked, setPicked] = useState<string | null>(null);
   const fb = useGameFeedback();
   const solvedRef = useRef(false);
@@ -37,7 +45,15 @@ export default function FillBlankGame({
     if (opt === answer) {
       if (!solvedRef.current) {
         solvedRef.current = true;
-        fb.correct({ xp: 10 });
+        // Persist completion (via ActivityContext) when used as a lesson
+        // activity — mirrors QuizGame so lesson progress flips to COMPLETED.
+        fb.solved({
+          xp: 10,
+          label: "+10 XP",
+          game: "fill",
+          score: 100,
+          data: { [question]: opt },
+        });
       } else {
         fb.correct();
       }
@@ -116,8 +132,8 @@ export default function FillBlankGame({
       {picked !== null && (
         <div
           className={`mx-auto mt-3 max-w-[680px] rounded-xl px-3 py-2 text-center text-sm font-bold ${isCorrect
-              ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-              : "bg-[#ffe9e9] text-[#d33]"
+            ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+            : "bg-[#ffe9e9] text-[#d33]"
             }`}
         >
           {isCorrect

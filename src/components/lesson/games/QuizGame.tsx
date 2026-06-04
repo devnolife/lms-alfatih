@@ -23,6 +23,22 @@ interface QItem {
   explain: string;
 }
 
+/** Fisher–Yates shuffle that returns the new array plus where each original
+ *  index landed, so we can keep track of the correct answer's new position. */
+function shuffleWithMap<T>(arr: T[]): { items: T[]; newIndexOf: number[] } {
+  const idx = arr.map((_, i) => i);
+  for (let i = idx.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [idx[i], idx[j]] = [idx[j], idx[i]];
+  }
+  const items = idx.map((i) => arr[i]);
+  const newIndexOf: number[] = [];
+  idx.forEach((origIndex, newIndex) => {
+    newIndexOf[origIndex] = newIndex;
+  });
+  return { items, newIndexOf };
+}
+
 function parse(data: string): QItem[] {
   return data
     .split("~")
@@ -30,10 +46,14 @@ function parse(data: string): QItem[] {
     .filter(Boolean)
     .map((chunk) => {
       const [q, opts, ans, explain] = chunk.split("|");
+      const options = (opts ?? "").split(";").map((o) => o.trim()).filter(Boolean);
+      const answer = Number((ans ?? "0").trim());
+      // Shuffle the options so the correct answer isn't always first.
+      const { items: shuffled, newIndexOf } = shuffleWithMap(options);
       return {
         q: (q ?? "").trim(),
-        options: (opts ?? "").split(";").map((o) => o.trim()).filter(Boolean),
-        answer: Number((ans ?? "0").trim()),
+        options: shuffled,
+        answer: newIndexOf[answer] ?? 0,
         explain: (explain ?? "").trim(),
       };
     });

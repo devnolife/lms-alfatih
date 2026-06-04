@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: "Cocok untuk usia berapa?",
-    a: "Dirancang khusus untuk tingkat SMP (kelas 7–9), tapi bisa juga dipakai untuk SD kelas atas dan SMA pemula. Modul 1-hari diuji untuk anak yang baru pertama lihat kode.",
+    a: "Dirancang khusus untuk tingkat SMP (kelas 7–9), tapi bisa juga dipakai untuk SD kelas atas dan SMA pemula. Modulnya diuji untuk anak yang baru pertama lihat kode.",
   },
   {
     q: "Apakah materi sesuai Kurikulum Merdeka?",
@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "Apakah gratis?",
-    a: "Versi 1-Day Bootcamp Track gratis untuk siswa dan guru. Modul lanjutan & dukungan sekolah skala besar akan diumumkan terpisah.",
+    a: "Versi FunPython Track gratis untuk siswa dan guru. Modul lanjutan & dukungan sekolah skala besar akan diumumkan terpisah.",
   },
   {
     q: "Datanya tersimpan di mana?",
@@ -50,11 +50,10 @@ export default function FAQSection() {
             return (
               <li
                 key={item.q}
-                className={`border-3 rounded-2xl bg-snow transition-all ${
-                  isOpen
-                    ? "border-duo-green shadow-[0_6px_0_var(--color-duo-green)]"
-                    : "border-cloud shadow-[0_4px_0_var(--color-cloud)]"
-                }`}
+                className={`border-3 rounded-2xl bg-snow transition-all ${isOpen
+                  ? "border-duo-green shadow-[0_6px_0_var(--color-duo-green)]"
+                  : "border-cloud shadow-[0_4px_0_var(--color-cloud)]"
+                  }`}
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
@@ -65,11 +64,10 @@ export default function FAQSection() {
                     {item.q}
                   </span>
                   <span
-                    className={`shrink-0 w-9 h-9 rounded-full border-2 border-almost-black flex items-center justify-center text-xl font-bold transition-transform ${
-                      isOpen
-                        ? "bg-duo-green text-white rotate-45"
-                        : "bg-snow text-almost-black"
-                    }`}
+                    className={`shrink-0 w-9 h-9 rounded-full border-2 border-almost-black flex items-center justify-center text-xl font-bold transition-transform ${isOpen
+                      ? "bg-duo-green text-white rotate-45"
+                      : "bg-snow text-almost-black"
+                      }`}
                     aria-hidden
                   >
                     +

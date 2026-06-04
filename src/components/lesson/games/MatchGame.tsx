@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useGameFeedback } from "@/hooks/useGameFeedback";
 
 interface Props {
@@ -27,8 +27,21 @@ export default function MatchGame({
   question = "Apa yang akan ditampilkan kode ini?",
 }: Props) {
   const codeLines = code.split("\\n");
-  const opts = options.split("|").map((o) => o.replace(/\\n/g, "\n"));
-  const correctIndex = parseInt(answer, 10) || 0;
+  const rawOpts = options.split("|").map((o) => o.replace(/\\n/g, "\n"));
+  const rawCorrect = parseInt(answer, 10) || 0;
+  // Shuffle options once on mount so the correct answer isn't always first.
+  const { opts, correctIndex } = useMemo(() => {
+    const idx = rawOpts.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [idx[i], idx[j]] = [idx[j], idx[i]];
+    }
+    return {
+      opts: idx.map((i) => rawOpts[i]),
+      correctIndex: idx.indexOf(rawCorrect),
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options, answer]);
   const [picked, setPicked] = useState<number | null>(null);
   const fb = useGameFeedback();
   const solvedRef = useRef(false);
@@ -39,7 +52,15 @@ export default function MatchGame({
     if (i === correctIndex) {
       if (!solvedRef.current) {
         solvedRef.current = true;
-        fb.correct({ xp: 10 });
+        // Persist completion (via ActivityContext) when this game is an
+        // activity inside a lesson — mirrors QuizGame so lesson progress flips.
+        fb.solved({
+          xp: 10,
+          label: "+10 XP",
+          game: "match",
+          score: 100,
+          data: { [question]: opts[i] ?? "" },
+        });
       } else {
         fb.correct();
       }
@@ -93,8 +114,8 @@ export default function MatchGame({
       {picked !== null && (
         <div
           className={`mx-auto mt-3 max-w-[680px] rounded-xl px-3 py-2 text-center text-sm font-bold ${picked === correctIndex
-              ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
-              : "bg-[#ffe9e9] text-[#d33]"
+            ? "bg-[var(--color-duo-green-light)] text-[var(--color-duo-green-dark)]"
+            : "bg-[#ffe9e9] text-[#d33]"
             }`}
         >
           {picked === correctIndex

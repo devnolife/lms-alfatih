@@ -18,21 +18,23 @@ challenges:
       - name: "Cabang 'Besar'"
         expectedStdout: "Besar\n"
   - id: logic-2
-    prompt: "Cetak angka 1 sampai 5 (masing-masing di baris baru) menggunakan for-loop."
+    prompt: "Cetak angka 1 sampai 5 menyamping dalam satu baris sehingga hasilnya: 12345"
     xpReward: 20
     starterCode: |
-      # Tugas: gunakan for + range untuk mencetak 1..5
+      # Tugas: cetak 1 sampai 5 menyamping (hasil: 12345)
+      # Tips: pakai for + range(1, 6), lalu print(i, end="") supaya TIDAK pindah baris
       
     tests:
       - name: "Cetak 1..5"
-        expectedStdout: "1\n2\n3\n4\n5\n"
+        expectedStdout: "12345\n"
   - id: logic-3
-    prompt: "Game tebak angka: jawaban benar adalah 4. Untuk setiap tebakan dalam list `tebakan = [2, 4, 7]`, cetak 'Salah' atau 'Benar!'."
+    prompt: "Game tebak angka: jawaban benar adalah 4. Untuk setiap tebakan dalam list `tebakan = [2, 4, 7]`, cetak 'Benar!' jika sama dengan jawaban, selain itu 'Salah' (masing-masing di baris baru)."
     xpReward: 25
     starterCode: |
       jawaban = 4
       tebakan = [2, 4, 7]
-      # Tugas: loop melalui 'tebakan' dan cetak 'Benar!' jika sama dgn 'jawaban', selain itu 'Salah'.
+      # Tugas: loop tiap tebakan, cetak 'Benar!' kalau sama dgn jawaban, selain itu 'Salah'.
+      # Tips: pakai print("...") BIASA tiap hasil di baris baru, JANGAN pakai end="".
       
     tests:
       - name: "Game tebak angka"
@@ -48,8 +50,8 @@ answerKey:
     answer: 'if angka > 5: print("Besar")  else: print("Kecil")'
     note: "angka = 7 → Besar"
   - ref: "Tantangan 2 — Cetak 1..5"
-    answer: 'for i in range(1, 6): print(i)'
-    note: "Output: 1 2 3 4 5 (tiap baris)"
+    answer: 'for i in range(1, 6): print(i, end="")'
+    note: "Output: 12345 (satu baris menyamping)"
   - ref: "Tantangan 3 — Game Tebak Angka"
     answer: 'for t in tebakan: print("Benar!" if t == jawaban else "Salah")'
     note: "Output: Salah, Benar!, Salah"

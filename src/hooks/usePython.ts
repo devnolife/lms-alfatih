@@ -53,7 +53,7 @@ export function usePython() {
   }, [clearTimers]);
 
   const createWorker = useCallback(() => {
-    const worker = new Worker("/python-worker.js");
+    const worker = new Worker("/python-worker.js?v=2");
 
     worker.onmessage = (event: MessageEvent) => {
       const data = event.data || {};

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getCurriculum } from "@/lib/curriculum";
+import { getCurriculum, isStaffRole } from "@/lib/curriculum";
 import { getGlobalLeaderboard } from "@/lib/leaderboard";
 import { syncUserBadges, getUserBadges } from "@/lib/badges";
 import { hasCompletedPreTest } from "@/lib/test-status";
@@ -22,7 +22,7 @@ export default async function AppHome() {
 
   await syncUserBadges(user.id);
   const [groups, leaderboard, badges] = await Promise.all([
-    getCurriculum(user.id),
+    getCurriculum(user.id, { unlockAll: isStaffRole(user.role) }),
     getGlobalLeaderboard(user.id),
     getUserBadges(user.id),
   ]);

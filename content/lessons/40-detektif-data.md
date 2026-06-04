@@ -97,7 +97,7 @@ dianalisis. ✅
 
 Uji pemahamanmu soal membersihkan data:
 
-::game{type="quiz" activityId="ad-cleaning" title="Detektif Pembersih Data" data="Catatan penjualan \"Bakso\" muncul dua kali dengan angka sama persis. Ini masalah...|Duplikat;Outlier;Nilai hilang|0|Data yang sama tercatat dua kali disebut duplikat — salah satunya dihapus.~Ada waktu tempuh tertulis 600 menit ke sekolah yang biasanya 15 menit. Ini...|Outlier;Duplikat;Standardisasi|0|Nilai yang menyimpang jauh disebut outlier — perlu diperiksa.~Tanggal ditulis campur \"01-12-2025\" dan \"12/01/2025\". Yang harus dilakukan?|Menyeragamkan formatnya;Menghapus semua tanggal;Membiarkannya|0|Menyamakan format disebut standardisasi agar data konsisten."}
+::game{type="quiz" activityId="ad-cleaning" title="Detektif Pembersih Data" data="Catatan penjualan 'Bakso' muncul dua kali dengan angka sama persis. Ini masalah...|Duplikat;Outlier;Nilai hilang|0|Data yang sama tercatat dua kali disebut duplikat — salah satunya dihapus.~Ada waktu tempuh tertulis 600 menit ke sekolah yang biasanya 15 menit. Ini...|Outlier;Duplikat;Standardisasi|0|Nilai yang menyimpang jauh disebut outlier — perlu diperiksa.~Tanggal ditulis campur '01-12-2025' dan '12/01/2025'. Yang harus dilakukan?|Menyeragamkan formatnya;Menghapus semua tanggal;Membiarkannya|0|Menyamakan format disebut standardisasi agar data konsisten."}
 
 ## 🏷️ Kelompokkan Datanya
 

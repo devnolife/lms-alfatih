@@ -70,6 +70,20 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
     setCodeByIdx((prev) => ({ ...prev, [activeIdx]: value }));
   }
 
+  function resetCode() {
+    setCodeByIdx((prev) => {
+      const next = { ...prev };
+      delete next[activeIdx];
+      return next;
+    });
+    setStdout("");
+    setStderr("");
+    setErrorMsg(null);
+    setDraw([]);
+    setTestResults(null);
+    setHasRun(false);
+  }
+
   function selectChallenge(idx: number) {
     setActiveIdx(idx);
     setStdout("");
@@ -289,6 +303,15 @@ export default function LessonEditor({ lesson, onChallengeSolved }: Props) {
           {booting ? "Menyiapkan Python…" : `Python · ${lesson.title}`}
         </span>
         <div className="flex items-center gap-2">
+          <button
+            onClick={resetCode}
+            disabled={busy}
+            title="Kembalikan ke kode awal"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[var(--color-graphite)] text-sm font-bold uppercase tracking-wide bg-white border-2 border-[var(--color-cloud)] hover:brightness-105 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <span aria-hidden>↺</span>
+            Reset
+          </button>
           <button
             onClick={handleRun}
             disabled={busy}

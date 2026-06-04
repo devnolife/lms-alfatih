@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getAllLessons, getLessonBySlug } from "@/lib/content";
 import { getCurrentUser } from "@/lib/auth";
-import { isLessonLocked } from "@/lib/curriculum";
+import { isLessonLocked, isStaffRole } from "@/lib/curriculum";
 import LessonPlayer from "@/components/lesson/LessonPlayer";
 import MascotSvg from "@/components/MascotSvg";
 import BackButton from "@/components/ui/BackButton";
@@ -21,7 +21,11 @@ export default async function LessonPage({ params }: PageProps) {
   if (!lesson) notFound();
 
   const user = await getCurrentUser();
-  if (await isLessonLocked(lessonSlug, user?.id)) {
+  if (
+    await isLessonLocked(lessonSlug, user?.id, {
+      unlockAll: isStaffRole(user?.role),
+    })
+  ) {
     redirect("/learn?locked=1");
   }
 

@@ -69,11 +69,11 @@ export default function CurriculumSection() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
           <div>
             <span className="inline-block mb-4 text-[11px] uppercase tracking-[0.18em] font-bold text-duo-green-dark">
-              1-Day Bootcamp Track
+              Kurikulum FunPython
             </span>
             <h2 className="font-[family-name:var(--font-feather)] text-4xl md:text-[44px] tracking-tight leading-[1.1] max-w-[640px]">
-              Tiga modul. Satu hari.{" "}
-              <span className="text-duo-green">Satu sertifikat.</span>
+              Belajar bertahap.{" "}
+              <span className="text-duo-green">Raih sertifikat.</span>
             </h2>
           </div>
           <p className="text-graphite font-bold text-[15px] max-w-sm">

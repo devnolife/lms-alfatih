@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getCurriculum, getLevelMeta } from "@/lib/curriculum";
+import { getCurriculum, getLevelMeta, isStaffRole } from "@/lib/curriculum";
 import PendingLink from "@/components/ui/PendingLink";
 import MascotSvg from "@/components/MascotSvg";
 import BackButton from "@/components/ui/BackButton";
@@ -30,7 +30,9 @@ export default async function LevelPage({ params }: PageProps) {
   if (!meta) notFound();
 
   const user = await getCurrentUser();
-  const groups = await getCurriculum(user?.id);
+  const groups = await getCurriculum(user?.id, {
+    unlockAll: isStaffRole(user?.role),
+  });
   const group = groups.find((g) => g.meta.level === level);
   if (!group) notFound();
 

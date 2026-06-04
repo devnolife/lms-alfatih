@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import PendingLink from "@/components/ui/PendingLink";
 import gsap from "gsap";
 import MascotSvg from "@/components/MascotSvg";
@@ -89,6 +90,16 @@ export default function MarketingHero() {
       <div className="mx-auto max-w-[1180px] px-6 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-14 items-center">
         {/* Left: text */}
         <div ref={textRef}>
+          <div className="mb-5 w-fit rounded-2xl bg-snow p-2.5 border-2 border-cloud shadow-[0_4px_0_var(--color-cloud)]">
+            <Image
+              src="/logo.png"
+              alt="Fakultas Teknik Unismuh Makassar"
+              width={48}
+              height={48}
+              className="h-12 w-12 object-contain"
+              priority
+            />
+          </div>
           <span className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full bg-duo-green-light text-duo-green-dark font-[family-name:var(--font-feather)] font-bold text-[13px] border-2 border-duo-green">
             🎓 KURIKULUM MERDEKA · ELEMEN AP & PLB
           </span>
@@ -103,7 +114,7 @@ export default function MarketingHero() {
           </h1>
           <p className="text-graphite text-lg md:text-[19px] font-bold mb-9 leading-relaxed max-w-xl">
             FunPython adalah platform LMS untuk siswa SMP — coding Python langsung
-            di browser, project 1-hari yang dikemas seperti game, monitoring
+            di browser, materi yang dikemas seperti game, monitoring
             real-time untuk guru. Tanpa setup ribet.
           </p>
 
@@ -170,23 +181,6 @@ export default function MarketingHero() {
             <span className="text-[10px] uppercase tracking-wider text-charcoal">+XP</span>
             <span className="text-2xl text-almost-black leading-none">100</span>
           </div>
-        </div>
-      </div>
-
-      {/* Social proof strip */}
-      <div className="mx-auto max-w-[1180px] px-6 mt-20">
-        <p className="text-center text-[11px] uppercase tracking-[0.18em] text-silver font-bold mb-5">
-          Sudah dipakai komunitas guru informatika di Indonesia
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-70">
-          {["SMP Negeri 1", "MTs Al-Hikmah", "SMP IT Cendekia", "SMPN 5 Bandung", "Kelas Coding Surabaya"].map((s) => (
-            <span
-              key={s}
-              className="text-[13px] font-bold uppercase tracking-wide text-graphite"
-            >
-              {s}
-            </span>
-          ))}
         </div>
       </div>
     </section>

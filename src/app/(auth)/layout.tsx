@@ -12,6 +12,15 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <div className="pointer-events-none absolute inset-0 dotted-bg opacity-40 lg:opacity-60" />
 
         <div className="relative z-10 w-full max-w-md auth-rise">
+          {/* Back to landing page */}
+          <Link
+            href="/"
+            className="mb-4 inline-flex items-center gap-1.5 rounded-full border-2 border-cloud bg-snow px-4 py-1.5 text-sm font-bold text-graphite transition-colors hover:border-[var(--color-duo-green)] hover:text-[var(--color-duo-green)]"
+            style={{ fontFamily: "var(--font-din)" }}
+          >
+            ← Kembali ke beranda
+          </Link>
+
           {/* Mobile logo */}
           <Link
             href="/"

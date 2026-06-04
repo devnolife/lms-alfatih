@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getCurriculum } from "@/lib/curriculum";
+import { getCurriculum, isStaffRole } from "@/lib/curriculum";
 import { hasCompletedPreTest } from "@/lib/test-status";
 import LevelMap from "@/components/curriculum/LevelMap";
 import BackButton from "@/components/ui/BackButton";
@@ -18,7 +18,9 @@ export default async function LearnIndex({
     redirect("/test/pre");
   }
 
-  const groups = await getCurriculum(user?.id);
+  const groups = await getCurriculum(user?.id, {
+    unlockAll: isStaffRole(user?.role),
+  });
 
   return (
     <div className="max-w-[1140px] mx-auto px-6 py-12">

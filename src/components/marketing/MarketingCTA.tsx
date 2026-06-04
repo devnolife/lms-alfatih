@@ -15,7 +15,7 @@ export default function MarketingCTA() {
           <LottiePlayer src="/lottie/rocket.json" className="absolute bottom-6 right-6 h-16 w-16 rotate-[-8deg] opacity-80" fallback={<span aria-hidden className="text-5xl">🚀</span>} />
 
           <span className="inline-block mb-4 text-[11px] uppercase tracking-[0.2em] font-bold text-duo-green-dark">
-            1-Day Bootcamp · 100% Gratis
+            100% Gratis
           </span>
           <h2 className="font-[family-name:var(--font-feather)] text-4xl md:text-[48px] text-almost-black leading-[1.05] mb-5">
             Siap ngoding Python hari ini?

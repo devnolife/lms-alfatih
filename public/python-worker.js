@@ -256,8 +256,11 @@ async function runCode(id, code, stdin) {
   // the (short) execution watchdog rather than the (long) boot timeout.
   postMessage({ type: "exec", id });
 
-  pyodide.setStdout({ batched: (text) => postMessage({ type: "stdout", id, text }) });
-  pyodide.setStderr({ batched: (text) => postMessage({ type: "stderr", id, text }) });
+  // Pyodide's `batched` callback is invoked once per line with the trailing
+  // newline stripped. Re-add it so multi-line output (e.g. one print() per
+  // line) keeps its line breaks instead of collapsing into a single line.
+  pyodide.setStdout({ batched: (text) => postMessage({ type: "stdout", id, text: text + "\n" }) });
+  pyodide.setStderr({ batched: (text) => postMessage({ type: "stderr", id, text: text + "\n" }) });
 
   const lines = (stdin ?? "").length ? String(stdin).split("\n") : [];
   let idx = 0;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import LottiePlayer from "@/components/ui/LottiePlayer";
 
 const cols = [
@@ -62,6 +63,25 @@ export default function MarketingFooter() {
             LMS Python untuk SMP Indonesia. Dirancang sesuai{" "}
             <strong>Kurikulum Merdeka</strong>.
           </p>
+
+          <div className="mt-6 flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="Fakultas Teknik Unismuh Makassar"
+              width={48}
+              height={48}
+              className="h-12 w-12 object-contain"
+            />
+            <div className="text-[11px] font-bold leading-snug text-graphite">
+              <span className="block uppercase tracking-wider text-silver">
+                Dipersembahkan oleh
+              </span>
+              Fakultas Teknik
+              <br />
+              Universitas Muhammadiyah Makassar
+            </div>
+          </div>
+
           <p className="mt-6 text-[11px] uppercase tracking-wider font-bold text-silver">
             🇮🇩 Dibuat di Indonesia
           </p>
@@ -88,7 +108,7 @@ export default function MarketingFooter() {
         ))}
       </div>
       <div className="border-t-2 border-cloud py-5 text-center text-[12px] font-bold text-silver uppercase tracking-wider">
-        © {new Date().getFullYear()} FunPython · All systems green ●
+        © {new Date().getFullYear()} FunPython · Fakultas Teknik Unismuh Makassar · All systems green ●
       </div>
     </footer>
   );
