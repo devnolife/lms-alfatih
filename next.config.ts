@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["funpython.teknik.unismuh.ac.id"],
   async headers() {
     return [
       {
