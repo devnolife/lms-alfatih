@@ -25,7 +25,7 @@ import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 // Reuse the Playwright install from a sibling project (no pip / local install).
-const { chromium } = require("/home/devnolife/dashboard-lab/node_modules/playwright");
+const { chromium } = require("/home/devnolife/lab/dashboard-lab/node_modules/playwright");
 
 const BASE = (process.env.E2E_BASE_URL || "http://localhost:3007").replace(/\/$/, "");
 const USERNAME = process.env.E2E_STUDENT_USER || "siswa";
